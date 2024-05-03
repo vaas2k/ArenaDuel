@@ -1,10 +1,10 @@
 import { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
-import { connectToDatabase } from "../database/database";
-import User from "../database/model/user";
 import * as bcrypt from 'bcryptjs'
-import { login } from "@/types/types";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const authConfig: NextAuthOptions = {
     providers : [
@@ -31,8 +31,13 @@ const authConfig: NextAuthOptions = {
                 }
                 
                 try{
-                    await connectToDatabase();
-                    const user = await User.findOne({email : credentials.email});
+                    
+                    console.log('Check for user ')
+                    const user = await prisma.user.findFirst({
+                        where: { email: credentials.email },
+                      });
+                    console.log('Done Checking')
+
                     if(!user){return null;}
                     const decryptPassword = bcrypt.compareSync(credentials.password,user.password);
                     console.log(decryptPassword);
@@ -67,40 +72,39 @@ const authConfig: NextAuthOptions = {
             else if (account?.provider !== 'credentials' && profile?.email) {
                 try {
                     
-                    await connectToDatabase();
-    
-                    const is_user = await User.findOne({email : profile.email});
+                    const is_user = await prisma.user.findFirst({
+                       where :{email : profile.email}}
+                    );
+                    
                     if(is_user && is_user.OAuth_ID){
-                        console.log(is_user);
                         return is_user;
                     }
                     // if user signedup manually then add providers data to theri profile
                     else if(is_user && !is_user.OAuth_ID){
                         console.log('enter update')
-                        const updatedUser = await User.findOneAndUpdate(
-                            { email: profile.email },
-                            {
-                                image: profile.picture || 'default-image.png',
-                                name: profile.name,
-                                OAuth_ID: account!.providerAccountId,
-                                verified : true
+                        const updatedUser = await prisma.user.update({
+                            where: { email: profile.email },
+                            data: {
+                              image:   profile?.picture || "default-image.png",
+                              name:    profile.name,
+                              OAuth_ID: account?.providerAccountId,
+                              verified: true,
                             },
-                            { new: true } // This option returns the modified document instead of the original one
-                        );
+                          });
                         console.log('updated User');
                         console.log(updatedUser);
                         return updatedUser;
                     }
                     else{
-                        const newUser = new User({
-                            image: profile?.picture! || 'default-image.png',
+                        const newUser = await prisma.user.create({
+                          data: {
+                            image: profile?.picture! || "default-image.png",
                             email: profile.email,
-                            username: profile.name,
-                            OAuth_ID: account!.providerAccountId,// Assuming OAuth_ID is a property
-                            verified : true 
+                            username: profile.name!,
+                            OAuth_ID: account!.providerAccountId, // Assuming OAuth_ID is a property
+                            verified: true,
+                          },
                         });
-    
-                        await newUser.save();
                         console.log(newUser)
                         return newUser;
                     }

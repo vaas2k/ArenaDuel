@@ -1,42 +1,40 @@
 'use server'
+import { signup } from '@/types/types';
+import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcryptjs'
 
-import { signup } from "@/types/types";
-import { connectToDatabase } from "../database/database";
-import User from "../database/model/user";
-import * as bcrypt from 'bcryptjs';
-import user from "../database/model/user";
-import verify_token from "../database/model/verification_token";
+const prisma = new PrismaClient();
 
+export async function registerUser(user: signup) {
+  try {
 
-export async function registerUser(user:signup) {
-
-    try{
-        await connectToDatabase();
-
-        const email = await User.findOne({email : user.email});
-        if(email){
-            return 'email taken';
-        }
-        const username = await User.findOne({username : user.username});
-        if(username){
-            return 'username taken';
-        }
-
-        const hashed_password = await bcrypt.hash(user.password!,10);
-        console.log(hashed_password);
-        const newuser = new User({
-            name : user.name,
-            username : user.username,
-            email : user.email,
-            password : hashed_password
-        })
-
-        await newuser.save();
-        return JSON.stringify(newuser);
-        
-    }catch(error){
-        console.log(error);
+    const existingEmail = await prisma.user.findUnique({
+      where: { email: user.email },
+    });
+    if (existingEmail) {
+      return 'email taken';
     }
+    const existingUsername = await prisma.user.findUnique({
+      where: { username: user.username },
+    });
+    if (existingUsername) {
+      return 'username taken';
+    }
+    const hashedPassword = await bcrypt.hash(user.password!, 10);
+
+    const newUser = await prisma.user.create({
+      data: {
+        name: user.name,
+        username: user.username!,
+        email: user.email!,
+        password: hashedPassword,
+      },
+    });
+    return newUser; // Return the created user object
+  } catch (error) {
+    console.error(error);
+    throw error; // Re-throw the error for proper handling
+  }
 }
 
 
