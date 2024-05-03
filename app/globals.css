@@ -74,3 +74,13 @@
       @apply bg-background text-foreground;
     }
   }
+
+  .spinner {
+    @apply w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .spinner {
+      @apply border-blue-400;
+    }
+  }

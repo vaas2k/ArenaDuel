@@ -10,47 +10,48 @@ import Credentials from "next-auth/providers/credentials";
 import Link from "next/link";
 
 const Login = () => {
+  const router = useRouter();
+  const [user, setUser] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<any>({
+    email: false,
+    password: false,
+    credentials: false,
+  });
+  const [form, setForm] = useState<login>({
+    email: "",
+    password: "",
+  });
+  const handleError = (field: string) => error[field];
 
-    const router = useRouter();
-    const [user , setUser] = useState<any>();
-    const [loading , setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState<any>({
-        email: false,
-        password: false,
-        credentials : false,
-    });
-    const [form, setForm] = useState<login>({
-        email: "",
-        password: "",
-    });
-    const handleError = (field: string) => error[field];
-
-    async function onSubmit(e: any) {
-        e.preventDefault();
-        setLoading(true)
-        setError({ ...error, email: !form.email, password: !form.password , credentials : false });
-        if (!form.email || !form.password) { setLoading(false);return;}
-        
-        
-        const SignInResponse = await signIn('credentials',{
-          email : form.email,
-          password : form.password,
-          redirect:false
-        })
-
-        if(SignInResponse && !SignInResponse.error) {
-          router.push('/about');
-          setLoading(false)
-        }
-        else{
-          setError({...error,credentials : true})
-          setLoading(false)
-        }
+  async function onSubmit(e: any) {
+    e.preventDefault();
+    setLoading(true);
+    setError({ ...error, email: !form.email, password: !form.password, credentials: false });
+    if (!form.email || !form.password) {
+      setLoading(false);
+      return;
     }
 
-    return (
-      <Card className="sm:w-[400px] lg:w-[480px] overflow-auto drop-shadow-2xl">
+    const SignInResponse = await signIn('credentials', {
+      email: form.email,
+      password: form.password,
+      redirect: false
+    });
+
+    if (SignInResponse && !SignInResponse.error) {
+      router.push('/about');
+      setLoading(false);
+    } else {
+      setError({ ...error, credentials: true });
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <Card className="sm:w-[90%] md:w-[400px] lg:w-[480px] overflow-auto drop-shadow-2xl">
         <Flex className="flex flex-col items-center justify-center gap-[25px] p-[30px]">
           <Card>
             <Image src={"/next.svg"} width={90} height={60} alt="logo" />
@@ -59,7 +60,7 @@ const Login = () => {
           <Text>Sign into name</Text>
 
           {/* Email Field */}
-          <Flex direction={"column"} gap={"2"}>
+          <Flex direction={"column"} gap={"2"} className="w-full max-w-[250px]">
             <Text size={"2"}>Email</Text>
             <TextField.Root
               placeholder={handleError("email") ? "Email required" : "Email"}
@@ -70,7 +71,7 @@ const Login = () => {
               }}
               value={form.email}
               type="email"
-              className="w-[250px]"
+              className="w-full"
             >
               <TextField.Slot side="left">
                 <EnvelopeClosedIcon />
@@ -79,7 +80,7 @@ const Login = () => {
           </Flex>
 
           {/* Password Field */}
-          <Flex direction={"column"} gap={"2"}>
+          <Flex direction={"column"} gap={"2"} className="w-full max-w-[250px]">
             <Text size={"2"}>Password</Text>
             <TextField.Root
               onChange={(e: any) => {
@@ -87,7 +88,7 @@ const Login = () => {
               }}
               value={form.password}
               type={showPassword ? "text" : "password"}
-              className="w-[250px]"
+              className="w-full"
               placeholder={
                 handleError("password") ? "Password required" : "Password"
               }
@@ -113,19 +114,18 @@ const Login = () => {
             </Badge>
           )}
 
-
           {/* Login Button */}
           <Button
             loading={loading}
-            style={{ width: "250px", cursor: "pointer" }}
+            style={{ width: "250px", maxWidth: "100%", cursor: "pointer" }}
             onClick={onSubmit}
-            >
+          >
             Continue
           </Button>
 
-             <Link href={'/reset_password'}>
-              <Text size={'1'} style={{fontWeight:'500'}} >Forget Password ?</Text>
-              </Link> 
+          <Link href={'/reset_password'}>
+            <Text size={'1'} style={{ fontWeight: '500' }}>Forget Password ?</Text>
+          </Link>
 
           {/* Line */}
           <Flex direction={"row"} className="items-center justify-center">
@@ -154,10 +154,10 @@ const Login = () => {
           <Flex direction={"column"} gap={"4"}>
             <Button
               variant={"surface"}
-              style={{ width: "250px", cursor: "pointer" }}
+              style={{ width: "250px", maxWidth: "100%", cursor: "pointer" }}
               onClick={async () => {
-                const usr = await signIn("google",{
-                  callbackUrl : '/'
+                const usr = await signIn("google", {
+                  callbackUrl: '/'
                 });
                 console.log(usr);
               }}
@@ -166,20 +166,20 @@ const Login = () => {
               Continue with Google
             </Button>
             {/** 
-                     * 
-                    <Button
-                        variant={"surface"}
-                        style={{ width: "250px", cursor: "pointer" }}
-                    >
-                        <Image
-                            src={"/facebook.png"}
-                            width={20}
-                            height={20}
-                            alt="facebook"
-                        />
-                        Continue with Facebook
-                    </Button>
-                    */}
+             * 
+             <Button
+             variant={"surface"}
+             style={{ width: "250px", cursor: "pointer" }}
+             >
+             <Image
+             src={"/facebook.png"}
+             width={20}
+             height={20}
+             alt="facebook"
+             />
+             Continue with Facebook
+             </Button>
+            */}
           </Flex>
 
           {/* Go To Sign Up */}
@@ -191,7 +191,8 @@ const Login = () => {
           </Text>
         </Flex>
       </Card>
-    );
+    </div>
+  );
 };
 
 export default Login;

@@ -1,16 +1,11 @@
-import authConfig from "@/lib/NextAuth/auth";
-import { getSession } from "next-auth/react";
+import ProtectedRoute from "@/components/Protected/ProtectedRoute";
 
 const About = () => {
-
-    console.log(getSession());
-    
-    return(
-        <>
-        Hellooo
-        </>
-    )
-
-}
+  return (
+    <ProtectedRoute>
+      <div>Hellooo</div>
+    </ProtectedRoute>
+  );
+};
 
 export default About;
