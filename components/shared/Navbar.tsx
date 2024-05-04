@@ -13,10 +13,7 @@ const rubik = Rubik({ subsets:['latin'] });
 const Navbar = ({ changeTheme, theme }: any) => {
   const width = useWidth();
   const router = useRouter();
-
   const { data: session,status } = useSession();
-
-
   // render which buttons auth button to render based on status
   const authButtonRender = () => {
 
@@ -24,7 +21,7 @@ const Navbar = ({ changeTheme, theme }: any) => {
       return(
            <Button
             onClick={()=>{signOut()}} 
-            variant={width < '765' ? 'solid' : 'ghost'} 
+            variant={width! < 765 ? 'solid' : 'ghost'} 
             style={{cursor:"pointer"}} >
             <p className={rubik.className}>LOGOUT</p>
             </Button>
@@ -34,14 +31,14 @@ const Navbar = ({ changeTheme, theme }: any) => {
       return(<>
             <Button 
             onClick={()=>{router.push('/sign-in')}}
-            variant={width < '765' ? 'soft' : 'ghost'} 
+            variant={width! < 765 ? 'soft' : 'ghost'} 
             style={{cursor:"pointer"}} >
               <p className={rubik.className}>LOGIN</p>
               </Button>
            
             <Button
             onClick={()=>{router.push('/sign-up')}} 
-            variant={width < '765' ? 'solid' : 'outline'} 
+            variant={width! < 765 ? 'solid' : 'outline'} 
             style={{cursor:"pointer"}} >
               <p className={rubik.className}>SIGN UP</p>
               </Button>
@@ -49,14 +46,12 @@ const Navbar = ({ changeTheme, theme }: any) => {
               )
     }
   }
-
-
   return (
     <div className="flex items-center justify-between px-[30px] pt-[15px] pb-[15px] ">
-      <div >Logo</div>
+      <div className="cursor-pointer" onClick={()=>{router.push('/')}}>Logo</div>
 
       <div className="flex items-center gap-[30px]">
-        {width > "765" ? (
+        {width! > 765 ? (
           <>
              {authButtonRender()}  
             <Button variant="soft" radius='full'>

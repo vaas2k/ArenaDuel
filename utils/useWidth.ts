@@ -4,14 +4,17 @@ import { useEffect , useState } from "react"
 
 export const useWidth = () => {
 
-    const [ width , setwidth ] = useState(typeof window !== undefined ? window.innerWidth : '');
+    if(typeof window !== 'undefined'){
 
-    const changewidth = () => setwidth(typeof window !== undefined ? window.innerWidth : '');
-    useEffect(()=>{
-        window.addEventListener('resize',changewidth)
-        return () => {
-            window.removeEventListener('resize',changewidth);
-        }
-    })
-    return width;
+        const [ width , setwidth ] = useState(window.innerWidth );
+        
+        const changewidth = () => setwidth(window.innerWidth);
+        useEffect(()=>{
+            window.addEventListener('resize',changewidth)
+            return () => {
+                window.removeEventListener('resize',changewidth);
+            }
+        })
+        return width;
+    }
 }
