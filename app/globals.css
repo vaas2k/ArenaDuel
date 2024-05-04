@@ -84,3 +84,7 @@
       @apply border-blue-400;
     }
   }
+
+  .radix-themes {
+    --default-font-family: var(--font-rubik);
+  }

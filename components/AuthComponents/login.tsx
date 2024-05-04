@@ -50,7 +50,7 @@ const Login = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center pt-[20px]">
       <Card className="sm:w-[90%] md:w-[400px] lg:w-[480px] overflow-auto drop-shadow-2xl">
         <Flex className="flex flex-col items-center justify-center gap-[25px] p-[30px]">
           <Card>

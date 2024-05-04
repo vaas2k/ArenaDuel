@@ -15,14 +15,8 @@ export default function Home() {
 
 
   return (
-   <div className="flex items-center justify-center gap-[100px] min-h-screen">
-       <Button  loading={status == 'loading' ? true : false}>
-        {status == 'unauthenticated' ? 'un-Signed' : "Signed"}
-       </Button>
-
-       <Button onClick={()=>{ signOut()}}>
-        sign-out
-       </Button>
+   <div className="flex items-center justify-center min-h-screen">
+       Landing Page
    </div>
   );
 }
