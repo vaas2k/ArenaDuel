@@ -25,7 +25,7 @@ const Navbar = ({ changeTheme, theme }: any) => {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+  }, [status]);
 
   if (!isMounted) return null;
 
@@ -53,7 +53,8 @@ const Navbar = ({ changeTheme, theme }: any) => {
 
   return (
     <div className="flex items-center justify-between px-[30px] pt-[15px] pb-[15px]">
-      <div className="cursor-pointer font-black leading-tight flex flex-row items-center" onClick={() => router.push('/')}><svg className="w-auto h-6 text-indigo-600 fill-current" viewBox="0 0 194 116"
+      <div className="cursor-pointer font-black leading-tight flex flex-row items-center" onClick={() => router.push('/')}>
+        <svg className="w-auto h-6 fill-current" viewBox="0 0 194 116"
                     xmlns="http://www.w3.org/2000/svg">
                     <g fill-rule="evenodd">
                         <path
@@ -61,7 +62,7 @@ const Navbar = ({ changeTheme, theme }: any) => {
                         <path d="M87 68.732l9.926 17.143 29.893-51.59L174.15 116H194L126.817 0z" />
                     </g>
                 </svg>
-                <span className="ml-3 text-xl">DevSage<span className="text-pink-500">.</span></span>
+                <span className="ml-3 text-xl">DevBuddies<span className="text-pink-500">.</span></span>
         </div>
       
       <div className="flex items-center gap-[30px]">

@@ -1,32 +1,24 @@
-"use client";
-import AppFooter from "@/components/LandingAstro/AppFooter";
-import AppHeader from "@/components/LandingAstro/AppHeader";
-import CallToAction from "@/components/LandingAstro/CallToAction";
-import Container from "@/components/LandingAstro/Container";
-import HeroSection from "@/components/LandingAstro/HeroSection";
-import Testmonials from "@/components/LandingPage/Testmonials";
-import Features from "@/components/LandingPage/Features";
-import { useSession } from "next-auth/react";
+import CalltoAction from "@/components/LandingPage/CalltoAction";
+import Clients from "@/components/LandingPage/Clients";
+import Commitment from "@/components/LandingPage/Commitment";
+import Community from "@/components/LandingPage/Community";
+import Discover from "@/components/LandingPage/Discover";
 import Footer from "@/components/LandingPage/Footer";
-export default function Home() {
-  const { data: session, status } = useSession();
-  //const router = useRouter();
-  //if(status === 'authenticated'){
-  //  router.push(`/profile/${session.user?.name}`);
-  // }
+import Hero from "@/components/LandingPage/Hero";
 
+
+
+export default function Home() {
+  
   return (
     <>
-      <Container>
-      
-        <HeroSection />
-        <Features />
-        <Testmonials />
-        {/**<Blog /> */} 
-        <CallToAction />
-        
-      </Container>
-      <Footer />
+    <Hero />
+    <Discover />
+    <Commitment />
+    <Community />
+    <Clients />
+    <CalltoAction />
+    <Footer />
     </>
   );
 }
