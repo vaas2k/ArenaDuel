@@ -25,9 +25,9 @@ export default function RootLayout({
       <body className={rubik.className}>
         <NextAuthProvider>
           <Theme
-            appearance={"dark"}
+            appearance={theme  ? "dark" : "light"}
             radius={"full"}
-            accentColor={"purple"}
+            accentColor={"blue"}
           >
           <Navbar changeTheme={changeTheme} theme={theme} />
             {children}

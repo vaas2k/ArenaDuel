@@ -4,9 +4,9 @@ import React from 'react'
 const Clients = () => {
   return (
     <section className="section__container client__container" id="resources">
-      <Card className="client__image gradient__box">
+      <div className="client__image gradient__box">
         <img src="./client.png" alt="client" />
-      </Card>
+      </div>
       <div className="client__content ">
         <h2 className="section__header">
           What our <span>trusted clients</span> say
@@ -16,7 +16,7 @@ const Clients = () => {
           <div className="">
 
             
-            <div className="py-[35px]">
+            <div className="py-[23px]">
               <Card className="client__card gradient__box h-[150px]">
                 <p>
                 I no longer dread coding challenges thanks to DevSage

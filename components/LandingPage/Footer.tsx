@@ -5,17 +5,17 @@ const Footer = () => {
     <footer className="footer">
     <div className="section__container footer__container">
       <div className="logo footer__logo">
-        <a href="#">VETA</a>
+        <a href="#">DevBuddies</a>
       </div>
       <ul className="footer__links">
         <li><a href="#about">About</a></li>
-        <li><a href="#project">Projects</a></li>
+        <li><a href="#project">Features</a></li>
         <li><a href="#community">Community</a></li>
-        <li><a href="#resources">Resources</a></li>
+        <li><a href="#resources">Mission</a></li>
       </ul>
     </div>
     <div className="footer__bar">
-      Copyright © 2024 Web Design Mastery. All rights reserved.
+      Copyright © 2024 DevSage. All rights reserved.
     </div>
   </footer>
   )

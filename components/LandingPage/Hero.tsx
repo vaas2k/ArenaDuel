@@ -15,7 +15,7 @@ const Hero = () => {
           </div>
         </div>
         <div className="header__image">
-          <img src="./header.png" alt="header" />
+          <img style={{width:'500px' , height :'500px'}} src="./twobuds.png" alt="header" />
         </div>
       </div>
     </header>
