@@ -16,7 +16,7 @@ const Clients = () => {
               <div className="swiper-slide">
                 <div className="client__card gradient__box bg-gray-800 rounded-lg p-6 h-auto">
                   <p className="text-gray-400 mb-4">
-                    I no longer dread coding challenges thanks to DevSage real-time support. It's like having a personal
+                    I no longer dread coding challenges thanks to DevSage real-time support. Its like having a personal
                     coding coach!
                   </p>
                   <h4 className="text-lg font-semibold text-white mb-1">Sarah Thompson</h4>
