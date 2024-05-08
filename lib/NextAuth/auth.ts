@@ -110,11 +110,11 @@ const authConfig: NextAuthOptions = {
                     }
                     
                 } catch (error) {
-                    return null; 
+                    return false; 
                 }
             }
             else{
-                return null;
+                return false;
             }
         },   
     }
