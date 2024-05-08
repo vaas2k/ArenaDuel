@@ -93,13 +93,15 @@ const Navbar = ({ changeTheme, theme }: any) => {
                 <div className="flex gap-[10px] flex-col">
                   {authButtonRender()}
                 </div>
-                <div className="flex items-center justify-center pt-[15px]">
+
+                {status === 'authenticated' && <div className="flex items-center justify-center pt-[15px]">
                   {!theme ? (
                     <DynamicSun onClick={() => changeTheme(theme)} size={'20px'} />
                   ) : (
                     <DynamicMoon onClick={() => changeTheme(theme)} size={'20px'} />
                   )}
-                </div>
+                </div>}
+
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           </div>

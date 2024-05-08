@@ -67,7 +67,7 @@ const authConfig: NextAuthOptions = {
         async signIn({account, profile,user}) {
             //if custom sign in then return user from authorize func
             if(account?.provider === 'credentials'){
-                return user;
+                return JSON.parse(JSON.stringify(user));
             }
             else if (account?.provider !== 'credentials' && profile?.email) {
                 try {
@@ -77,7 +77,7 @@ const authConfig: NextAuthOptions = {
                     );
                     
                     if(is_user && is_user.OAuth_ID){
-                        return is_user;
+                        return JSON.parse(JSON.stringify(is_user));
                     }
                     // if user signedup manually then add providers data to theri profile
                     else if(is_user && !is_user.OAuth_ID){
@@ -93,7 +93,7 @@ const authConfig: NextAuthOptions = {
                           });
                         console.log('updated User');
                         console.log(updatedUser);
-                        return updatedUser;
+                        return JSON.parse(JSON.stringify(updatedUser));
                     }
                     else{
                         const newUser = await prisma.user.create({
@@ -106,7 +106,7 @@ const authConfig: NextAuthOptions = {
                           },
                         });
                         console.log(newUser)
-                        return newUser;
+                        return JSON.parse(JSON.stringify(newUser));
                     }
                     
                 } catch (error) {

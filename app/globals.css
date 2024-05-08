@@ -186,12 +186,10 @@
   font-size: 1.5rem;
   font-weight: 700;
   font-family: var(--header-font);
-  color: var(--primary-color-dark);
 }
 
 img {
   display: flex;
-  width: 100%;
 }
 
 a {
@@ -329,7 +327,6 @@ body {
   padding: 5px 12px;
   text-align: center;
   font-size: 2.5rem;
-  color: var(--text-dark);
   background-color: var(--primary-color-dark);
   border-radius: 1rem;
 }
@@ -340,11 +337,9 @@ body {
 }
 
 .discover__card h4 {
-  color: var(--text-light);
 }
 
 .discover__card:hover h4 {
-  color: var(--text-dark);
 }
 
 .commitment__container {
@@ -473,7 +468,6 @@ body {
   font-size: 1.2rem;
   font-weight: 500;
   line-height: 2rem;
-  color: var(--text-light);
   transition: 0.3s;
 }
 
@@ -514,23 +508,22 @@ body {
 .client__card p {
   margin-bottom: 1rem;
   line-height: 1.75rem;
-  color: var(--text-light);
 }
 
 .client__card h4 {
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--primary-color-dark);
+  
 }
 
 .client__card h5 {
   font-size: 1rem;
   font-weight: 400;
-  color: var(--text-light);
+  
 }
 
 .swiper-slide {
-  color: var(--white);
+  
 }
 
 .swiper-pagination-bullet {
@@ -575,7 +568,6 @@ body {
 }
 
 .footer__logo {
-  color: var(--primary-color-dark);
 }
 
 .footer__links {
@@ -589,7 +581,6 @@ body {
 .footer__links a {
   font-size: 1.2rem;
   font-weight: 500;
-  color: var(--primary-color-dark);
   transition: 0.3s;
 }
 

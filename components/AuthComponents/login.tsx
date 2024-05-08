@@ -39,7 +39,7 @@ const Login = () => {
       password: form.password,
       redirect: false
     });
-
+    console.log(SignInResponse);
     if (SignInResponse && !SignInResponse.error) {
       router.push('/about');
       setLoading(false);
