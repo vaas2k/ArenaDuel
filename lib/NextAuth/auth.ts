@@ -1,10 +1,27 @@
-import { NextAuthOptions } from "next-auth"
+import { Account, NextAuthOptions, User } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import * as bcrypt from 'bcryptjs'
 import { PrismaClient } from "@prisma/client";
+import { AdapterUser } from "next-auth/adapters";
 
 const prisma = new PrismaClient();
+
+interface Profile {
+    iss: string;
+    azp: string;
+    aud: string;
+    sub: string;
+    email: string;
+    email_verified: boolean;
+    at_hash: string;
+    name: string;
+    picture: string; // The picture property is a string
+    given_name: string;
+    family_name: string;
+    iat: number;
+    exp: number;
+  }
 
 const authConfig: NextAuthOptions = {
     providers : [
@@ -64,56 +81,53 @@ const authConfig: NextAuthOptions = {
         }),
     ],
     callbacks : {
-        async signIn({account, profile,user}) {
+        async signIn({ account, profile, user }) {
+            console.log(profile);
             //if custom sign in then return user from authorize func
-            if(account?.provider === 'credentials'){
+            if (account?.provider === 'credentials') {
                 return JSON.parse(JSON.stringify(user));
-            }
-            else if (account?.provider !== 'credentials' && profile?.email) {
+            } else if (account?.provider !== 'credentials' && profile?.email) {
                 try {
-                    
                     const is_user = await prisma.user.findFirst({
-                       where :{email : profile.email}}
-                    );
-                    
-                    if(is_user && is_user.OAuth_ID){
+                        where: { email: profile.email }
+                    });
+        
+                    if (is_user && is_user.OAuth_ID) {
                         return JSON.parse(JSON.stringify(is_user));
-                    }
-                    // if user signedup manually then add providers data to theri profile
-                    else if(is_user && !is_user.OAuth_ID){
+                    } else if (is_user && !is_user.OAuth_ID) {
                         console.log('enter update')
                         const updatedUser = await prisma.user.update({
                             where: { email: profile.email },
                             data: {
-                              image:   profile?.picture || "default-image.png",
-                              name:    profile.name,
-                              OAuth_ID: account?.providerAccountId,
-                              verified: true,
+                                // @ts-ignore
+                                image: profile?.picture || "default-image.png",
+                                name: profile.name,
+                                OAuth_ID: account?.providerAccountId,
+                                verified: true,
                             },
-                          });
+                        });
                         console.log('updated User');
                         console.log(updatedUser);
                         return JSON.parse(JSON.stringify(updatedUser));
-                    }
-                    else{
+                    } else {
                         const newUser = await prisma.user.create({
-                          data: {
-                            image: profile?.picture! || "default-image.png",
-                            email: profile.email,
-                            username: profile.name!,
-                            OAuth_ID: account!.providerAccountId, // Assuming OAuth_ID is a property
-                            verified: true,
-                          },
+                            data: {
+                                // @ts-ignore
+                                image: (profile && profile.picture!) ? profile.picture! : "default-image.png",
+                                email: profile.email,
+                                username: profile.name || "", // Assuming username can't be null, you may need to handle this differently
+                                OAuth_ID: account!.providerAccountId, // Assuming OAuth_ID is a property
+                                verified: true,
+                            },
                         });
                         console.log(newUser)
                         return JSON.parse(JSON.stringify(newUser));
                     }
-                    
+        
                 } catch (error) {
-                    return false; 
+                    return false;
                 }
-            }
-            else{
+            } else {
                 return false;
             }
         },   
