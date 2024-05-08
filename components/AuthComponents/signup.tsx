@@ -239,7 +239,7 @@ const Signup = () => {
     
                     {/* Go To Sign Up */}
                     <Text size={'1'}>
-                        Already registered?{" "}
+                        Already registered ?{" "}
                         <Link href={"/sign-in"}>
                             <Strong style={{ cursor: 'pointer' }}>Sign in</Strong>.
                         </Link>

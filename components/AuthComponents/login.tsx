@@ -184,7 +184,7 @@ const Login = () => {
 
           {/* Go To Sign Up */}
           <Text size={"1"}>
-            Don't have an account ?{" "}
+            Don&apos;t have an account ?{" "}
             <Link href={"/sign-up"}>
               <Strong style={{ cursor: "pointer" }}>Sign up</Strong>.
             </Link>
