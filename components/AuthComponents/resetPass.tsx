@@ -34,7 +34,7 @@ const ResetPassword = () => {
   const [Email_verified, setEmail_Verified] = useState(false);
 
   // for handling pin verification
-  const [pin, setPin] = useState<number>();
+  const [pin, setPin] = useState<string>();
   const [pinButton, setPinButton] = useState(false);
   const [pinError, setPinError] = useState("");
   const [Pin_verified, setPin_Verified] = useState(false);
