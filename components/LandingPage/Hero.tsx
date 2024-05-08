@@ -1,3 +1,4 @@
+import { Button } from '@radix-ui/themes';
 import React from 'react';
 
 const Hero = () => {
@@ -14,9 +15,9 @@ const Hero = () => {
             problem-solving.
           </p>
           <div className="header__btns">
-            <button className="bg-white text-gray-700 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+            <Button variant='outline' style={{widows:"200px",height:"40px",cursor:"pointer"}}>
               Start Collaborating Now
-            </button>
+            </Button>
           </div>
         </div>
         <div className="header__image">
