@@ -20,7 +20,7 @@ const Clients = () => {
               <Card className="client__card gradient__box h-[150px]">
                 <p>
                 I no longer dread coding challenges thanks to DevSage
-                      real-time support. It's like having a personal coding
+                      real-time support. Its like having a personal coding
                       coach!
                 </p>
                 <h4>Sarah Thompson</h4>
