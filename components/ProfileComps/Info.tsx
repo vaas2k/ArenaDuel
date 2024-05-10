@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
-const Info = ({ name, username }) => {
+const Info = ({ name, username } : any) => {
   const [currentuser, setCurrentUser] = useState(true);
 
   const skills = ["NEXT", "C++", "TypeScript", "Python", "Nginx"];
