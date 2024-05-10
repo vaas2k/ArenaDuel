@@ -1,12 +1,11 @@
 'use client'
 import Banner from "@/components/ProfileComps/Banner";
 import Info from "@/components/ProfileComps/Info";
-import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import Loader from "@/components/shared/Loader";
 
-const Profile = ( {params} : Params ) => {    
+const Profile = ( {params} : any ) => {    
 
     
     const [user , setUser ] = useState<any>();
