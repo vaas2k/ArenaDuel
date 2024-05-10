@@ -1,6 +1,6 @@
 "use client";
 import { Button, DropdownMenu, Flex } from "@radix-ui/themes";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, PersonIcon } from "@radix-ui/react-icons";
 import { Rubik } from "next/font/google";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -33,17 +33,28 @@ const Navbar = ({ changeTheme, theme }: any) => {
   const authButtonRender = () => {
     if (status === 'authenticated') {
       return (
-        <Button onClick={() => signOut()} variant={width! < 765 ? 'solid' : 'ghost'} style={{ cursor: "pointer" }}>
+        <>
+        <Button  
+        onClick={() => signOut()} variant={'solid'} 
+        style={{ cursor: "pointer"}}>
           <p className={rubik.className}>LOGOUT</p>
         </Button>
+
+        <Button
+        style={{ cursor: "pointer"}}
+        onClick={()=>{ router.push(`/profile/${session.user?.email!}`)}}>
+          <PersonIcon />
+        </Button>
+
+          </>
       )
     } else if (status === 'unauthenticated') {
       return (
         <>
-          <Button onClick={() => router.push('/sign-in')} variant={width! < 765 ? 'soft' : 'ghost'} style={{ cursor: "pointer" }}>
+          <Button onClick={() => router.push('/sign-in')} variant={'solid'} style={{ cursor: "pointer" }}>
             <p className={rubik.className}>LOGIN</p>
           </Button>
-          <Button onClick={() => router.push('/sign-up')} variant={width! < 765 ? 'solid' : 'outline'} style={{ cursor: "pointer" }}>
+          <Button onClick={() => router.push('/sign-up')} variant={'solid'} style={{ cursor: "pointer" }}>
             <p className={rubik.className}>SIGN UP</p>
           </Button>
         </>

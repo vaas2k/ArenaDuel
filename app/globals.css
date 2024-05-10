@@ -100,7 +100,6 @@
   --primary-color: #71a5de;
   --primary-color-dark: #3c7dc2;
   --max-width: 1200px;
-  --header-font: "Orbitron", sans-serif;
   --gradient-1: linear-gradient(
     to right,
     var(--primary-color),
@@ -124,7 +123,7 @@
 
 .section__header {
   margin-bottom: 1rem;
-  font-family: var(--header-font);
+
   font-weight: 600;
   font-size: 3rem;
   text-align: center;
@@ -204,7 +203,6 @@ body {
 }
 
 body {
-  font-family: "Noto Sans", sans-serif;
   background-color: var(--text-dark);
 }
 
@@ -218,7 +216,6 @@ body {
   margin-bottom: 1rem;
   font-size: 4.75rem;
   font-weight: 600;
-  font-family: var(--header-font);
   line-height: 5rem;
   color: var(--white);
   text-align: center;
@@ -336,11 +333,6 @@ body {
   background-color: whitesmoke;
 }
 
-.discover__card h4 {
-}
-
-.discover__card:hover h4 {
-}
 
 .commitment__container {
   display: grid;
@@ -522,9 +514,7 @@ body {
   
 }
 
-.swiper-slide {
-  
-}
+
 
 .swiper-pagination-bullet {
   background-color: var(--text-light);
@@ -567,8 +557,6 @@ body {
   justify-content: space-between;
 }
 
-.footer__logo {
-}
 
 .footer__links {
   list-style: none;

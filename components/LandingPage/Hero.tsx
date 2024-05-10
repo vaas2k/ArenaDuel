@@ -1,8 +1,12 @@
 import { Button } from '@radix-ui/themes';
+import { Rubik } from 'next/font/google';
 import React from 'react';
+
+const rubik = Rubik({ subsets: ["latin"] });
 
 const Hero = () => {
   return (
+    <div className={rubik.className}>
     <header className=" py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="header__content">
@@ -25,6 +29,7 @@ const Hero = () => {
         </div>
       </div>
     </header>
+    </div>
   );
 };
 
