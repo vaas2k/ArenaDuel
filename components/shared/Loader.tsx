@@ -3,7 +3,7 @@ import React from 'react'
 import { jellyTriangle } from "ldrs";
 jellyTriangle.register();
 
-const Loader = () => {
+export const Loader = () => {
   return (
     <div className="flex justify-center items-center h-screen">
         <l-jelly-triangle
@@ -14,5 +14,14 @@ const Loader = () => {
       </div>
   )
 }
-
-export default Loader
+export const Loader2 = () => {
+  return (
+    <div className="">
+        <l-jelly-triangle
+          size="30"
+          speed="1.4"
+          color={'whitesmoke'}
+        ></l-jelly-triangle>
+      </div>
+  )
+}

@@ -7,15 +7,22 @@ export async function GET( request: Request,{ params }: { params: { slug: string
 
 
   try{
-    const getUserData = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where :{
         email : slug
       }
     })
 
-    if(getUserData){
+    if(user){
+      const userinfo = await prisma.userInfo.findFirst({
+        where : {userID : user.id}
+      })
+      const data = {
+        ...user,
+        ...userinfo
+      }
       return new Response(JSON.stringify({
-        data : getUserData,
+        data : data,
         status : 200
       }))
     }

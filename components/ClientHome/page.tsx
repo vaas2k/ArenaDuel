@@ -6,7 +6,7 @@ import Community from "@/components/LandingPage/Community";
 import Discover from "@/components/LandingPage/Discover";
 import Footer from "@/components/LandingPage/Footer";
 import Hero from "@/components/LandingPage/Hero";
-import Loader from "@/components/shared/Loader";
+import {Loader} from "@/components/shared/Loader";
 import { useSession } from "next-auth/react";
 import { Rubik } from "next/font/google";
 import { useRouter } from "next/navigation";

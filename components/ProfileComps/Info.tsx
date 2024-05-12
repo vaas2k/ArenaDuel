@@ -6,17 +6,18 @@ import React, { useState } from "react";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
-const Info = ({ name, username } : any) => {
+const Info = ({ user , open , handleSettings } : any) => {
   const [currentuser, setCurrentUser] = useState(true);
+  
+  
 
-  const skills = ["NEXT", "C++", "TypeScript", "Python", "Nginx"];
 
   return (
     <div className={`${rubik.className} p-[20px]`}>
       <div className="flex flex-col ">
-        <h1 className="font-bold text-2xl">{ name ? name : username}</h1>
-        <h1 className="opacity-[35%]">{name && username}</h1>
-        <h1 className="opacity-[50%]">Software Engineer</h1>
+        <h1 className="font-bold text-2xl">{ user.name ? user.name : user.username}</h1>
+        <h1 className="opacity-[35%]">{user.name && user.username}</h1>
+        <h1 className="opacity-[50%]">{user.role}</h1>
         <h1 className="opacity-[50%]"> Bay , New-York</h1>
       </div>
 
@@ -26,8 +27,7 @@ const Info = ({ name, username } : any) => {
         <div className="flex flex-row gap-[20px]">
           {currentuser ? (
             <>
-              <Button>Edit Profile</Button>
-              <Button variant="outline">Settings</Button>
+              <Button onClick={()=>handleSettings(open)}>Edit Profile</Button>
             </>
           ) : (
             <>
@@ -39,7 +39,7 @@ const Info = ({ name, username } : any) => {
 
         {/**User Skills */}
         <div className="flex flex-row wrap gap-[10px] order-first">
-          {skills.map((item) => (
+          {user.skills.map((item : string ) => (
             <Badge key={item}>{item}</Badge>
           ))}
         </div>

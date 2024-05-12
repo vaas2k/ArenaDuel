@@ -8,15 +8,26 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
   name     String?
-  username String  @unique
-  email    String  @unique
-  password String @default("null")
+  username String     @unique
+  email    String     @unique
+  password String     @default("null")
   image    String?
   OAuth_ID String?
-  verified Boolean @default(false)
+  verified Boolean    @default(false)
   Token    Token[]
+  UserInfo UserInfo[]
+}
+
+model UserInfo {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  user             User     @relation(fields: [userID], references: [id])
+  userID           String   @db.ObjectId
+  address          String?
+  role             String?
+  skills           String[]
+  background_image String?   @default("https://e1.pxfuel.com/desktop-wallpaper/95/631/desktop-wallpaper-black-16-9.jpg")
 }
 
 model Token {

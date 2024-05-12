@@ -1,8 +1,9 @@
+import Setting from "@/components/ProfileComps/Setting";
 
 const About = () => {
 
   return (
-      <div>Hellooo</div>
+      <div>About</div>
   );
 };
 
