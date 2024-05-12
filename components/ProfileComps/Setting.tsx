@@ -31,7 +31,7 @@ const Setting = ({ user , open , handleSettings }: any) => {
         <div className="p-[20px]">
           <h1 className="text-lg font-bold">Edit Profile</h1>
           <h2 className="text-sm">
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </h2>
         </div>
 
