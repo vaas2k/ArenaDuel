@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Loader from "../shared/Loader";
+import {Loader} from "../shared/Loader";
 
 const ProtectedRoute = ({ children }: any) => {
   const [ isMounted , setisMounted ] = useState(false);
