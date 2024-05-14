@@ -1,33 +1,102 @@
 "use client";
 import { Label } from "@radix-ui/react-label";
-import { Badge, Button, TextField } from "@radix-ui/themes";
+import { Badge, Button, Select, TextField } from "@radix-ui/themes";
+import axios from "axios";
 import { X } from "lucide-react";
 import { Rubik } from "next/font/google";
 import React, { useState } from "react";
+import { Loader2 } from "../shared/Loader";
+
 const rubik = Rubik({ subsets: ["latin"] });
 
+
+
 const Setting = ({ user , open , handleSettings }: any) => {
+
+  const [load  , setLoad ] = useState<boolean>(false);
+  const [error , setError ] = useState<string>('');
   const [skills, setSkills] = useState<any>(user.skills);
   const [skill, setSkill] = useState<string>("");
+  const [ info  , setInfo] = useState<any>({
+    name : null,
+    username : null,
+    role :null,
+    level: null,
+    address : null,
+    email : user.email
+  })
+
+  console.log(info);
 
   const addSkill = (skill: string) => {
+    if(!skills){
+      const newskills = [];
+      newskills.push(skill);
+      setSkills(newskills);
+      return;
+    }
     setSkills((oldSkills: string[]) => {
-      // Use spread operator to create a new array with the new skill appended
       return [...oldSkills, skill];
     });
   };
-
   const removeSkill = (skill: string) => {
     setSkills((oldSkills: string[]) => {
-      // Use filter to remove the skill from the array
       return oldSkills.filter((s: string) => s !== skill);
     });
   };
+  
+  async function handleChangeInSettings() {
+    setLoad(true);
+    setError('')
+    
+    let data ;
+    if(user.skills){
+      data = {
+        ...info,
+        skills: skills.length !== user.skills.length ? skills : null,
+      };
+    }else{
+      data = {
+        ...info,
+        skills: skills,
+      };
+    }
+    console.log(data);
+    
+    try{
+
+      const req = await axios.post('/api/profile/info',data);
+
+      if(req.data.status === 200) {
+        setLoad(false);
+      }
+      else{ 
+        console.log(req.data);
+        if(req.data.msg === 'USERNAME_TAKEN') {
+          setError('USERNAME TAKEN ALREADY')
+        }
+        setLoad(false);
+      }
+    }catch(error){
+      setLoad(false);
+      console.log(error);
+    }
+
+  }
 
   return (
-    <div className={` ${rubik.className} flex items-center justify-center p-[20px]`}>
+    <div
+      className={` ${rubik.className} flex items-center justify-center p-[20px]`}
+    >
       <div className=" rounded-lg w-[500px] h-full border border-gray">
-        <div className="flex items-center justify-end p-[20px]"><X className="cursor-pointer" onClick={()=>handleSettings(open)} size={'20px'} /></div>
+        <div className="flex items-center justify-end p-[20px]">
+          <X
+            className="cursor-pointer"
+            onClick={() => handleSettings(open)}
+            size={"20px"}
+          />
+        </div>
+
         <div className="p-[20px]">
           <h1 className="text-lg font-bold">Edit Profile</h1>
           <h2 className="text-sm">
@@ -45,8 +114,11 @@ const Setting = ({ user , open , handleSettings }: any) => {
               radius="large"
               className="w-[300px]"
               type="text"
-              placeholder="Name"
-              defaultValue={user.name}
+              placeholder={user.name}
+              value={info.name}
+              onChange={(e) => {
+                setInfo({ ...info, name: e.target.value });
+              }}
             ></TextField.Root>
           </div>
 
@@ -59,8 +131,11 @@ const Setting = ({ user , open , handleSettings }: any) => {
               radius="large"
               className="w-[300px]"
               type="text"
-              placeholder="Username"
-              defaultValue={user.username}
+              placeholder={user.username}
+              value={info.username}
+              onChange={(e) => {
+                setInfo({ ...info, username: e.target.value });
+              }}
             ></TextField.Root>
           </div>
 
@@ -69,12 +144,16 @@ const Setting = ({ user , open , handleSettings }: any) => {
               Email
             </Label>
             <TextField.Root
+              disabled
               id="email"
               radius="large"
               className="w-[300px]"
               type="email"
               placeholder="Email"
-              defaultValue={user.email}
+              value={info.email}
+              onChange={(e) => {
+                setInfo({ ...info, email: e.target.value });
+              }}
             ></TextField.Root>
           </div>
 
@@ -87,8 +166,11 @@ const Setting = ({ user , open , handleSettings }: any) => {
               radius="large"
               className="w-[300px]"
               type="text"
-              placeholder="Role"
-              defaultValue={user.role}
+              placeholder={user.role}
+              value={info.role}
+              onChange={(e) => {
+                setInfo({ ...info, role: e.target.value });
+              }}
             ></TextField.Root>
           </div>
 
@@ -101,41 +183,43 @@ const Setting = ({ user , open , handleSettings }: any) => {
               radius="large"
               className="w-[300px]"
               type="text"
-              placeholder="Address"
-              defaultValue={'Address'}
+              placeholder={user.address ? user.address : "city , country"}
+              value={info.address}
+              onChange={(e) => {
+                setInfo({ ...info, address: e.target.value });
+              }}
             ></TextField.Root>
           </div>
 
+            <div className="flex flex-col p-[15px]">
+              <Label htmlFor="skill" className="py-[10px]">
+                Skills
+              </Label>
+              <TextField.Root
+                id="skill"
+                radius="large"
+                className="w-[300px]"
+                type="text"
+                placeholder="skill"
+                onChange={(e) => {
+                  setSkill(e.target.value);
+                }}
+              >
+                <TextField.Slot side="right">
+                  <Button
+                    onClick={() => {
+                      skill && addSkill(skill);
+                    }}
+                    variant="ghost"
+                  >
+                    add
+                  </Button>
+                </TextField.Slot>
+              </TextField.Root>
+            </div>
 
-          
-          <div className="flex flex-col p-[15px]">
-            <Label htmlFor="skill" className="py-[10px]">
-              Skills
-            </Label>
-            <TextField.Root
-              id="skill"
-              radius="large"
-              className="w-[300px]"
-              type="text"
-              placeholder="skill"
-              onChange={(e) => {
-                setSkill(e.target.value);
-              }}
-            >
-              <TextField.Slot side="right">
-                <Button
-                  onClick={() => {
-                    skill && addSkill(skill);
-                  }}
-                  variant="ghost"
-                >
-                  add
-                </Button>
-              </TextField.Slot>
-            </TextField.Root>
-          </div>
           <div className="flex items-center justify-center flex-row flex-wrap gap-[10px] px-[20px] py-[20px]">
-            {skills.map((skill: string) => {
+            {skills && skills.map((skill: string) => {
               return (
                 <>
                   <div>
@@ -150,13 +234,29 @@ const Setting = ({ user , open , handleSettings }: any) => {
               );
             })}
           </div>
-
         </div>
+
+        <div className="flex items-center justify-evenly p-[30px]">
+          <Label htmlFor="level">Level </Label>
+              <Select.Root size="2" defaultValue="junior" onValueChange={(value)=>setInfo({...info,level : value})}>
+                <Select.Trigger radius="large" />
+                <Select.Content id="level">
+                  <Select.Item value="Junior">Junior</Select.Item>
+                  <Select.Item value="Intermediate" >Intermediate</Select.Item>
+                  <Select.Item value="Senior" >Senior</Select.Item>
+                </Select.Content>
+              </Select.Root>
+            </div>
 
 
         <div className="flex flex-row items-center justify-center gap-[30px] py-[15px]">
-            <Button>Save</Button>
-            <Button onClick={()=>handleSettings(open)}>Discard</Button>
+          <Button loading={load} onClick={handleChangeInSettings}>
+            Save
+          </Button>
+          <Button onClick={() => handleSettings(open)}>Discard</Button>
+        </div>
+        <div className="flex items-center justify-center p-[20px]">
+          {error && <Badge color="ruby">{error}</Badge>}
         </div>
       </div>
     </div>

@@ -27,6 +27,7 @@ model UserInfo {
   address          String?
   role             String?
   skills           String[]
+  level            String?
   background_image String?   @default("https://e1.pxfuel.com/desktop-wallpaper/95/631/desktop-wallpaper-black-16-9.jpg")
 }
 

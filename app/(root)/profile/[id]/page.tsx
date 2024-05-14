@@ -7,7 +7,6 @@ import { Loader } from "@/components/shared/Loader";
 import Settings from "@/components/ProfileComps/Setting";
 const Profile = ({ params }: any) => {
   const [user, setUser] = useState<any>();
-  console.log(user);
 
   const [open, setOpen] = useState(false);
   function hanldeSettings(open: boolean) {

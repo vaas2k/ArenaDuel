@@ -106,13 +106,12 @@ const Banner = ({ image , email , background_image }: any) => {
 
       {profile || background ? (
         <div className="flex flex-row items-center justify-end gap-[20px] pr-[20px]">
-          <Button onClick={uploadimage}>Apply</Button>
+          <Button loading={load} onClick={uploadimage}>Apply</Button>
           <Button variant="outline">Discard</Button>
         </div>
       ) : (
         <>{""}</>
       )}
-    {load && <div className="absolute sm:right-[200px] right-[30px] flex flex-row items-center justify-center"><Loader2 /></div>}
     </>
   );
 };
