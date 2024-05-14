@@ -31,11 +31,13 @@ const Profile = ({ params }: any) => {
     return <Loader />;
   }
 
+  console.log(user);
+
   return (
     <>
       {!open ? (
         <div className="flex items-center justify-center h-screen">
-          <div className="sm:w-[80%] w-[100%] sm:h-[650px] h-screen border rounded-lg ">
+          <div className="sm:w-[80%] w-[100%] sm:h-[660px] overflow-auto h-screen border rounded-lg ">
             <Banner
               image={user.image}
               email={user.email}

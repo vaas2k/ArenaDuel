@@ -1,12 +1,13 @@
 "use client";
-import { Button, DropdownMenu, Flex } from "@radix-ui/themes";
-import { DotsHorizontalIcon, PersonIcon } from "@radix-ui/react-icons";
+import { Button, DropdownMenu, Flex, TextField } from "@radix-ui/themes";
+import { DotsHorizontalIcon, MagnifyingGlassIcon, PersonIcon } from "@radix-ui/react-icons";
 import { Rubik } from "next/font/google";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useWidth } from "@/utils/useWidth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const rubik = Rubik({ subsets: ['latin'] });
 
@@ -21,6 +22,7 @@ const Navbar = ({ changeTheme, theme }: any) => {
   const width = useWidth();
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [ searchKeyword , setSearchKeyword ] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -29,13 +31,42 @@ const Navbar = ({ changeTheme, theme }: any) => {
 
   if (!isMounted) return null;
 
+  async function handleSearchWord () {
+    
+    try{
+      const req = await axios.get(`/api/search/${searchKeyword}`);
+      if(req.data.status === 200) {
+        console.log(req.data.msg);
+      }
+      else{
+        console.log(req.data.msg);
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+
+
   // render which buttons auth button to render based on status
   const authButtonRender = () => {
     if (status === 'authenticated') {
       return (
         <>
+        {/** Only Render Search bar with them if screen is bigger */}
+        { width! > 765 && <div className="px-[10px]">
+        <TextField.Root type="text" name="search" value={searchKeyword} 
+        onChange={(e)=>{setSearchKeyword(e.target.value)}}
+        onKeyDown={(e)=>{ e.key == 'Enter' ? handleSearchWord() : null}}
+        >
+          <TextField.Slot side="right">
+            <MagnifyingGlassIcon />
+          </TextField.Slot>
+        </TextField.Root>
+        </div>}
+
         <Button  
-        onClick={() => signOut()} variant={'solid'} 
+        onClick={() => {signOut(); router.push('/sign-in');}} variant={'solid'} 
         style={{ cursor: "pointer"}}>
           <p className={rubik.className}>LOGOUT</p>
         </Button>
@@ -63,30 +94,66 @@ const Navbar = ({ changeTheme, theme }: any) => {
   }
 
   return (
-    <div className="flex items-center justify-between px-[30px] pt-[15px] pb-[15px]">
-      <div className="cursor-pointer font-black leading-tight flex flex-row items-center" onClick={() => router.push('/')}>
-        <svg className="w-auto h-6 fill-current" viewBox="0 0 194 116"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g fill-rule="evenodd">
-                        <path
-                            d="M96.869 0L30 116h104l-9.88-17.134H59.64l47.109-81.736zM0 116h19.831L77 17.135 67.088 0z" />
-                        <path d="M87 68.732l9.926 17.143 29.893-51.59L174.15 116H194L126.817 0z" />
-                    </g>
-                </svg>
-                <span className="ml-3 text-xl">DevBuddies<span className="text-pink-500">.</span></span>
-        </div>
-      
-      <div className="flex items-center gap-[30px]">
+    <div className="flex items-center justify-between sm:px-[30px] px-[15px] pt-[20px] pb-[15px]">
+      <div
+        className="cursor-pointer font-black leading-tight flex flex-row items-center justify-evenly "
+        onClick={() => router.push("/")}
+      >
+        <svg
+          className="w-auto h-6 fill-current"
+          viewBox="0 0 194 116"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g fill-rule="evenodd">
+            <path d="M96.869 0L30 116h104l-9.88-17.134H59.64l47.109-81.736zM0 116h19.831L77 17.135 67.088 0z" />
+            <path d="M87 68.732l9.926 17.143 29.893-51.59L174.15 116H194L126.817 0z" />
+          </g>
+        </svg>
 
+        {/** show name only larger screens */}
+        {width! > 765 && (
+          <span className="ml-3 text-xl">
+            DevBuddies<span className="text-pink-500">.</span>
+          </span>
+        )}
+        </div>
+
+        {width! < 765 && (
+          <div className="px-[10px]">
+            <TextField.Root
+              type="text"
+              name="search"
+              value={searchKeyword}
+              onChange={(e) => {
+                setSearchKeyword(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                e.key == "Enter" ? handleSearchWord() : null;
+              }}
+            >
+              <TextField.Slot side="right">
+                <MagnifyingGlassIcon />
+              </TextField.Slot>
+            </TextField.Root>
+          </div>
+        )}
+
+      <div className="flex items-center gap-[30px]">
         {width! > 765 ? (
           <>
             {authButtonRender()}
             <Flex className="flex items-center justify-center hover:opacity-[50%] cursor-pointer">
-              <Button variant="soft" radius='full'>
+              <Button variant="soft" radius="full">
                 {!theme ? (
-                  <DynamicSun onClick={() => changeTheme(theme)} size={'20px'} />
+                  <DynamicSun
+                    onClick={() => changeTheme(theme)}
+                    size={"20px"}
+                  />
                 ) : (
-                  <DynamicMoon onClick={() => changeTheme(theme)} size={'20px'} />
+                  <DynamicMoon
+                    onClick={() => changeTheme(theme)}
+                    size={"20px"}
+                  />
                 )}
               </Button>
             </Flex>
@@ -95,7 +162,7 @@ const Navbar = ({ changeTheme, theme }: any) => {
           <div>
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
-                <DotsHorizontalIcon width={'20px'} />
+                <DotsHorizontalIcon width={"20px"} />
               </DropdownMenu.Trigger>
               <DropdownMenu.Content className="p-[10px] gap-[10px]">
                 <DropdownMenu.Item shortcut="">About</DropdownMenu.Item>
@@ -105,14 +172,21 @@ const Navbar = ({ changeTheme, theme }: any) => {
                   {authButtonRender()}
                 </div>
 
-                {status === 'authenticated' && <div className="flex items-center justify-center pt-[15px]">
-                  {!theme ? (
-                    <DynamicSun onClick={() => changeTheme(theme)} size={'20px'} />
-                  ) : (
-                    <DynamicMoon onClick={() => changeTheme(theme)} size={'20px'} />
-                  )}
-                </div>}
-
+                {status === "authenticated" && (
+                  <div className="flex items-center justify-center pt-[15px]">
+                    {!theme ? (
+                      <DynamicSun
+                        onClick={() => changeTheme(theme)}
+                        size={"20px"}
+                      />
+                    ) : (
+                      <DynamicMoon
+                        onClick={() => changeTheme(theme)}
+                        size={"20px"}
+                      />
+                    )}
+                  </div>
+                )}
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           </div>

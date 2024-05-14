@@ -72,7 +72,7 @@ const Banner = ({ image , email , background_image }: any) => {
           <img
             src={background ? background : (background_image ? background_image : "/back1.jpg")}
             alt="banner"
-            className="w-[100%] h-[220px] object-cover rounded-t-lg hover:drop-shadow-xl cursor-pointer"
+            className="w-[100%] sm:h-[220px] h-[180px] object-cover rounded-t-lg hover:drop-shadow-xl cursor-pointer"
           />
         </label>
         <input

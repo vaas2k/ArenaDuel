@@ -69,6 +69,7 @@ const Setting = ({ user , open , handleSettings }: any) => {
 
       if(req.data.status === 200) {
         setLoad(false);
+        typeof window !== undefined ? window.location.reload() : null;
       }
       else{ 
         console.log(req.data);
@@ -238,7 +239,7 @@ const Setting = ({ user , open , handleSettings }: any) => {
 
         <div className="flex items-center justify-evenly p-[30px]">
           <Label htmlFor="level">Level </Label>
-              <Select.Root size="2" defaultValue="junior" onValueChange={(value)=>setInfo({...info,level : value})}>
+              <Select.Root size="2" defaultValue={user.level} onValueChange={(value)=>setInfo({...info,level : value})}>
                 <Select.Trigger radius="large" />
                 <Select.Content id="level">
                   <Select.Item value="Junior">Junior</Select.Item>

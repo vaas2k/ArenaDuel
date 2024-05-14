@@ -90,6 +90,39 @@
   }
 
 
+  /* Styling for scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust the width of the scrollbar */
+}
+
+/* Track (background line) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Make the track transparent */
+}
+
+/* Handle (scrollbar itself) */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(77, 72, 72, 0.2); /* Set the color and opacity of the scrollbar */
+  border-radius: 4px; /* Add rounded corners to the scrollbar */
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4); /* Change the color of the scrollbar on hover */
+}
+
+/* Hide scrollbar initially */
+::-webkit-scrollbar {
+  width: 0; /* Make the scrollbar invisible initially */
+}
+
+/* Show scrollbar on hover or scroll */
+:hover::-webkit-scrollbar,
+:active::-webkit-scrollbar {
+  width: 8px; /* Show the scrollbar when hovering or scrolling */
+}
+
 
 
 

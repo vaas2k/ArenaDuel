@@ -40,12 +40,14 @@ const Info = ({ user , open , handleSettings } : any) => {
         </div>
 
         {/**User Skills */}
-        <div className="flex flex-row wrap gap-[10px] order-first">
+        <div className="flex flex-row flex-wrap gap-[10px] order-first">
           { user.skills && user.skills.map((item : string ) => (
             <Badge key={item}>{item}</Badge>
           ))}
         </div>
-
+      </div>
+      <div className="py-[30px]"> 
+       <hr/>
       </div>
     </div>
   );
