@@ -65,9 +65,10 @@ const UserCards = ({ param }: any) => {
             users.length > 0 ? 
             (<div className="flex items-center justity-center flex-col w-[100%]">
             <div className=" flex flex-row justify-center flex-wrap gap-[80px] sm:w-[85%] w-[100%] sm:h-[660px] overflow-scroll h-screen border-x border-t px-[30px] pt-[30px] rounded-lg">
-              {users.map((user: any) => {
+              {users.map((user: any,index:number) => {
                 return (
                   <div
+                  key={index}
                   onClick={() => router.push(`/profile/${user.email}`)} 
                   className="w-[290px] h-[260px] flex flex-col p-[20px] gap-[10px] items-center justify-center border border-gray rounded-lg dark:bg-gray-900 bg-white cursor-pointer">
                     <img
