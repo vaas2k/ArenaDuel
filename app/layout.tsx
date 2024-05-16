@@ -5,7 +5,7 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import { NextAuthProvider } from "./providers";
 import Navbar from "@/components/shared/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Rubik } from "next/font/google";
 const rubik = Rubik({ subsets: ["latin"] });
@@ -17,7 +17,11 @@ export default function RootLayout({
 }>) {
   
 
-  const theme = typeof window !== undefined ? window.sessionStorage.getItem('theme') : null;
+  const [theme , setTheme] = useState<any>('false');
+  useEffect(()=>{
+    const newtheme = typeof window !== undefined ? sessionStorage.getItem('theme') : null;
+    setTheme(newtheme);
+  })
   
   return (
     <html lang="en">

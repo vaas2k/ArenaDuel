@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useWidth } from "@/utils/useWidth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 const rubik = Rubik({ subsets: ['latin'] });
 
@@ -27,7 +26,7 @@ const Navbar = () => {
   const [theme, setTheme] = useState<boolean>(false); // State to manage theme
 
   useEffect(() => {
-    const storedTheme = typeof window !== undefined ? window.sessionStorage.getItem('theme') : null;
+    const storedTheme = typeof window !== undefined ? sessionStorage.getItem('theme') : null;
     console.log(storedTheme)
     if (storedTheme !== null) {
       setTheme(storedTheme === 'true');
@@ -37,7 +36,7 @@ const Navbar = () => {
   const toggleTheme = () => {
     const newTheme = !theme;
     setTheme(newTheme);
-    typeof window !== undefined ? window.sessionStorage.setItem('theme',JSON.stringify(newTheme)) : null;
+    typeof window !== undefined ? sessionStorage.setItem('theme',JSON.stringify(newTheme)) : null;
     typeof window !== undefined ? window.location.reload() : null;
 
   };
