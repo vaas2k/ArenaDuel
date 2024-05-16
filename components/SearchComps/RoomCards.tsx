@@ -18,7 +18,7 @@ const RoomCards = ({param} : any) => {
           <div className=" flex flex-row justify-center flex-wrap gap-[40px] sm:w-[85%] w-[100%] sm:h-[660px] overflow-scroll h-screen border-x border-t px-[30px] pt-[30px] rounded-lg">
             {cards.map((card : string , index)=>{
               return(
-                <Card key={index} className="w-[240px] h-[220px]"></Card>
+                <Card key={index} className="w-[240px] h-[220px]">{cards}</Card>
               )
             })}
           </div>
