@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   
 
-  const theme = typeof window !== undefined ? sessionStorage.getItem('theme') : null;
+  const theme = typeof window !== undefined ? window.sessionStorage.getItem('theme') : null;
   
   return (
     <html lang="en">
