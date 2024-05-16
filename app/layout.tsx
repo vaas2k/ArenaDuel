@@ -1,6 +1,5 @@
 "use client";
 
-import { Rubik } from "next/font/google";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
@@ -8,6 +7,7 @@ import { NextAuthProvider } from "./providers";
 import Navbar from "@/components/shared/Navbar";
 import { useState } from "react";
 
+import { Rubik } from "next/font/google";
 const rubik = Rubik({ subsets: ["latin"] });
 
 export default function RootLayout({

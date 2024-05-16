@@ -31,23 +31,6 @@ const Navbar = ({ changeTheme, theme }: any) => {
 
   if (!isMounted) return null;
 
-  async function handleSearchWord () {
-    
-    try{
-      const req = await axios.get(`/api/search/${searchKeyword}`);
-      if(req.data.status === 200) {
-        console.log(req.data.msg);
-      }
-      else{
-        console.log(req.data.msg);
-      }
-    }catch(error){
-      console.log(error);
-    }
-  }
-
-
-
   // render which buttons auth button to render based on status
   const authButtonRender = () => {
     if (status === 'authenticated') {
@@ -57,7 +40,7 @@ const Navbar = ({ changeTheme, theme }: any) => {
         { width! > 765 && <div className="px-[10px]">
         <TextField.Root type="text" name="search" value={searchKeyword} 
         onChange={(e)=>{setSearchKeyword(e.target.value)}}
-        onKeyDown={(e)=>{ e.key == 'Enter' ? handleSearchWord() : null}}
+        onKeyDown={(e)=>{ e.key == 'Enter' ? router.push(`/search/${searchKeyword}`) : null}}
         >
           <TextField.Slot side="right">
             <MagnifyingGlassIcon />
@@ -128,7 +111,7 @@ const Navbar = ({ changeTheme, theme }: any) => {
                 setSearchKeyword(e.target.value);
               }}
               onKeyDown={(e) => {
-                e.key == "Enter" ? handleSearchWord() : null;
+                e.key == "Enter" ? router.push(`/search/${searchKeyword}`) : null;
               }}
             >
               <TextField.Slot side="right">

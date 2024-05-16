@@ -102,7 +102,7 @@
 
 /* Handle (scrollbar itself) */
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(77, 72, 72, 0.2); /* Set the color and opacity of the scrollbar */
+  background-color: rgba(0, 0, 0, 0.2); /* Set the color and opacity of the scrollbar */
   border-radius: 4px; /* Add rounded corners to the scrollbar */
   transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
@@ -117,11 +117,6 @@
   width: 0; /* Make the scrollbar invisible initially */
 }
 
-/* Show scrollbar on hover or scroll */
-:hover::-webkit-scrollbar,
-:active::-webkit-scrollbar {
-  width: 8px; /* Show the scrollbar when hovering or scrolling */
-}
 
 
 
