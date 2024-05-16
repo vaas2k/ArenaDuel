@@ -15,21 +15,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  function changeTheme(theme: boolean) {
-    setTheme(!theme);
-  }
+  
 
-  const [theme, setTheme] = useState<boolean>(true);
+  const theme = typeof window !== undefined ? sessionStorage.getItem('theme') : null;
+  
   return (
     <html lang="en">
       <body className={rubik.className}>
         <NextAuthProvider>
           <Theme
-            appearance={theme  ? "dark" : "light"}
+            appearance={theme == 'true' ? 'light' : 'dark'}
             radius={"full"}
             accentColor={"blue"}
           >
-          <Navbar changeTheme={changeTheme} theme={theme} />
+          <Navbar  />
             {children}
           </Theme>
         </NextAuthProvider>

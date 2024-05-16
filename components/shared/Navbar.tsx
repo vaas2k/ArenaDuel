@@ -18,12 +18,29 @@ const DynamicSun = dynamic(() => import("lucide-react").then((mod) => mod.Sun), 
   ssr: false,
 });
 
-const Navbar = ({ changeTheme, theme }: any) => {
+const Navbar = () => {
   const width = useWidth();
   const router = useRouter();
   const { data: session, status } = useSession();
   const [ searchKeyword , setSearchKeyword ] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
+  const [theme, setTheme] = useState<boolean>(false); // State to manage theme
+
+  useEffect(() => {
+    const storedTheme = typeof window !== undefined ? sessionStorage.getItem('theme') : null;
+    console.log(storedTheme)
+    if (storedTheme !== null) {
+      setTheme(storedTheme === 'true');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !theme;
+    setTheme(newTheme);
+    typeof window !== undefined ? sessionStorage.setItem('theme',JSON.stringify(newTheme)) : null;
+    typeof window !== undefined ? window.location.reload() : null;
+
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -129,12 +146,12 @@ const Navbar = ({ changeTheme, theme }: any) => {
               <Button variant="soft" radius="full">
                 {!theme ? (
                   <DynamicSun
-                    onClick={() => changeTheme(theme)}
+                    onClick={() => toggleTheme()}
                     size={"20px"}
                   />
                 ) : (
                   <DynamicMoon
-                    onClick={() => changeTheme(theme)}
+                    onClick={() => toggleTheme()}
                     size={"20px"}
                   />
                 )}
@@ -159,12 +176,12 @@ const Navbar = ({ changeTheme, theme }: any) => {
                   <div className="flex items-center justify-center pt-[15px]">
                     {!theme ? (
                       <DynamicSun
-                        onClick={() => changeTheme(theme)}
+                        onClick={() => toggleTheme()}
                         size={"20px"}
                       />
                     ) : (
                       <DynamicMoon
-                        onClick={() => changeTheme(theme)}
+                        onClick={() => toggleTheme()}
                         size={"20px"}
                       />
                     )}
