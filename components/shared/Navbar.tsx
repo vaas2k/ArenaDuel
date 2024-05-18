@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useWidth } from "@/utils/useWidth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-
 const rubik = Rubik({ subsets: ['latin'] });
+
 
 const DynamicMoon = dynamic(() => import("lucide-react").then((mod) => mod.Moon), {
   ssr: false,

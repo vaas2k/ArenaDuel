@@ -26,10 +26,6 @@ export default function ClientHome() {
 
   if (!isMounted) return <Loader />;
 
-  if (status === "authenticated") {
-    router.push("/about");
-    return <Loader />
-  }
   else if(status === 'loading'){
     return <Loader />
   } 

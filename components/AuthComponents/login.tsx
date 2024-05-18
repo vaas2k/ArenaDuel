@@ -41,7 +41,7 @@ const Login = () => {
     });
     console.log(SignInResponse);
     if (SignInResponse && !SignInResponse.error) {
-      router.push('/about');
+      router.push(`profile/${form.email}`);
       setLoading(false);
     } else {
       setError({ ...error, credentials: true });
