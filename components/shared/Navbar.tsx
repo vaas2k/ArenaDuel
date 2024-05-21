@@ -1,12 +1,14 @@
 "use client";
 import { Button, DropdownMenu, Flex, TextField } from "@radix-ui/themes";
-import { DotsHorizontalIcon, MagnifyingGlassIcon, PersonIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, MagnifyingGlassIcon, PersonIcon , BellIcon } from "@radix-ui/react-icons";
 import { Rubik } from "next/font/google";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useWidth } from "@/utils/useWidth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import Notifications from "./Notifications";
+
 const rubik = Rubik({ subsets: ['latin'] });
 
 
@@ -52,32 +54,63 @@ const Navbar = () => {
     if (status === 'authenticated') {
       return (
         <>
-        {/** Only Render Search bar with them if screen is bigger */}
-        { width! > 765 && <div className="px-[10px]">
-        <TextField.Root type="text" name="search" value={searchKeyword} 
-        onChange={(e)=>{setSearchKeyword(e.target.value)}}
-        onKeyDown={(e)=>{ e.key == 'Enter' ? router.push(`/search/${searchKeyword}`) : null}}
-        >
-          <TextField.Slot side="right">
-            <MagnifyingGlassIcon />
-          </TextField.Slot>
-        </TextField.Root>
-        </div>}
+          {/** Only Render Search bar with them if screen is bigger */}
+          {width! > 765 && (
+            <div className="px-[10px]">
+              <TextField.Root
+                type="text"
+                name="search"
+                value={searchKeyword}
+                onChange={(e) => {
+                  setSearchKeyword(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  e.key == "Enter"
+                    ? router.push(`/search/${searchKeyword}`)
+                    : null;
+                }}
+              >
+                <TextField.Slot side="right">
+                  <MagnifyingGlassIcon />
+                </TextField.Slot>
+              </TextField.Root>
+            </div>
+          )}
 
-        <Button  
-        onClick={() => {signOut(); router.push('/sign-in');}} variant={'solid'} 
-        style={{ cursor: "pointer"}}>
-          <p className={rubik.className}>LOGOUT</p>
-        </Button>
+          <Button
+            onClick={() => {
+              signOut();
+              router.push("/sign-in");
+            }}
+            variant={"solid"}
+            style={{ cursor: "pointer" }}
+          >
+            <p className={rubik.className}>LOGOUT</p>
+          </Button>
 
-        <Button
-        style={{ cursor: "pointer"}}
-        onClick={()=>{ router.push(`/profile/${session.user?.email!}`)}}>
-          <PersonIcon />
-        </Button>
+          <Button
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              router.push(`/profile/${session.user?.email!}`);
+            }}
+          >
+            <PersonIcon />
+          </Button>
 
-          </>
-      )
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              <Button variant="soft" >
+                <BellIcon />
+                <DropdownMenu.TriggerIcon />
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content size={'1'} variant="soft">
+              <h1 className="text-center fond-bold text-lg pt-[10px]">Notfications</h1>
+              <Notifications />
+              </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        </>
+      );
     } else if (status === 'unauthenticated') {
       return (
         <>
@@ -196,3 +229,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

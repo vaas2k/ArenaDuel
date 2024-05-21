@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id       String     @id @default(auto()) @map("_id") @db.ObjectId
-  name     String?
-  username String     @unique
-  email    String     @unique
-  password String     @default("null")
-  image    String?
-  OAuth_ID String?
-  verified Boolean    @default(false)
-  Token    Token[]
-  UserInfo UserInfo[]
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  username      String          @unique
+  email         String          @unique
+  password      String          @default("null")
+  image         String?
+  OAuth_ID      String?
+  verified      Boolean         @default(false)
+  Token         Token[]
+  UserInfo      UserInfo[]
+  Friends       Friends[]
+  Notifications Notifications[]
 }
 
 model UserInfo {
@@ -28,7 +30,7 @@ model UserInfo {
   role             String?
   skills           String[]
   level            String?
-  background_image String?   @default("https://e1.pxfuel.com/desktop-wallpaper/95/631/desktop-wallpaper-black-16-9.jpg")
+  background_image String?  @default("https://e1.pxfuel.com/desktop-wallpaper/95/631/desktop-wallpaper-black-16-9.jpg")
 }
 
 model Token {
@@ -39,4 +41,24 @@ model Token {
   token     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Friends {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  user         User    @relation(fields: [userID], references: [id])
+  userID       String  @db.ObjectId
+  sender_name  String
+  sender_id    String
+  sender_image String
+  accepted     Boolean
+}
+
+model Notifications {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  user         User   @relation(fields: [userID], references: [id])
+  userID       String @db.ObjectId
+  sender_name  String
+  sender_id    String
+  sender_image String
+  message      String
 }

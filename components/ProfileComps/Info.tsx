@@ -10,7 +10,7 @@ const rubik = Rubik({ subsets: ["latin"] });
 const Info = ({ user , open , handleSettings } : any) => {
   const {data : session , status } = useSession();
   const [currentuser, setCurrentUser] = useState<boolean>(session?.user?.email == user.email);
-  
+
   
 
 
