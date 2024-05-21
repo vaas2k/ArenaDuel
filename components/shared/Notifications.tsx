@@ -1,14 +1,11 @@
 import { Card, Text } from "@radix-ui/themes";
 import React, { useEffect, useState } from "react";
 import { Rubik } from "next/font/google";
-import socketIO from 'socket.io-client';
 
 const rubik = Rubik({ subsets: ["latin"] });
-const socket = socketIO();
 
 const Notifications = () => {
 
-  const [notifications , setNotifications] = useState<any>([]);
 
   return (
     <div className="w-[400px] h-[400px] flex flex-col p-[20px] overflow-scroll ">
