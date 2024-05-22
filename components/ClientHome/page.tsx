@@ -25,25 +25,7 @@ export default function ClientHome() {
     setIsMounted(true);
   }, []);
 
-  const getUserData = async (email: string) => {
-    try {
-      const { data } = await axios.get(`/api/profile/${email}`);
-      if (data.status === 200) {
-        typeof window !== undefined ? window.sessionStorage.setItem('user', JSON.stringify(data.data)) : null;
-        console.log(data.data);
-      } else {
-        console.error(data.msg);
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user?.email) {
-      getUserData(session.user.email);
-    }
-  }, [status, session]);
+  
 
   if (!isMounted) return <Loader />;
 
@@ -51,6 +33,23 @@ export default function ClientHome() {
     return <Loader />
   } 
   else {
+    const getUserData = async (email: string) => {
+      try {
+        const { data } = await axios.get(`/api/profile/${email}`);
+        if (data.status === 200) {
+          typeof window !== undefined ? window.sessionStorage.setItem('user', JSON.stringify(data.data)) : null;
+          console.log(data.data);
+        } else {
+          console.error(data.msg);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+      if (status === 'authenticated' && session?.user?.email) {
+        getUserData(session.user.email);
+      }
 
     return (
       <div className={rubik.className}>
