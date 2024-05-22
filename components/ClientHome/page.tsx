@@ -3,10 +3,10 @@
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { Rubik } from "next/font/google";
-import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Loader } from "@/components/shared/Loader";
+import { useSession } from "next-auth/react";
 
 // Dynamically import components that may access the DOM
 const CalltoAction = dynamic(() => import("@/components/LandingPage/CalltoAction"), { ssr: false });
@@ -22,14 +22,14 @@ const rubik = Rubik({ subsets: ["latin"] });
 export default function ClientHome() {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
-  const { data: session, status } = useSession();
+  const {data : session , status} = useSession();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    const getUserData = async (email: string) => {
+    const getUserData = async (email: any) => {
       try {
         const { data } = await axios.get(`/api/profile/${email}`);
         if (data.status === 200) {
@@ -45,10 +45,10 @@ export default function ClientHome() {
       }
     };
 
-    if (status === 'authenticated' && session?.user?.email) {
-      getUserData(session.user.email);
+    if (isMounted == true) {
+      getUserData(session?.user!.email);
     }
-  }, [status, session]);
+  }, [isMounted]);
 
   if (!isMounted) return <Loader />;
   if (status === 'loading') return <Loader />;
