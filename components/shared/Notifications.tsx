@@ -1,7 +1,7 @@
+'use client'
 import { Button, Card, Text } from "@radix-ui/themes";
 import React, { useEffect, useState } from "react";
 import { Rubik } from "next/font/google";
-import { useSession } from "next-auth/react";
 import axios from "axios";
 import { Loader2 } from "./Loader";
 
@@ -13,7 +13,6 @@ const Notifications = () => {
   const [load , setLoad] = useState(true);
   const [error , setError] = useState('');
 
-  console.log(notifications);
   useEffect(()=>{
 
     async function getNotis () {
