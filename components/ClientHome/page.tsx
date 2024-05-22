@@ -45,19 +45,23 @@ export default function ClientHome() {
     }
   }, [status, session]);
 
-  if (!isMounted || status === 'loading') {
-    return <Loader />;
-  }
+  if (!isMounted) return <Loader />;
 
-  return (
-    <div className={rubik.className}>
-      <Hero />
-      <Discover />
-      <Commitment />
-      <Community />
-      <Clients />
-      <CalltoAction />
-      <Footer />
-    </div>
-  );
+  else if(status === 'loading'){
+    return <Loader />
+  } 
+  else {
+
+    return (
+      <div className={rubik.className}>
+        <Hero />
+        <Discover />
+        <Commitment />
+        <Community />
+        <Clients />
+        <CalltoAction />
+        <Footer />
+      </div>
+    );
+  }
 }
