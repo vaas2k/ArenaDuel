@@ -48,7 +48,7 @@ model Friends {
   user         User    @relation(fields: [userID], references: [id])
   userID       String  @db.ObjectId
   sender_name  String
-  sender_id    String
+  sender_email String
   sender_image String
   accepted     Boolean
 }
@@ -58,7 +58,7 @@ model Notifications {
   user         User   @relation(fields: [userID], references: [id])
   userID       String @db.ObjectId
   sender_name  String
-  sender_id    String
+  sender_email String
   sender_image String
   message      String
 }

@@ -41,6 +41,7 @@
     "react-simple-code-editor": "^0.13.1",
     "react-toastify": "^10.0.5",
     "scrollreveal": "^4.0.9",
+    "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",

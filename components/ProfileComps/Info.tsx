@@ -1,5 +1,6 @@
 "use client";
 import { Badge, Button } from "@radix-ui/themes";
+import axios from "axios";
 import { Sparkle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Rubik } from "next/font/google";
@@ -7,11 +8,36 @@ import React, { useState } from "react";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
-const Info = ({ user , open , handleSettings } : any) => {
+const Info = ({ user , open , handleSettings, email } : any) => {
   const {data : session , status } = useSession();
   const [currentuser, setCurrentUser] = useState<boolean>(session?.user?.email == user.email);
+  const [ loading , setLoading ] = useState(false);
 
-  
+
+  async function sentFriendReq () {
+    setLoading(true);
+    try{
+      const data = {
+        sender_name: session?.user?.name,
+        sender_email: session?.user?.email,
+        sender_image: session?.user?.image,
+        email : email
+      };
+      const req = await axios.post('/api/friends/addfriend',data);
+      if(req.data.status === 200) {
+        console.log('Friend Request Sent');
+        setLoading(false);
+      }
+      else{
+        console.log('internal server error');
+        setLoading(false);
+      }
+
+    }catch(error){
+      console.log(error);
+      setLoading(false);
+    }
+  }
 
 
   return (
@@ -33,10 +59,10 @@ const Info = ({ user , open , handleSettings } : any) => {
             </>
           ) : (
             <>
-              <Button>Add Buddie</Button>
-              <Button variant="outline">Release Buddie</Button>
+              <Button onClick={sentFriendReq} loading={loading}>Add Buddie</Button>
+              <Button variant="outline" >Release Buddie</Button>
             </>
-          )}
+          )}   
         </div>
 
         {/**User Skills */}

@@ -24,7 +24,7 @@ const Profile = ({ params }: any) => {
         console.log(req.data.msg);
       }
     }
-    getUserData();
+    getUserData(); // user data for the current page
   }, [params]);
 
   if (!user) {
@@ -43,7 +43,7 @@ const Profile = ({ params }: any) => {
               email={user.email}
               background_image={user.background_image}
             />
-            <Info user={user} open={open} handleSettings={hanldeSettings} />
+            <Info user={user} open={open} handleSettings={hanldeSettings} email={user.email} />
           </div>
         </div>
       ) : (
