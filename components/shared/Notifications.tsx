@@ -49,7 +49,7 @@ const Notifications = () => {
       >
         {notifications && notifications.map((n : any,i : number) => {
           return (
-            <div className="flex flex-row items-center gap-[20px] p-[15px] m-[15px] drop-shadow-md rounded-lg dark:bg-neutral-900 bg-neutral-100">
+            <div key={i} className="flex flex-row items-center gap-[20px] p-[15px] m-[15px] drop-shadow-md rounded-lg dark:bg-neutral-900 bg-neutral-100">
               <img
                 src={n.sender_image}
                 className=" flex w-[30px] h-[30px] rounded-full"
