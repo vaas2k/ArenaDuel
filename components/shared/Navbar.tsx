@@ -55,6 +55,9 @@ const Navbar = () => {
       return (
         <>
           {/** Only Render Search bar with them if screen is bigger */}
+          
+          
+          
           {width! > 765 && (
             <div className="px-[10px]">
               <TextField.Root
@@ -77,6 +80,10 @@ const Navbar = () => {
             </div>
           )}
 
+          <Button variant="solid" style={{cursor:"pointer"}} onClick={()=>{router.push('/dashboard')}}>
+            Code
+          </Button>
+
           <Button
             onClick={() => {
               signOut();
@@ -85,7 +92,7 @@ const Navbar = () => {
             variant={"solid"}
             style={{ cursor: "pointer" }}
           >
-            <p className={rubik.className}>LOGOUT</p>
+            <p >signout</p>
           </Button>
 
           <Button
@@ -97,6 +104,7 @@ const Navbar = () => {
             <PersonIcon />
           </Button>
 
+          {/* Will resume once main features are done
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <Button variant="soft" >
@@ -108,17 +116,17 @@ const Navbar = () => {
               <h1 className="text-center fond-bold text-lg pt-[10px]">Notfications</h1>
               <Notifications />
               </DropdownMenu.Content>
-          </DropdownMenu.Root>
+          </DropdownMenu.Root> */}
         </>
       );
     } else if (status === 'unauthenticated') {
       return (
         <>
           <Button onClick={() => router.push('/sign-in')} variant={'solid'} style={{ cursor: "pointer" }}>
-            <p className={rubik.className}>LOGIN</p>
+            <p>LOGIN</p>
           </Button>
           <Button onClick={() => router.push('/sign-up')} variant={'solid'} style={{ cursor: "pointer" }}>
-            <p className={rubik.className}>SIGN UP</p>
+            <p>SIGN UP</p>
           </Button>
         </>
       )
@@ -126,7 +134,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="flex items-center justify-between sm:px-[30px] px-[15px] pt-[20px] pb-[15px]">
+    <div className={`${rubik.className} flex items-center justify-between sm:px-[30px] px-[15px] pt-[20px] pb-[15px]`}>
       <div
         className="cursor-pointer font-black leading-tight flex flex-row items-center justify-evenly "
         onClick={() => router.push("/")}
@@ -197,9 +205,6 @@ const Navbar = () => {
                 <DotsHorizontalIcon width={"20px"} />
               </DropdownMenu.Trigger>
               <DropdownMenu.Content className="p-[10px] gap-[10px]">
-                <DropdownMenu.Item shortcut="">About</DropdownMenu.Item>
-                <DropdownMenu.Item shortcut="">Pricing</DropdownMenu.Item>
-                <DropdownMenu.Separator />
                 <div className="flex gap-[10px] flex-col">
                   {authButtonRender()}
                 </div>

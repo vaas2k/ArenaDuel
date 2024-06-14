@@ -14,6 +14,7 @@ const Info = ({ user , open , handleSettings, email } : any) => {
   const [ loading , setLoading ] = useState(false);
 
 
+  /* Will resume once main features are added
   async function sentFriendReq () {
     setLoading(true);
     try{
@@ -37,7 +38,7 @@ const Info = ({ user , open , handleSettings, email } : any) => {
       console.log(error);
       setLoading(false);
     }
-  }
+  }*/
 
 
   return (
@@ -59,8 +60,8 @@ const Info = ({ user , open , handleSettings, email } : any) => {
             </>
           ) : (
             <>
-              <Button onClick={sentFriendReq} loading={loading}>Add Buddie</Button>
-              <Button variant="outline" >Release Buddie</Button>
+              {/*(<Button onClick={sentFriendReq} loading={loading}>Add Buddie</Button>
+              <Button variant="outline" >Release Buddie</Button>*/}
             </>
           )}   
         </div>

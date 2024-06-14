@@ -64,7 +64,7 @@ const UserCards = ({ param }: any) => {
           {
             users.length > 0 ? 
             (<div className="flex items-center justity-center flex-col w-[100%]">
-            <div className=" flex flex-row justify-center flex-wrap gap-[80px] sm:w-[85%] w-[100%] sm:h-[660px] overflow-scroll h-screen border-x border-t px-[30px] pt-[30px] rounded-lg">
+            <div className=" flex flex-row justify-center flex-wrap gap-[80px] sm:w-[85%] w-[100%] sm:h-[660px] overflow-scroll h-screen  px-[30px] pt-[30px] rounded-lg">
               {users.map((user: any,index:number) => {
                 return (
                   <div
@@ -94,7 +94,7 @@ const UserCards = ({ param }: any) => {
                 );
               })}
             </div>
-            <Button variant="outline" onClick={getUsers}>Load More</Button>
+            {users.length > 6 && <Button variant="outline" onClick={getUsers}>Load More</Button>}
           </div>)
           :
           (<div className="">No result found for this query </div>)
