@@ -49,8 +49,8 @@ const EditorV0 = () => {
 
         <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={() => { setShowResults(true) }}>
+            Run
             <PlayIcon className="h-5 w-5" />
-            <span className="sr-only">Run</span>
           </Button>
           <Button variant="solid" className="bg-blue-500 text-white hover:bg-blue-600">
             Submit
@@ -78,7 +78,12 @@ const EditorV0 = () => {
             <span className="sr-only">Close</span>
           </Button>
         </div>
-        <div className="mt-4 grid overflow-y-auto max-h-[200px] gap-[15px] py-[10px]">
+        <div className='flex gap-[10px] items-center'>
+          <h1 className='py-[10px]' style={{color:'lightgreen'}}><b>Accepted</b></h1>
+          <h1 className='py-[10px]' style={{color:'tomato'}}><b>Wrong Answer</b></h1>
+        </div>
+    
+        <div className=" flex flex-wrap mt-4 overflow-y-auto max-h-[200px] gap-[15px] py-[10px]">
           <div className="flex items-center gap-4">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
               <CheckIcon className="h-4 w-4" />
@@ -106,16 +111,6 @@ const EditorV0 = () => {
               <p className="text-sm text-gray-500">Failed</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white">
-              <X className="h-4 w-4" />
-            </div>
-            <div>
-              <h4 className="font-medium">Test Case 4</h4>
-              <p className="text-sm text-gray-500">Failed</p>
-            </div>
-          </div>
-          {/* Add more test cases here */}
         </div>
       </div>
         :
