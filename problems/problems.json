@@ -1,0 +1,17 @@
+[
+    {
+        "id" : 1,
+        "name": "Weird AlgorithmInputOutputConstraintsExample",
+        "statement": "Time limit: 1.00 s\nMemory limit: 512 MB\n\nConsider an algorithm that takes as input a positive integer n. If n is even, the algorithm divides it by two, and if n is odd, the algorithm multiplies it by three and adds one. The algorithm repeats this, until n is one. For example, the sequence for n=3 is as follows:\n 3 \\rightarrow 10 \\rightarrow 5 \\rightarrow 16 \\rightarrow 8 \\rightarrow 4 \\rightarrow 2 \\rightarrow 1\nYour task is to simulate the execution of the algorithm for a given value of n.\n\nThe only input line contains an integer n.\n\nPrint a line that contains all values of n during the algorithm.\n\n1 \\le n \\le 10^6\n\nInput:\n\nOutput:"
+      },
+      {
+        "id" : 2,
+        "name": "Missing NumberInputOutputConstraintsExample",
+        "statement": "Time limit: 1.00 s\nMemory limit: 512 MB\n\nYou are given all numbers between 1,2,\\ldots,n except one. Your task is to find the missing number.\n\nThe first input line contains an integer n.\n\nThe second line contains n-1 numbers. Each number is distinct and between 1 and n (inclusive).\n\nPrint the missing number.\n\n2 \\le n \\le 2 \\cdot 10^5\n\nInput:\n\nOutput:"
+      },
+      {
+        "id" : 3,
+        "name": "RepetitionsInputOutputConstraintsExample",
+        "statement": "Time limit: 1.00 s\nMemory limit: 512 MB\n\nYou are given a DNA sequence: a string consisting of characters A, C, G, and T. Your task is to find the longest repetition in the sequence. This is a maximum-length substring containing only one type of character.\n\nThe only input line contains a string of n characters.\n\nPrint one integer: the length of the longest repetition.\n\n1 \\le n \\le 10^6\n\nInput:\n\nOutput:"
+      }
+]

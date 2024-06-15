@@ -5,7 +5,7 @@ import React from 'react'
 
 const OptionBar = () => {
   return (
-    <div className="flex items-center justify-between border  dark:bg-gray-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">
+    <div className="flex items-center justify-between border  dark:bg-neutral-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">
       <div className="flex items-center justify-center gap-[20px]">
         <img src="./client.png" className="w-[30px] h-[30px] rounded-full" />
         <Badge>tourist &nbsp; (280)</Badge>
