@@ -1,60 +1,73 @@
-'use client'
-import Searchingmatch from '@/components/Dashboard/Searchingmatch';
-import { Dashboard_Comp } from '@/components/Dashboard/dash-board';
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import getUser from '@/lib/UserActions/getUser';
-import { useSession } from 'next-auth/react';
-import { findMatch } from '@/BACKEND_CALLs/apis';
+"use client";
+import Searchingmatch from "@/components/Dashboard/Searchingmatch";
+import { Dashboard_Comp } from "@/components/Dashboard/dash-board";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import getUser from "@/lib/UserActions/getUser";
+import { useSession } from "next-auth/react";
+import { queue_player } from "@/BACKEND_CALLs/apis";
+import useSocket from "@/lib/Sockets/useSocket";
 
-const Dashoard = () => {
-
-  const {data : session , status} = useSession();
+const Dashboard = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const [mode, setMode] = useState<any>({
-    type: '',
+  const socket = useSocket();
+  const [mode, setMode] = useState({
+    type: "",
     rated: false,
-    player_id : 222
-  })
+    id: ""
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  function handleMode(newMode : any) {
+    setMode(newMode);
+    if (newMode.type === "") {
+      setIsLoading(false);
+    }
+  }
+
   async function finding_match() {
-    // get user id   
+    setIsLoading(true);
     const user = await getUser(session?.user?.email);
-      
-      //send user to put him in waiting queue for match
-      const req = await findMatch(user)
+    setMode({ ...mode, id: user.id });
 
-      setTimeout(()=>{
-        console.log(user);
-        setMode({mode : '',rated : mode.rated});
-      },3000)
-    return null;
+    const data = {
+      type: mode.type,
+      rated: false,
+      id: user.id
+    };
+
+    console.log(data);
+    
+    socket.emit('nigga',data);
+
+    // Send user to put him in waiting queue for match
+    const req = await queue_player(data);
+    console.log(req);
+    // Remove isLoading=false here since you want to keep the loading state until cancel or match found
   }
 
-  function handleMode(mode: any) {
-    setMode(mode);
-  }
-
-  
-  if(mode.type === '1v1'){
-    finding_match();
-  }
-  else if(mode.type == 'marathon') {
-    // do some thing
-  }
-  else{
-    // do some thing (DAILY);
-  }
+  useEffect(() => {
+    if (mode.type === "1v1") {
+      finding_match();
+    } else if (mode.type === "marathon") {
+      // Do something
+    } else {
+      // Do something (DAILY);
+    }
+  }, [mode.type]);
 
   return (
     <div className="relative min-h-screen">
       <Dashboard_Comp mode={mode} handleMode={handleMode} />
-      {mode.type === '1v1' && (
-        <div className="fixed bottom-6 left-0 right-0 flex items-center justify-center">
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Searchingmatch mode={mode} handleMode={handleMode} />
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Dashoard;
+export default Dashboard;

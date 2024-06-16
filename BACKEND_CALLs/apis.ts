@@ -9,10 +9,19 @@ const api = axios.create({
 })
 
 
-const findMatch = async (data : any) => {
+const queue_player = async (data : any) => {
     let response ;
     try{
-        response = await api.post('/startChat',data);
+        response = await api.post('/enqueue_player',data);
+    }catch(error){
+        return error;
+    }
+    return response;
+}
+const cancel_queue = async (data : any) => {
+    let response : any;
+    try{
+        response = await api.post('/cancel_queue',data);
     }catch(error){
         return error;
     }
@@ -20,5 +29,6 @@ const findMatch = async (data : any) => {
 }
 
 export  {
-    findMatch
+    queue_player,
+    cancel_queue
 }

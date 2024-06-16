@@ -8,7 +8,6 @@ import { AlertDialog, Button, Flex, Switch } from "@radix-ui/themes"
 
 export function Dashboard_Comp({mode , handleMode} : {mode : any  , handleMode : any}) {
   
-  console.log(mode);
   return (
     <div className="flex flex-col h-full w-full p-6 md:p-10">
       {/**Header Section */}
