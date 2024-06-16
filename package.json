@@ -35,6 +35,7 @@
     "mongoose": "^8.3.2",
     "next": "14.2.2",
     "next-auth": "^4.24.7",
+    "node-cache": "^5.1.2",
     "nodemailer": "^6.9.13",
     "prismjs": "^1.29.0",
     "react": "^18",

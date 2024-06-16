@@ -3,23 +3,33 @@ import Searchingmatch from '@/components/Dashboard/Searchingmatch';
 import { Dashboard_Comp } from '@/components/Dashboard/dash-board';
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import getUser from '@/lib/UserActions/getUser';
+import { useSession } from 'next-auth/react';
+import { findMatch } from '@/BACKEND_CALLs/apis';
 
 const Dashoard = () => {
 
+  const {data : session , status} = useSession();
   const router = useRouter();
   const [mode, setMode] = useState<any>({
     type: '',
     rated: false,
+    player_id : 222
   })
   async function finding_match() {
+    // get user id   
+    const user = await getUser(session?.user?.email);
+      
+      //send user to put him in waiting queue for match
+      const req = await findMatch(user)
+
       setTimeout(()=>{
-        router.push('/editor');
+        console.log(user);
         setMode({mode : '',rated : mode.rated});
       },3000)
     return null;
   }
 
-  console.log(mode);
   function handleMode(mode: any) {
     setMode(mode);
   }
@@ -27,6 +37,12 @@ const Dashoard = () => {
   
   if(mode.type === '1v1'){
     finding_match();
+  }
+  else if(mode.type == 'marathon') {
+    // do some thing
+  }
+  else{
+    // do some thing (DAILY);
   }
 
   return (

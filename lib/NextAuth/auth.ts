@@ -56,8 +56,6 @@ const authConfig: NextAuthOptions = {
 
                     if(!user){return null;}
                     const decryptPassword = bcrypt.compareSync(credentials.password,user.password);
-                    console.log(decryptPassword);
-                    console.log(user);
                     
                     if(user && decryptPassword === false){
                         return null
@@ -65,6 +63,7 @@ const authConfig: NextAuthOptions = {
                     else if(!user){
                         return null;
                     }
+                                        
                     return user;
 
                 }catch(error){
