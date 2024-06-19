@@ -2,25 +2,20 @@
 import Searchingmatch from "@/components/Dashboard/Searchingmatch";
 import { Dashboard_Comp } from "@/components/Dashboard/dash-board";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import getUser from "@/lib/UserActions/getUser";
 import { useSession } from "next-auth/react";
 import { queue_player } from "@/BACKEND_CALLs/apis";
-import useSocket from "@/lib/Sockets/useSocket";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
-  const router = useRouter();
-  const socket = useSocket();
   const [mode, setMode] = useState({
     type: "",
     rated: false,
-    id: ""
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  console.log(session)
+  const [isLoading, setIsLoading] = useState<any>(false);
 
-  function handleMode(newMode : any) {
+  function handleMode(newMode: any) {
     setMode(newMode);
     if (newMode.type === "") {
       setIsLoading(false);
@@ -29,23 +24,22 @@ const Dashboard = () => {
 
   async function finding_match() {
     setIsLoading(true);
-    const user = await getUser(session?.user?.email);
-    setMode({ ...mode, id: user.id });
 
     const data = {
-      type: mode.type,
+      type: mode.type, // Use newMode instead of mode
       rated: false,
-      id: user.id
+      // @ts-ignore
+      id: session?.user!.id
     };
 
     console.log(data);
-    
-    socket.emit('nigga',data);
 
     // Send user to put him in waiting queue for match
-    const req = await queue_player(data);
-    console.log(req);
-    // Remove isLoading=false here since you want to keep the loading state until cancel or match found
+    const req : any  = await queue_player(data);
+
+    if (req.status === 200) {
+      console.log("Player Queue");
+    }
   }
 
   useEffect(() => {
@@ -63,7 +57,10 @@ const Dashboard = () => {
       <Dashboard_Comp mode={mode} handleMode={handleMode} />
       {isLoading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Searchingmatch mode={mode} handleMode={handleMode} />
+          <Searchingmatch 
+          mode={mode} handleMode={handleMode}
+          // @ts-ignore
+          currentuser={session?.user!.id} />
         </div>
       )}
     </div>

@@ -8,6 +8,7 @@ import { useWidth } from "@/utils/useWidth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Notifications from "./Notifications";
+import Link from "next/link";
 
 const rubik = Rubik({ subsets: ['latin'] });
 
@@ -70,9 +71,11 @@ const Navbar = () => {
             </div>
           )}
 
+          <Link href={'/dashboard'}>
           <Button variant="solid" style={{ cursor: "pointer" }} onClick={() => router.push('/dashboard')}>
             Code
           </Button>
+          </Link>
 
           <Button
             onClick={() => {
@@ -85,23 +88,29 @@ const Navbar = () => {
             <p>Sign Out</p>
           </Button>
 
+          <Link href={`/profile/${session.user?.email}`}>
           <Button
             style={{ cursor: "pointer" }}
-            onClick={() => router.push(`/profile/${session.user?.email}`)}
-          >
+            >
             <PersonIcon />
           </Button>
+            </Link>
         </>
       );
     } else if (status === 'unauthenticated') {
       return (
         <>
-          <Button onClick={() => router.push('/sign-in')} variant={'solid'} style={{ cursor: "pointer" }}>
+        <Link href={'/sign-in'}>
+          <Button variant={'solid'} style={{ cursor: "pointer" }}>
             <p>Login</p>
           </Button>
-          <Button onClick={() => router.push('/sign-up')} variant={'solid'} style={{ cursor: "pointer" }}>
+        </Link>
+
+        <Link href={'/sign-up'}>
+          <Button variant={'solid'} style={{ cursor: "pointer" }}>
             <p>Sign Up</p>
           </Button>
+        </Link>
         </>
       );
     }
@@ -109,15 +118,16 @@ const Navbar = () => {
 
   return (
     <div className={`${rubik.className} flex items-center justify-between sm:px-[30px] px-[15px] pt-[20px] pb-[15px]`}>
+      
+      <Link href={'/'}>
       <div
         className="cursor-pointer font-black leading-tight flex flex-row items-center justify-evenly"
-        onClick={() => router.push("/")}
-      >
+        >
         <svg
           className="w-auto h-6 fill-current"
           viewBox="0 0 194 116"
           xmlns="http://www.w3.org/2000/svg"
-        >
+          >
           <g fillRule="evenodd">
             <path d="M96.869 0L30 116h104l-9.88-17.134H59.64l47.109-81.736zM0 116h19.831L77 17.135 67.088 0z" />
             <path d="M87 68.732l9.926 17.143 29.893-51.59L174.15 116H194L126.817 0z" />
@@ -130,6 +140,7 @@ const Navbar = () => {
           </span>
         )}
       </div>
+      </Link>
 
       {width! < 765 && (
         <div className="px-[10px]">

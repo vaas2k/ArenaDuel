@@ -29,7 +29,7 @@ export default function ClientHome() {
 
   if (!isMounted) return <Loader />;
   if (status === 'loading') return <Loader />;
-
+  
   return (
     <div className={rubik.className}>
       <Hero />

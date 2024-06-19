@@ -18,11 +18,12 @@ const queue_player = async (data : any) => {
     }
     return response;
 }
-const cancel_queue = async (data : any) => {
+const cancel_matchmaking = async (data : any) => {
     let response : any;
     try{
-        response = await api.post('/cancel_queue',data);
+        response = await api.post('/player_left',data);
     }catch(error){
+        console.log(error);
         return error;
     }
     return response;
@@ -30,5 +31,5 @@ const cancel_queue = async (data : any) => {
 
 export  {
     queue_player,
-    cancel_queue
+    cancel_matchmaking
 }
