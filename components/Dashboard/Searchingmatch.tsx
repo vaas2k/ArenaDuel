@@ -3,6 +3,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useSocket from "@/lib/Sockets/useSocket";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setData } from "@/storeRedux/reducers/matchReducer";
 
 const Searchingmatch = ({ mode, handleMode, currentuser }: any) => {
   const socket = useSocket();
@@ -11,12 +13,20 @@ const Searchingmatch = ({ mode, handleMode, currentuser }: any) => {
   const [waiting, setWaiting] = useState(true);
   const [matchFound, setMatchFound] = useState(false);
   const [countdown, setCountdown] = useState(3);
-  const [newData, setNewData] = useState<any>(null); // Initialize with null
+  const [room, setRoom] = useState<any>(null); // Initialize with null
+  
+  const dispatch = useDispatch();
+
 
   // Function to cancel the matchmaking process
   const cancelMatch = async () => {
+    const data = { 
+      type : mode.type,
+      rated : false ,
+      id : currentuser
+    }
     try {
-      const req = await axios.post("http://localhost:8080/player_left", mode);
+      const req = await axios.post("http://localhost:8080/player_left", data);
       if (req.status === 200) {
         handleMode({ type: "", rated: false });
       } else {
@@ -33,11 +43,15 @@ const Searchingmatch = ({ mode, handleMode, currentuser }: any) => {
       try {
         socket.on(JSON.stringify(currentuser), (data) => {
           console.log(`Match created for - ${currentuser}`);
-          console.log(data);
-          setNewData(data);
-          setMatchFound(true);
-          setWaiting(false);
-          setCountdown(3);
+          if(currentuser == data.p2) {
+            const P2 = data.p1;
+            data = {...data,p1 : currentuser,p2 : P2}
+          }
+            dispatch(setData(data));
+            setRoom(data.room_id)
+            setMatchFound(true);
+            setWaiting(false);
+            setCountdown(3);
         });
 
         return () => {
@@ -63,12 +77,12 @@ const Searchingmatch = ({ mode, handleMode, currentuser }: any) => {
     if (countdown === 0) {
       clearInterval(countdownInterval);
       // Redirect to game page or handle next steps
-        const queryParams = new URLSearchParams(newData);
-        router.push(`/editor/${queryParams.toString()}`);
+        const queryParams = new URLSearchParams(room);
+        router.push(`/editor/${queryParams}`);
     }
 
     return () => clearInterval(countdownInterval);
-  }, [matchFound, countdown, router, newData]);
+  }, [matchFound, countdown, router, room]);
 
   return (
     <Card>

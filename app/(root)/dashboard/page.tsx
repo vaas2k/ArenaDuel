@@ -5,15 +5,15 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { queue_player } from "@/BACKEND_CALLs/apis";
 
+
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const [mode, setMode] = useState({
     type: "",
     rated: false,
   });
-
-  console.log(session)
   const [isLoading, setIsLoading] = useState<any>(false);
+
 
   function handleMode(newMode: any) {
     setMode(newMode);

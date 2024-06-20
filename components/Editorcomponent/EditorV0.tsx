@@ -6,7 +6,7 @@ import { PlayIcon } from "@radix-ui/react-icons"
 import { ArrowUp, CheckIcon, ChevronDownIcon, CodeIcon, MaximizeIcon, X } from "lucide-react"
 import { Editor } from '@monaco-editor/react'
 
-const EditorV0 = () => {
+const EditorV0 = ({test} : any) => {
   const [isTestResultsOpen, setIsTestResultsOpen] = useState(false)
   const [showResult, setShowResults] = useState(false);
   const [lang ,setLang]  = useState('cpp');
@@ -19,26 +19,21 @@ const EditorV0 = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="gap-2">
-                <CodeIcon className="h-5 w-5" />
                 <span>{lang}</span>
                 <ChevronDownIcon className="h-4 w-4 text-gray-500" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" sideOffset={8}>
               <DropdownMenuItem onClick={()=>{setLang('javascript')}}>
-                <CodeIcon className="mr-2 h-4 w-4" />
                 JavaScript
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>{setLang('python')}}>
-                <CodeIcon className="mr-2 h-4 w-4" />
                 Python
               </DropdownMenuItem >
               <DropdownMenuItem onClick={()=>{setLang('java')}}>
-                <CodeIcon className="mr-2 h-4 w-4" />
                 Java
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>{setLang('cpp')}}>
-                <CodeIcon className="mr-2 h-4 w-4" />
                 C++
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -48,7 +43,7 @@ const EditorV0 = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => { setShowResults(true) }}>
+          <Button variant="ghost" onClick={() => { test(); setShowResults(true) }}>
             Run
             <PlayIcon className="h-5 w-5" />
           </Button>
