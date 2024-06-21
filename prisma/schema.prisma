@@ -17,6 +17,7 @@ model User {
   OAuth_ID      String?
   verified      Boolean         @default(false)
   Token         Token[]
+  rating        Int?            @default(50)
   UserInfo      UserInfo[]
   Friends       Friends[]
   Notifications Notifications[]

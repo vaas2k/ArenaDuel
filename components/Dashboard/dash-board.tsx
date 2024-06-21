@@ -1,4 +1,3 @@
-//@see https://v0.dev/t/CiAEaWQpxKT
 
 import Link from "next/link"
 import { CardContent, Card } from "@/components/ui/card"
@@ -6,7 +5,7 @@ import { LightningBoltIcon } from "@radix-ui/react-icons"
 import { AlertDialog, Button, Flex, Switch } from "@radix-ui/themes"
 
 
-export function Dashboard_Comp({mode , handleMode} : {mode : any  , handleMode : any}) {
+export function Dashboard_Comp({mode , handleMode ,rating } : any) {
   
   return (
     <div className="flex flex-col h-full w-full p-6 md:p-10">
@@ -17,7 +16,7 @@ export function Dashboard_Comp({mode , handleMode} : {mode : any  , handleMode :
           <ZapIcon className="w-5 h-5 text-yellow-500" />
           <p>
             {" "}
-            <b>202</b>
+            <b>{rating}</b>
           </p>
         </div>
       </header>
@@ -60,12 +59,12 @@ export function Dashboard_Comp({mode , handleMode} : {mode : any  , handleMode :
 
                 <Flex gap="3" mt="4" justify="end">
                   <AlertDialog.Cancel>
-                    <Button variant="soft" color="gray" onClick={() => handleMode({type : '1v1',rated : false})}>
+                    <Button variant="soft" color="gray" onClick={() => handleMode({type : '1v1',rating : 0})}>
                       No
                     </Button>
                   </AlertDialog.Cancel>
                   <AlertDialog.Action>
-                    <Button variant="solid" color="red" onClick={() =>  handleMode({type : '1v1',rated : true})}>
+                    <Button variant="solid" color="red" onClick={() =>  handleMode({type : '1v1',rating : rating})}>
                       Yes
                     </Button>
                   </AlertDialog.Action>

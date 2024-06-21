@@ -26,7 +26,7 @@ const Navbar = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
   const [theme, setTheme] = useState<boolean>(false);
-
+  console.log(session?.user);
   useEffect(() => {
     const storedTheme = typeof window !== undefined ? sessionStorage.getItem('theme') : null;
     if (storedTheme !== null) {

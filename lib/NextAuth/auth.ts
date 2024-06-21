@@ -94,7 +94,8 @@ const authConfig: NextAuthOptions = {
             name: true,
             email: true,
             OAuth_ID: true,
-            image : true 
+            image : true,
+            rating : true 
           },
         });
         token.user = dbUser;

@@ -10,7 +10,7 @@ const Dashboard = () => {
   const { data: session, status } = useSession();
   const [mode, setMode] = useState({
     type: "",
-    rated: false,
+    rating: "",
   });
   const [isLoading, setIsLoading] = useState<any>(false);
 
@@ -27,7 +27,7 @@ const Dashboard = () => {
 
     const data = {
       type: mode.type, // Use newMode instead of mode
-      rated: false,
+      rating: mode.rating,
       // @ts-ignore
       id: session?.user!.id
     };
@@ -54,11 +54,16 @@ const Dashboard = () => {
 
   return (
     <div className="relative min-h-screen">
-      <Dashboard_Comp mode={mode} handleMode={handleMode} />
+      <Dashboard_Comp 
+      mode={mode} handleMode={handleMode} 
+      // @ts-ignore
+      rating={session?.user.rating} />
       {isLoading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Searchingmatch 
           mode={mode} handleMode={handleMode}
+          // @ts-ignore
+          rating={session?.user.rating}
           // @ts-ignore
           currentuser={session?.user!.id} />
         </div>

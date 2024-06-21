@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setData } from "@/storeRedux/reducers/matchReducer";
 
-const Searchingmatch = ({ mode, handleMode, currentuser }: any) => {
+const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   const socket = useSocket();
   const router = useRouter();
 
@@ -22,7 +22,7 @@ const Searchingmatch = ({ mode, handleMode, currentuser }: any) => {
   const cancelMatch = async () => {
     const data = { 
       type : mode.type,
-      rated : false ,
+      rating : mode.rating,
       id : currentuser
     }
     try {
@@ -43,6 +43,7 @@ const Searchingmatch = ({ mode, handleMode, currentuser }: any) => {
       try {
         socket.on(JSON.stringify(currentuser), (data) => {
           console.log(`Match created for - ${currentuser}`);
+          console.log(data);
           if(currentuser == data.p2) {
             const P2 = data.p1;
             data = {...data,p1 : currentuser,p2 : P2}
