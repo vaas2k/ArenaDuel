@@ -22,29 +22,46 @@ const Dashboard = () => {
     }
   }
 
-  async function finding_match() {
+
+  // send player for matching in mode 1v1
+  async function finding_match_for_1v1() {
     setIsLoading(true);
 
-    const data = {
-      type: mode.type, // Use newMode instead of mode
-      rating: mode.rating,
-      // @ts-ignore
-      id: session?.user!.id
-    };
-
-    console.log(data);
-
-    // Send user to put him in waiting queue for match
-    const req : any  = await queue_player(data);
-
-    if (req.status === 200) {
-      console.log("Player Queue");
+    try {
+      const data = {
+        type: mode.type, // Use newMode instead of mode
+        rating: mode.rating,
+        // @ts-ignore
+        id: session?.user!.id,
+      };
+      console.log(data);
+      // Send user to put him in waiting queue for match
+      const req: any = await queue_player(data);
+      if (req.status === 200) {
+        console.log("Player Queued");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  useEffect(() => {
+  // for marathon mode
+  const marathon = async () => {
+    try {
+      const data = {
+        type: "marathon", //@ts-ignore
+        id: session?.user.id,
+      };
+      
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+    
+    useEffect(() => {
     if (mode.type === "1v1") {
-      finding_match();
+      finding_match_for_1v1();
     } else if (mode.type === "marathon") {
       // Do something
     } else {

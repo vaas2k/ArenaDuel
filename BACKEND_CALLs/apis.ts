@@ -29,7 +29,20 @@ const cancel_matchmaking = async (data : any) => {
     return response;
 }
 
+
+const submitCode = async (data : any) => {
+    let response : any;
+    response = await api.post('/runAllTestCases',data);
+    return response;
+}
+const runCode = async (data : any) => {
+    let response : any;
+    response = await api.post('/runSampleTestCases',data);
+    return response;
+}
 export  {
     queue_player,
-    cancel_matchmaking
+    cancel_matchmaking,
+    submitCode,
+    runCode
 }

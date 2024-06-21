@@ -13,7 +13,8 @@ export const getUserData = async ( id : string ) => {
                 image : true,
                 username : true,
                 email : true,
-                name : true
+                name : true,
+                rating : true
             }
         })
 
