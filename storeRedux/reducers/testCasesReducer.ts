@@ -19,7 +19,7 @@ const testCasesSlice = createSlice({
     initialState ,
     reducers : {
         setTestCases : (state, action ) => {
-
+            return action.payload;
         },
         updateTestCases : (state , action ) => {
 

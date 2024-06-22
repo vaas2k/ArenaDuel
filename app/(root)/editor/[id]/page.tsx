@@ -5,28 +5,28 @@ import {
   OptionBarMarathon,
 } from "@/components/Editorcomponent/OptionBar";
 import Problem_Editor from "@/components/Editorcomponent/problem-editor";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch } from "react-redux";
 import { useSession } from "next-auth/react";
 import { getUserData } from "@/lib/userActions/getUserData";
 import useSocket from "@/lib/Sockets/useSocket";
-
 
 const Page = ({ params }: any) => {
   const param = params.id;
   console.log(param);
   const socket = useSocket();
-  const data = useSelector((state: any) => { return state.matchReducer; });
+  const matchInfo = useSelector((state: any) => { return state.matchReducer; });
   const testCases = useSelector((state : any) => {return  state.testCasesReducer} );
   const [player2, setPlayer2] = useState<any>({});
-  const [passed_cases, setPassedCases] = useState(0);
+  const [P2_passed_cases, setPassedCases] = useState(0);
   const { data: session, status } = useSession();
+  const dispatch = useDispatch()
 
 
   useEffect(() => {
     // get Player2 Data when Match is Found and Started
     async function getP2Data() {
       try {
-        const req = await getUserData(data.p2);
+        const req = await getUserData(matchInfo.p2);
         if (req) {
           setPlayer2(req);
         }
@@ -48,27 +48,37 @@ const Page = ({ params }: any) => {
 
   // for 1v1 real time test cases updates
   useEffect(() => {
-    socket.on(`${data.room_id}`, (data) => {
+    socket.on(`${matchInfo.room_id}`, (data) => {
       console.log(data);
-      console.log("if");
       console.log(player2);
+      console.log('Recieving Cases');
       // @ts-ignore
-      data.username != session?.user.username
+      data.userid != session?.user.id
         ? setPassedCases(data.testCasesPassed)
         : null;
     });
   }, []);
 
-  function test() {
-    console.log("Test");
-    const obj = {
-      room_id: data.room_id,
-      // @ts-ignore
-      username: session?.user!.username,
-      testCasesPassed: 10,
-    };
-    socket.emit("match_start", obj);
-  }
+  useEffect(()=>{
+    // Execute When a player run code and get result
+    // send the result along with match room_id
+    // room_id is same for p1 and p2 
+    // so its used to create socket where both players can send test cases in real time 
+    function test() {
+      const obj = {
+        room_id: matchInfo.room_id, // match room id
+        // @ts-ignore
+        userid: session?.user!.id, // the current userid
+        testCasesPassed: testCases && testCases.passed, // along with test cases passed
+      };
+      console.log('Sending Cases');
+      socket.emit("match_start", obj);
+    }
+
+    if(testCases && testCases.passed > 0) {test();}
+   
+  },[testCases])
+
 
 
   useEffect(() => {
@@ -92,7 +102,8 @@ const Page = ({ params }: any) => {
             <OptionBar
               player2={player2}
               currentplayer={session?.user}
-              passed_cases={passed_cases}
+              P2_passed_cases={P2_passed_cases}
+              matchInfo={matchInfo}
             />
           )}
         </>

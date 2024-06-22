@@ -6,7 +6,9 @@ const initialState = {
     problem_id : '', 
     p1 : '',
     p2 : '',
-    winner : null
+    p1PassedCasses : 0,
+    p2PassedCasses : 0,
+    winner : null,
 }
 
 const matchSlice = createSlice({

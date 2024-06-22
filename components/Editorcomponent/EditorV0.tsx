@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { ReducerAction, useState } from "react";
 import { Button } from "@radix-ui/themes";
 import {
   DropdownMenuTrigger,
@@ -10,23 +10,25 @@ import {
 import { PlayIcon } from "@radix-ui/react-icons";
 import { ArrowUp, CheckIcon, ChevronDownIcon, X } from "lucide-react";
 import { Editor } from "@monaco-editor/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { runCode, submitCode } from "@/BACKEND_CALLs/apis";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { setTestCases } from "@/storeRedux/reducers/testCasesReducer";
 
 const EditorV0 = ({ type, userid, username }: any) => {
   console.log(type, userid, username);
   const [isTestResultsOpen, setIsTestResultsOpen] = useState(false);
   const [showResult, setShowResults] = useState(false);
+  const testCases = useSelector((state: any) => state.testCasesReducer);
   const [lang, setLang] = useState("cpp");
   const [code, setCode] = useState("dasdasdasdasdasd");
   const dispatch = useDispatch();
+  const [failedCase, setFailedCase] = useState(false);
 
   console.log(code);
   const Run = async () => {
+    setFailedCase(false);
     try {
-      // Send code with userData for running on test cases
-      // userID, code, problemID (test cases will get from files on server based on problem id)
       const data = {
         code: code,
         userid: userid,
@@ -36,16 +38,16 @@ const EditorV0 = ({ type, userid, username }: any) => {
       const req = await runCode(data);
       if (req.status === 200) {
         console.log(req.data);
+        dispatch(setTestCases(req.data));
+        if (req.data.failedCase) {
+          setFailedCase(true);
+        }
       }
-    } catch (error : any) {
-      // Log the entire error object for debugging
+    } catch (error: any) {
       console.error("Caught an error:", error);
-
-      // Check for error response and log the specific message if it exists
       if (error.response && error.response.status === 403) {
-        toast.error(`${error.response.data.msg}`,{position: 'bottom-left'});
+        toast.error(`${error.response.data.msg}`, { position: "bottom-left" });
       } else {
-        // Log a generic message or rethrow the error for further handling
         console.log("An unexpected error occurred.");
       }
     }
@@ -53,22 +55,19 @@ const EditorV0 = ({ type, userid, username }: any) => {
 
   const Submit = async () => {
     try {
-      // send code with userData for running on test Cases
-      // userID , code , problemID (test cases will get from files on server based on problem id)
       const data = {
         code: code,
         userid: userid,
         problem_id: 1,
       };
-      const req: any = await submitCode(data);
-      if (req.status == 200) {
+      const req = await submitCode(data);
+      if (req.status === 200) {
         console.log(req.data);
       }
-    } catch (error : any) {
+    } catch (error: any) {
       console.error("Caught an error:", error);
-      // Check for error response and toast the specific message if it exists
       if (error.response && error.response.status === 403) {
-        toast.error(`${error.response.data.msg}`,{position: 'bottom-left'});
+        toast.error(`${error.response.data.msg}`, { position: "bottom-left" });
       } else {
         console.log("An unexpected error occurred.");
       }
@@ -77,7 +76,6 @@ const EditorV0 = ({ type, userid, username }: any) => {
 
   return (
     <div className="h-screen flex flex-col overflow-scroll">
-      
       <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 shadow-sm">
         <div className="flex items-center gap-4">
           <DropdownMenu>
@@ -88,32 +86,16 @@ const EditorV0 = ({ type, userid, username }: any) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" sideOffset={8}>
-              <DropdownMenuItem
-                onClick={() => {
-                  setLang("javascript");
-                }}
-              >
+              <DropdownMenuItem onClick={() => setLang("javascript")}>
                 JavaScript
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  setLang("python");
-                }}
-              >
+              <DropdownMenuItem onClick={() => setLang("python")}>
                 Python
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  setLang("java");
-                }}
-              >
+              <DropdownMenuItem onClick={() => setLang("java")}>
                 Java
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  setLang("cpp");
-                }}
-              >
+              <DropdownMenuItem onClick={() => setLang("cpp")}>
                 C++
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -151,9 +133,7 @@ const EditorV0 = ({ type, userid, username }: any) => {
           theme="vs-dark"
           language={lang}
           value={code}
-          onChange={(value: any) => {
-            setCode(value);
-          }}
+          onChange={(value: any) => setCode(value)}
           options={{
             fontSize: 16,
             formatOnType: true,
@@ -161,72 +141,80 @@ const EditorV0 = ({ type, userid, username }: any) => {
         />
       </div>
 
-      <div className="sticky bottom-0 z-10 bg-gray-200 px-6 py-4 shadow-sm dark:bg-neutral-900">
-        {showResult ? (
-          <div className="absolute bottom-full left-0 right-0 z-10 overflow-hidden rounded-t-lg bg-gray-200 px-6 py-4 transition-all duration-300 ease-in-out  max-h-[250px] dark:bg-neutral-900 ">
+      <div className="sticky bottom-0 z-10 bg-gray-200 px-6 py-2 shadow-sm dark:bg-neutral-900">
+        {testCases && testCases.total > 0 && showResult ? (
+          <div className="absolute bottom-full left-0 right-0 z-10 overflow-hidden rounded-t-lg bg-gray-200 px-6 py-1 transition-all duration-300 ease-in-out max-h-[250px] dark:bg-neutral-900">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold">Test Results</h3>
               <Button
                 variant="ghost"
                 radius={"small"}
-                onClick={() => {
-                  setShowResults(false);
-                }}
+                onClick={() => setShowResults(false)}
               >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </Button>
             </div>
             <div className="flex gap-[10px] items-center">
-              <h1 className="py-[10px]" style={{ color: "lightgreen" }}>
-                <b>Accepted</b>
-              </h1>
-              <h1 className="py-[10px]" style={{ color: "tomato" }}>
-                <b>Wrong Answer</b>
-              </h1>
+              {testCases.failedCase ? (
+                <h1 className="py-[10px]" style={{ color: "tomato" }}>
+                  <b>{testCases.errorMessage}</b>
+                </h1>
+              ) : (
+                <h1 className="py-[10px]" style={{ color: "lightgreen" }}>
+                  <b>Accepted</b>
+                </h1>
+              )}
             </div>
 
-            <div className=" flex flex-wrap mt-4 overflow-y-auto max-h-[200px] gap-[15px] py-[10px]">
-              <div className="flex items-center gap-4">
+            <div className="flex flex-col flex-wrap mt-[-10px] overflow-y-auto max-h-[200px] gap-[1px] py-[10px]">
+              {!testCases.failedCase.input ? (<div className="flex items-center gap-4">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
                   <CheckIcon className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="font-medium">Test Case 1</h4>
-                  <p className="text-sm text-gray-500">Passed</p>
+                  <h4 className="font-medium">
+                    Test Cases Passed - {testCases.passed} / {testCases.total}
+                  </h4>
                 </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
-                  <CheckIcon className="h-4 w-4" />
+              </div>)
+              :
+              (<div className="flex items-center gap-4">
+                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md w-full">
+                  <h4 className="font-medium text-red-600 dark:text-red-400">
+                    Failed Case
+                  </h4>
+                  <div className="mt-1">
+                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Input:
+                    </p>
+                    <pre className=" flex flex-row bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
+                      [{testCases.failedCase.input.map((i :any) => {
+                        return <p className="flex flex-row"> {i},</p>
+                      })}]
+                    </pre>
+                  </div>
+                  <div className="mt-1">
+                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Output:
+                    </p>
+                    <pre className=" flex flex-row bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
+                    [{testCases.failedCase.output.map((i :any) => {
+                        return <p className="flex flex-row"> {i},</p>
+                      })}]
+                    </pre>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium">Test Case 2</h4>
-                  <p className="text-sm text-gray-500">Passed</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white">
-                  <X className="h-4 w-4" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Test Case 3</h4>
-                  <p className="text-sm text-gray-500">Failed</p>
-                </div>
-              </div>
+              </div>)
+              }
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-between h-[40px] ">
+          <div className="flex items-center justify-between h-[40px]">
             <h3 className="text-lg font-bold">Test Results</h3>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setShowResults(true);
-              }}
-            >
+            <Button variant="ghost" onClick={() => setShowResults(true)}>
               <ArrowUp className="h-4 w-4" />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">Show</span>
             </Button>
           </div>
         )}
