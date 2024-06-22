@@ -190,7 +190,7 @@ const EditorV0 = ({ type, userid, username }: any) => {
                     </p>
                     <pre className=" flex flex-row bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
                       [{testCases.failedCase.input.map((i :any) => {
-                        return <p className="flex flex-row"> {i},</p>
+                        return <p key={i} className="flex flex-row"> {i},</p>
                       })}]
                     </pre>
                   </div>
@@ -200,7 +200,7 @@ const EditorV0 = ({ type, userid, username }: any) => {
                     </p>
                     <pre className=" flex flex-row bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
                     [{testCases.failedCase.output.map((i :any) => {
-                        return <p className="flex flex-row"> {i},</p>
+                        return <p key={i} className="flex flex-row"> {i},</p>
                       })}]
                     </pre>
                   </div>
