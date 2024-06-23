@@ -1,102 +1,77 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import problems from '../../public/problems/problems';
+import { Loader2 } from "../shared/Loader";
 
-const ProblemV0 = () => {
+const ProblemV0 = ({problem_id} : any ) => {
+
+  
+  const [getProblem, setgetProblem] = useState<any>();
+
+  useEffect(()=>{
+    setgetProblem(problems.find((i) => problem_id == i.id));
+  },[])
+
   return (
-    <div className="p-[20px] overflow-scroll" >
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Two Sum</h1>
-            <div className="flex items-center gap-2">
-              <div className="rounded-full bg-yellow-500 px-2 py-1 text-xs font-medium text-white">Easy</div>
+    <>
+    {getProblem ?
+    (<div className="p-[20px] overflow-scroll">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">{getProblem.title}</h1>
+          <div className="flex items-center gap-2">
+            <div className="rounded-full bg-yellow-500 px-2 py-1 text-xs font-medium text-white">
+              Easy
             </div>
-          </div>
-          <div className="space-y-4">
-            <p>
-              Given an array of integers <code>nums</code> and an integer <code>target</code>, return{" "}
-              <em>indices of the two numbers such that they add up to</em> <code>target</code>.
-            </p>
-            <p>
-              You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the{" "}
-              <em>same</em> element twice.
-            </p>
-            <p>You can return the answer in any order.</p>
-          </div>
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold">Test Cases</h2>
-            <div className="grid gap-4">
-              <div className="rounded-md border border-gray-200 p-4 dark:border-gray-800">
-                <h3 className="mb-2 font-medium">Test Case 1</h3>
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-2">
-                  <div>
-                    <label className="text-sm font-medium">Input</label>
-                    <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                      <code>nums = [2, 7, 11, 15], target = 9</code>
-                    </pre>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Output</label>
-                    <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                      <code>[0, 1]</code>
-                    </pre>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-md border border-gray-200 p-4 dark:border-gray-800">
-                <h3 className="mb-2 font-medium">Test Case 2</h3>
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-2">
-                  <div>
-                    <label className="text-sm font-medium">Input</label>
-                    <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                      <code>nums = [3, 2, 4], target = 6</code>
-                    </pre>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Output</label>
-                    <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                      <code>[1, 2]</code>
-                    </pre>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-md border border-gray-200 p-4 dark:border-gray-800">
-                <h3 className="mb-2 font-medium">Test Case 3</h3>
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-2">
-                  <div>
-                    <label className="text-sm font-medium">Input</label>
-                    <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                      <code>nums = [3, 3], target = 6</code>
-                    </pre>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Output</label>
-                    <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                      <code>[0, 1]</code>
-                    </pre>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-bold">Constraints</h2>
-            <ul className="list-disc space-y-1 pl-6 text-sm">
-              <li>
-                <code>2 &lt;= nums.length &lt;= 10^4</code>
-              </li>
-              <li>
-                <code>-10^9 &lt;= nums[i] &lt;= 10^9</code>
-              </li>
-              <li>
-                <code>-10^9 &lt;= target &lt;= 10^9</code>
-              </li>
-              <li>
-                <strong>Only one valid answer exists.</strong>
-              </li>
-            </ul>
           </div>
         </div>
+        <div className="space-y-4">
+          <pre className="whitespace-pre-wrap">
+            {getProblem.statement}
+          </pre>
+        </div>
+        <div className="flex flex-col gap-[10px]">
+          <p>Input</p>
+             {getProblem.input}
+        </div>
+        <div className="flex flex-col gap-[10px]">
+          <p>Output</p>
+             {getProblem.output}
+        </div>
+        <div className="space-y-4">
+          <h2 className="text-lg font-bold">Sample Case</h2>
+          <div className="grid gap-4">
+            <div className="rounded-md border border-gray-200 p-4 dark:border-gray-800">
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-2">
+                <div>
+                  <label className="text-sm font-medium">Input</label>
+                  <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
+                    <code>{getProblem.testCases[0]}</code>
+                  </pre>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Output</label>
+                  <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
+                    <code>{getProblem.testCases[1]}</code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-lg font-bold">Constraints</h2>
+          <p>{getProblem.constraints}</p>
+        </div>
       </div>
-  )
-}
+    </div>)
+    :
+    (<div className="flex items-center justify-center">
+      <Loader2 />
+    </div>)
+    
+  }
+    </>
+  );
+};
 
-export default ProblemV0
+export default ProblemV0;

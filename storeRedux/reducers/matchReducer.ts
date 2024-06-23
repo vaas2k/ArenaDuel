@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { stat } from "fs";
 
 
 const initialState = {
@@ -22,10 +23,12 @@ const matchSlice = createSlice({
             state.p2 = action.payload.p2
         },
         remData : (state) => {
-            state.room_id = ''
-            state.problem_id = ''
-            state.p1 = ''
-            state.p2 = ''        
+            state.room_id = '';
+            state.problem_id = '';
+            state.p1 = '';
+            state.p2 = '';
+            state.p1PassedCasses = 0;
+            state.p2PassedCasses = 0;        
         },
         updateData : (state,action) => {
 

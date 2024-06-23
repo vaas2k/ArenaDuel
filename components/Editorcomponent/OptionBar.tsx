@@ -7,33 +7,39 @@ import {
   Flex,
 } from "@radix-ui/themes";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-
+import { useSelector , useDispatch } from "react-redux";
+import { remData } from "@/storeRedux/reducers/matchReducer";
 const OptionBar = ({ player2, currentplayer, P2_passed_cases, matchInfo }: any) => {
   const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes in seconds
   const P1PassedCases = useSelector((state : any) => {return state.testCasesReducer.passed});
+  const dispatch = useDispatch();
 
+  // time control functionality
   useEffect(() => {
     if (matchInfo.room_id) {
       const timer = setInterval(() => {
         setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
       }, 1000);
-
       return () => clearInterval(timer); // Cleanup the interval on component unmount
     }
   }, [matchInfo.room_id]);
-
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
   };
 
-  console.log(timeLeft);
+
   if(timeLeft == 1190) {
-    // run a function to declare a winner based on testCases Passed the most
+    // show user winning Card;    
     console.log(`P1 : PASSED CASES - ${P1PassedCases}`);
     console.log(`P2 : PASSED CASES - ${P2_passed_cases}`);
+
+    // send winner data to backend
+    // req  
+    // clear redux store
+    // 
+    // thats it 
   } 
 
   return (

@@ -5,7 +5,7 @@ import {
   OptionBarMarathon,
 } from "@/components/Editorcomponent/OptionBar";
 import Problem_Editor from "@/components/Editorcomponent/problem-editor";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { getUserData } from "@/lib/userActions/getUserData";
 import useSocket from "@/lib/Sockets/useSocket";
@@ -19,7 +19,6 @@ const Page = ({ params }: any) => {
   const [player2, setPlayer2] = useState<any>({});
   const [P2_passed_cases, setPassedCases] = useState(0);
   const { data: session, status } = useSession();
-  const dispatch = useDispatch()
 
 
   useEffect(() => {
@@ -124,6 +123,7 @@ const Page = ({ params }: any) => {
       {renderOptionsBar()}
       <div className="flex sm:flex-row  flex-col items-center justify-center gap-[50px] ">
         <Problem_Editor 
+        problem_id={matchInfo.problem_id}
         type={param == 'marathon' ? 'marathon' : '1v1'}
         //@ts-ignore
         userid={session?.user.id}

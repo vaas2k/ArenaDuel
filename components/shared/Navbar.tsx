@@ -47,6 +47,7 @@ const Navbar = () => {
 
   if (!isMounted) return null;
 
+  // decide which buttons to render
   const AuthButtonRender = () => {
     if (status === 'authenticated') {
       return (
