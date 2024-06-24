@@ -63,6 +63,10 @@ const EditorV0 = ({ type, userid, username }: any) => {
       const req = await submitCode(data);
       if (req.status === 200) {
         console.log(req.data);
+        dispatch(setTestCases(req.data));
+        if (req.data.failedCase) {
+          setFailedCase(true);
+        }
       }
     } catch (error: any) {
       console.error("Caught an error:", error);

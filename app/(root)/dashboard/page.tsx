@@ -4,6 +4,9 @@ import { Dashboard_Comp } from "@/components/Dashboard/dash-board";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { queue_player } from "@/BACKEND_CALLs/apis";
+import { remMatchData } from "@/storeRedux/reducers/matchReducer";
+import { useDispatch } from "react-redux";
+import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 
 
 const Dashboard = () => {
@@ -13,6 +16,11 @@ const Dashboard = () => {
     rating: "",
   });
   const [isLoading, setIsLoading] = useState<any>(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(remMatchData());
+    dispatch(emptyTestCases());
+  }, []);
 
 
   function handleMode(newMode: any) {
@@ -26,7 +34,6 @@ const Dashboard = () => {
   // send player for matching in mode 1v1
   async function finding_match_for_1v1() {
     setIsLoading(true);
-
     try {
       const data = {
         type: mode.type, // Use newMode instead of mode

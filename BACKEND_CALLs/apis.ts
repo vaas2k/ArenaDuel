@@ -40,9 +40,15 @@ const runCode = async (data : any) => {
     response = await api.post('/runSampleTestCases',data);
     return response;
 }
+const onWin = async (data : any) => {
+    let response : any;
+    response = await api.post('/onwin',data);
+    return response;
+}
 export  {
     queue_player,
     cancel_matchmaking,
     submitCode,
-    runCode
+    runCode,
+    onWin
 }

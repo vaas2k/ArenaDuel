@@ -17,9 +17,8 @@ const Page = ({ params }: any) => {
   const matchInfo = useSelector((state: any) => { return state.matchReducer; });
   const testCases = useSelector((state : any) => {return  state.testCasesReducer} );
   const [player2, setPlayer2] = useState<any>({});
-  const [P2_passed_cases, setPassedCases] = useState(0);
+  const [P2PassedCases, setPassedCases] = useState(0);
   const { data: session, status } = useSession();
-
 
   useEffect(() => {
     // get Player2 Data when Match is Found and Started
@@ -100,9 +99,9 @@ const Page = ({ params }: any) => {
           {player2 && session?.user && (
             <OptionBar
               player2={player2}
-              currentplayer={session?.user}
-              P2_passed_cases={P2_passed_cases}
               matchInfo={matchInfo}
+              P2PassedCases={P2PassedCases}
+              currentplayer={session?.user}
             />
           )}
         </>
@@ -128,7 +127,10 @@ const Page = ({ params }: any) => {
         //@ts-ignore
         userid={session?.user.id}
         //@ts-ignore
-        username={session?.user.username}
+        username={session?.user.username} 
+        player2={player2}
+        matchInfo={matchInfo}
+        P2PassedCases={P2PassedCases}       
         />
       </div>
     </div>

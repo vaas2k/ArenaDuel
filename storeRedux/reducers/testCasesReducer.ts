@@ -15,20 +15,23 @@ const initialState = {
 
 
 const testCasesSlice = createSlice({
-    name : 'compiler',
-    initialState ,
-    reducers : {
-        setTestCases : (state, action ) => {
-            return action.payload;
-        },
-        updateTestCases : (state , action ) => {
+  name: "compiler",
+  initialState,
+  reducers: {
+    setTestCases: (state, action) => {
+      console.log(action.payload);
+      return action.payload;
+    },
+    emptyTestCases: (state) => {
+      state.userID = "";
+      state.type = "";
+      state.passed = 0;
+      state.failedCase = {};
+      state.errorMessage = "";
+      state.total = "";
+    },
+  },
+});
 
-        },
-        emptyTestCases : (state , action) => {
-
-        } 
-    }
-})
-
-export const {setTestCases,updateTestCases,emptyTestCases} = testCasesSlice.actions;
+export const {setTestCases,emptyTestCases} = testCasesSlice.actions;
 export default testCasesSlice.reducer;

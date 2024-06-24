@@ -1,40 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { stat } from "fs";
-
 
 const initialState = {
+    id : '',
     room_id : '',
     problem_id : '', 
     p1 : '',
     p2 : '',
-    p1PassedCasses : 0,
-    p2PassedCasses : 0,
     winner : null,
+    totalCases : 0
 }
 
 const matchSlice = createSlice({
     name : 'matchdata',
     initialState,
     reducers : {
-        setData : (state , action) => {
+        setMatchData : (state , action) => {
+            state.id = action.payload.id
             state.room_id = action.payload.room_id
             state.problem_id = action.payload.problem_id
             state.p1 = action.payload.p1
             state.p2 = action.payload.p2
+            state.totalCases = action.payload.totalCases
         },
-        remData : (state) => {
+        remMatchData : (state) => {
             state.room_id = '';
             state.problem_id = '';
             state.p1 = '';
             state.p2 = '';
-            state.p1PassedCasses = 0;
-            state.p2PassedCasses = 0;        
-        },
-        updateData : (state,action) => {
-
+            state.totalCases = 0;
         }
     }
 })
 
-export const { setData, remData , updateData } = matchSlice.actions;
+export const { setMatchData, remMatchData } = matchSlice.actions;
 export default matchSlice.reducer;

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import useSocket from "@/lib/Sockets/useSocket";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setData } from "@/storeRedux/reducers/matchReducer";
+import { setMatchData } from "@/storeRedux/reducers/matchReducer";
 
 const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   const socket = useSocket();
@@ -48,7 +48,7 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
             const P2 = data.p1;
             data = {...data,p1 : currentuser,p2 : P2}
           }
-            dispatch(setData(data));
+            dispatch(setMatchData(data));
             setRoom(data.room_id)
             setMatchFound(true);
             setWaiting(false);
