@@ -89,7 +89,8 @@ const Navbar = () => {
             <p>Sign Out</p>
           </Button>
 
-          <Link href={`/profile/${session.user?.email}`}>
+          <Link href={`/profile/${/**@ts-ignore \n*/ 
+            session.user?.id}`}>
           <Button
             style={{ cursor: "pointer" }}
             >

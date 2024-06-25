@@ -14,10 +14,7 @@ const Profile = ({ params }: any) => {
   }
   useEffect(() => {
     async function getUserData() {
-      const data = {
-        email: params.id,
-      };
-      const req = await axios.get(`/api/profile/${data.email}`);
+      const req = await axios.get(`/api/profile/${params.id}`);
       if (req.data.status === 200) {
         setUser(req.data.data);
       } else {

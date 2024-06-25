@@ -9,7 +9,7 @@ export async function GET( request: Request,{ params }: { params: { slug: string
   try{
     const user = await prisma.user.findFirst({
       where :{
-        email : slug
+        id : slug
       },
       select : {
         email : true ,
