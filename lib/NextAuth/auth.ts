@@ -3,7 +3,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import * as bcrypt from 'bcryptjs';
 import { PrismaClient } from "@prisma/client";
+import NodeCache from 'node-cache';
 
+const useCache = new NodeCache();
 const prisma = new PrismaClient();
 
 const authConfig: NextAuthOptions = {
@@ -12,37 +14,42 @@ const authConfig: NextAuthOptions = {
       name: "Sign in",
       credentials: {
         username: { label: "Username", type: "text", placeholder: "username" },
-        email: { label: "Email", type: "email", placeholder: "Enter Your Email" },
-        password: { label: "Password", type: "password" }
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "Enter Your Email",
+        },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        
         if (!credentials || !credentials.email || !credentials.password) {
           return null;
         }
 
-        let user ;
-        try{
+        let user;
+        try {
           user = await prisma.user.findFirst({
             where: { email: credentials.email },
           });
-        }
-        catch(error) {
+        } catch (error) {
           console.log(error);
         }
-          
-          if (!user) {
+
+        if (!user) {
           return null;
         }
 
-        const isValidPassword = bcrypt.compareSync(credentials.password, user.password);
+        const isValidPassword = bcrypt.compareSync(
+          credentials.password,
+          user.password
+        );
 
         if (!isValidPassword) {
           return null;
         }
 
         return user;
-      }
+      },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID! as string,
@@ -62,10 +69,10 @@ const authConfig: NextAuthOptions = {
             await prisma.user.update({
               where: { email: profile!.email },
               data: {
-                 // @ts-ignore
-                 image: profile.picture || "default-image.png",
-                 name: profile!.name,
-                 OAuth_ID: account!.providerAccountId,
+                // @ts-ignore
+                image: profile.picture || "default-image.png",
+                name: profile!.name,
+                OAuth_ID: account!.providerAccountId,
                 verified: true,
               },
             });
@@ -92,19 +99,27 @@ const authConfig: NextAuthOptions = {
       if (user) {
         token.user = user;
       } else {
-        // Fetch user from DB if not in token
-        const dbUser = await prisma.user.findFirst({
-          where: { email : token.email! },
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            email: true,
-            OAuth_ID: true,
-            image : true,
-            rating : true 
-          },
-        });
+        let dbUser = useCache.get(`${token.email}`);
+        if (dbUser) {
+          console.log('user cached');
+        } else {
+          // Fetch user from DB if not in token
+          dbUser = await prisma.user.findFirst({
+            where: { email: token.email! },
+            select: {
+              id: true,
+              username: true,
+              name: true,
+              email: true,
+              OAuth_ID: true,
+              image: true,
+              rating: true,
+            },
+          });
+          // clear all caches before that save memorey
+          useCache.flushAll();
+          useCache.set(`${token.email}`, dbUser);
+        }
         token.user = dbUser;
       }
       return token;
@@ -114,7 +129,7 @@ const authConfig: NextAuthOptions = {
         session.user = token.user;
       }
       return session;
-    },
+    }
   },
 };
 

@@ -31,7 +31,7 @@ const Profile = ({ params }: any) => {
     return <Loader />;
   }
 
-  console.log(user);
+console.log(user);
 
   return (
     <>

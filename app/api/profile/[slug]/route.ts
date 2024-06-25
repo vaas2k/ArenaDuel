@@ -10,6 +10,14 @@ export async function GET( request: Request,{ params }: { params: { slug: string
     const user = await prisma.user.findFirst({
       where :{
         email : slug
+      },
+      select : {
+        email : true ,
+        image : true ,
+        id : true ,
+        username : true ,
+        name : true , 
+        rating : true 
       }
     })
 
