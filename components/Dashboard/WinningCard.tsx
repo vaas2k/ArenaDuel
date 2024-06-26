@@ -23,9 +23,9 @@ const WinningCard = () => {
         </div>
         <div className="flex items-center justify-center ">
           <h1 className="text-center text-[11px]">
-            <b className=" text-center text-[20px]">{cardData.winner} Wins &nbsp;</b>
+            <b className=" text-center text-[20px]">{cardData.by == 'draw' ? 'Draw' : `${cardData.winner} Wins`} &nbsp;</b>
             <br />
-            by {cardData.by}
+            {cardData.by == 'draw' ? "by equal test cases" : ` by ${cardData.by}`}
           </h1>
         </div>
 

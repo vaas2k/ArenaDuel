@@ -121,7 +121,7 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
           </div>
         </div>
       ) : matchFound ? (
-        <div>
+        <div className="p-[30px]">
           <Text as="div" size="2" weight="bold">
             MATCH FOUND
           </Text>

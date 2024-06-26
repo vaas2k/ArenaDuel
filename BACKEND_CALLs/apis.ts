@@ -40,9 +40,24 @@ const runCode = async (data : any) => {
     response = await api.post('/runSampleTestCases',data);
     return response;
 }
-const onWin = async (data : any) => {
+const ontimeoutwin = async (data : any) => {
     let response : any;
-    response = await api.post('/onwin',data);
+    response = await api.post('/ontimeoutwin',data);
+    return response;
+}
+const onsubmissionwin = async (data : any) => {
+    let response : any;
+    response = await api.post('/onSubmissionwin',data);
+    return response;
+}
+const ondraw = async (data : any) => {
+    let response : any;
+    response = await api.post('/onDraw',data);
+    return response;
+}
+const marathonMatch = async (data : any) => {
+    let response : any;
+    response = await api.post('/marathonmatch',data);
     return response;
 }
 export  {
@@ -50,5 +65,8 @@ export  {
     cancel_matchmaking,
     submitCode,
     runCode,
-    onWin
+    ontimeoutwin,
+    onsubmissionwin,
+    ondraw,
+    marathonMatch
 }

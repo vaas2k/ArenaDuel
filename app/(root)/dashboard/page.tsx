@@ -3,23 +3,26 @@ import Searchingmatch from "@/components/Dashboard/Searchingmatch";
 import { Dashboard_Comp } from "@/components/Dashboard/dash-board";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { queue_player } from "@/BACKEND_CALLs/apis";
+import { marathonMatch, queue_player } from "@/BACKEND_CALLs/apis";
 import { remMatchData } from "@/storeRedux/reducers/matchReducer";
 import { useDispatch } from "react-redux";
 import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
+import { remMaradata, setMaraData } from "@/storeRedux/reducers/marathonReducer";
+import { useRouter } from "next/navigation";
+import { closeCard } from "@/storeRedux/reducers/winCard";
 
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
-  const [mode, setMode] = useState({
-    type: "",
-    rating: "",
-  });
-  const [isLoading, setIsLoading] = useState<any>(false);
+  const [mode, setMode] = useState({ type: "", rating: "" });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const router = useRouter();
+
   useEffect(() => {
     dispatch(remMatchData());
     dispatch(emptyTestCases());
+    dispatch(remMaradata());
   }, []);
 
 
@@ -30,10 +33,13 @@ const Dashboard = () => {
     }
   }
 
-
   // send player for matching in mode 1v1
   async function finding_match_for_1v1() {
     setIsLoading(true);
+    dispatch(remMatchData());
+    dispatch(emptyTestCases());
+    dispatch(remMaradata());
+    dispatch(closeCard());
     try {
       const data = {
         type: mode.type, // Use newMode instead of mode
@@ -60,7 +66,13 @@ const Dashboard = () => {
         id: session?.user.id,
       };
       
-
+      const req = await marathonMatch(data);
+      
+      if(req.status == 200) {
+        console.log(req.data);
+        dispatch(setMaraData(req.data));
+        router.push(`/editor/marathon`);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -70,9 +82,9 @@ const Dashboard = () => {
     if (mode.type === "1v1") {
       finding_match_for_1v1();
     } else if (mode.type === "marathon") {
-      // Do something
+      marathon();
     } else {
-      // Do something (DAILY);
+      // Do Something (DAILY);
     }
   }, [mode.type]);
 

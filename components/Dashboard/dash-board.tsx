@@ -58,11 +58,16 @@ export function Dashboard_Comp({mode , handleMode ,rating } : any) {
                 </AlertDialog.Description>
 
                 <Flex gap="3" mt="4" justify="end">
-                  <AlertDialog.Cancel>
-                    <Button variant="soft" color="gray" onClick={() => handleMode({type : '1v1',rating : 0})}>
-                      No
+                <AlertDialog.Cancel>
+                    <Button variant="soft" color="gray">
+                      cancel
                     </Button>
                   </AlertDialog.Cancel>
+                  <AlertDialog.Action>
+                    <Button variant="soft" color="blue" onClick={() => handleMode({type : '1v1',rating : 0})}>
+                      No
+                    </Button>
+                  </AlertDialog.Action>
                   <AlertDialog.Action>
                     <Button variant="solid" color="red" onClick={() =>  handleMode({type : '1v1',rating : rating})}>
                       Yes
@@ -92,13 +97,12 @@ export function Dashboard_Comp({mode , handleMode ,rating } : any) {
                 Compete in a series of matches to climb the leaderboard.
               </p>
             </div>
-            <Link
+            <div
               className="inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-              href='/editor/marathon'
               onClick={() => handleMode({type : 'marathon',rated : true})}
             >
               Play
-            </Link>
+            </div>
           </CardContent>
         </Card>
 

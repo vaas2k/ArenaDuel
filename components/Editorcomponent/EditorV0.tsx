@@ -14,24 +14,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { runCode, submitCode } from "@/BACKEND_CALLs/apis";
 import toast from "react-hot-toast";
 import { setTestCases } from "@/storeRedux/reducers/testCasesReducer";
+import { useSession } from "next-auth/react";
 
-const EditorV0 = ({ type, userid, username }: any) => {
-  console.log(type, userid, username);
-  const [isTestResultsOpen, setIsTestResultsOpen] = useState(false);
+const EditorV0 = () => {
   const [showResult, setShowResults] = useState(false);
+  const {data : session, status } = useSession();
   const testCases = useSelector((state: any) => state.testCasesReducer);
   const [lang, setLang] = useState("cpp");
-  const [code, setCode] = useState("dasdasdasdasdasd");
+  const [code, setCode] = useState("int main() { \n }");
   const dispatch = useDispatch();
-  const [failedCase, setFailedCase] = useState(false);
 
   console.log(code);
   const Run = async () => {
-    setFailedCase(false);
     try {
       const data = {
-        code: code,
-        userid: userid,
+        lang,
+        code: code, //@ts-ignore
+        userid: session?.user.id,
         problem_id: 1,
       };
 
@@ -39,9 +38,6 @@ const EditorV0 = ({ type, userid, username }: any) => {
       if (req.status === 200) {
         console.log(req.data);
         dispatch(setTestCases(req.data));
-        if (req.data.failedCase) {
-          setFailedCase(true);
-        }
       }
     } catch (error: any) {
       console.error("Caught an error:", error);
@@ -56,17 +52,16 @@ const EditorV0 = ({ type, userid, username }: any) => {
   const Submit = async () => {
     try {
       const data = {
-        code: code,
-        userid: userid,
+        lang,
+        code: code, //@ts-ignore
+        userid: session?.user.id,
         problem_id: 1,
       };
       const req = await submitCode(data);
       if (req.status === 200) {
         console.log(req.data);
         dispatch(setTestCases(req.data));
-        if (req.data.failedCase) {
-          setFailedCase(true);
-        }
+  
       }
     } catch (error: any) {
       console.error("Caught an error:", error);

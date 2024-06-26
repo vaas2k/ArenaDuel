@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
 import problems from '../../public/problems/problems';
 import { Loader2 } from "../shared/Loader";
+import { useSelector } from "react-redux";
 
-const ProblemV0 = ({problem_id} : any ) => {
+const ProblemV0 = () => {
 
   
   const [getProblem, setgetProblem] = useState<any>();
+  const maraProblems = useSelector((state : any) => { return state.marathonReducer.problems});
+  const problem1v1 = useSelector((state : any) => { return state.matchReducer.problem_id});
+
+  console.log(problem1v1);
 
   useEffect(()=>{
-    setgetProblem(problems.find((i) => problem_id == i.id));
-  },[])
+    if(problem1v1) {
+      setgetProblem(problems.find((i) => problem1v1 == i.id));
+    }
+    else if(maraProblems) {
+      const len = maraProblems.length;
+      setgetProblem(problems.find((i) => maraProblems[len - 1] == i.id));
+
+    }
+  },[maraProblems,problem1v1])
 
   return (
     <>

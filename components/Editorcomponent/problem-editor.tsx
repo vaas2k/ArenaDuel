@@ -5,7 +5,7 @@ import WinningCard from "../Dashboard/WinningCard";
 import { useSelector } from "react-redux";
 import Confetti from "react-confetti";
 
-export default function Probem_Editor({ type, userid, username, problem_id, player2,P2PassedCases,matchInfo }: any) {
+export default function Probem_Editor({ username }: any) {
   const showCard = useSelector((state: any) => state.winCard.showCard);
   const [showConfetti, setShowConfetti] = useState(false);
   const getWinner = useSelector((state : any) => { return state.winCard.winner});
@@ -24,12 +24,8 @@ export default function Probem_Editor({ type, userid, username, problem_id, play
 
   return (
     <div className="relative h-screen w-full grid grid-cols-1 md:grid-cols-[minmax(300px,_1fr)_minmax(400px,_1fr)]">
-      <ProblemV0 problem_id={problem_id} />
-      <EditorV0 
-      type={type} 
-      userid={userid} 
-      username={username}
-      />
+      <ProblemV0 />
+      <EditorV0 />
 
       {showCard && (
         <>

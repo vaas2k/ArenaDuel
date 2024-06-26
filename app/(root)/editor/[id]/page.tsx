@@ -20,6 +20,7 @@ const Page = ({ params }: any) => {
   const [P2PassedCases, setPassedCases] = useState(0);
   const { data: session, status } = useSession();
 
+
   useEffect(() => {
     // get Player2 Data when Match is Found and Started
     async function getP2Data() {
@@ -31,16 +32,9 @@ const Page = ({ params }: any) => {
       } catch (error) {
         console.log(error);
       }
-    }
-    
-    //get Problem
-    async function getProblemAndTestCases() { 
-      //get problem from disk drive
-      //get random question that range b/w user ratin
-      //add problem id to match Data aka matchReducer
-    }
+    }    
     param == 'marathon' ? null : getP2Data();
-    getProblemAndTestCases();
+
   }, []);
 
 
@@ -56,7 +50,6 @@ const Page = ({ params }: any) => {
         : null;
     });
   }, []);
-
   useEffect(()=>{
     // Execute When a player run code and get result
     // send the result along with match room_id
@@ -122,15 +115,8 @@ const Page = ({ params }: any) => {
       {renderOptionsBar()}
       <div className="flex sm:flex-row  flex-col items-center justify-center gap-[50px] ">
         <Problem_Editor 
-        problem_id={matchInfo.problem_id}
-        type={param == 'marathon' ? 'marathon' : '1v1'}
-        //@ts-ignore
-        userid={session?.user.id}
         //@ts-ignore
         username={session?.user.username} 
-        player2={player2}
-        matchInfo={matchInfo}
-        P2PassedCases={P2PassedCases}       
         />
       </div>
     </div>
