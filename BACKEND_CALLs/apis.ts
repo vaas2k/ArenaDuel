@@ -60,6 +60,12 @@ const marathonMatch = async (data : any) => {
     response = await api.post('/marathonmatch',data);
     return response;
 }
+
+const marathonMatchOver = async (data : any) => {
+    let response : any;
+    response = await api.post('/marathonmatchover',data);
+    return response;
+}
 export  {
     queue_player,
     cancel_matchmaking,
@@ -68,5 +74,6 @@ export  {
     ontimeoutwin,
     onsubmissionwin,
     ondraw,
-    marathonMatch
+    marathonMatch,
+    marathonMatchOver
 }

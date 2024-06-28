@@ -11,3 +11,4 @@ const ReduxProvider = ({ Component, pageProps }: any) => {
 };
 
 export default ReduxProvider;
+  

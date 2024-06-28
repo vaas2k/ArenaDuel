@@ -1,9 +1,8 @@
 import { marathonMatch } from "@/BACKEND_CALLs/apis";
-import problems from "@/public/problems/problems";
 import { createSlice  } from "@reduxjs/toolkit";
 
 
-const initialState = { 
+const initialState : any = { 
     id : '',
     userID : "",
     problems : []
@@ -13,7 +12,7 @@ const marathonSlice = createSlice ({
     name : 'marathon' ,
     initialState , 
     reducers : {
-        setMaraData: (state, action ) => {
+        setMaraData: ( state, action ) => {
             return action.payload ;
         },
         remMaradata : (state) => {
@@ -22,9 +21,12 @@ const marathonSlice = createSlice ({
               userID: "",
               problems: [],
             };
+        },
+        updateProblems : (state, action) => {
+            state.problems.push(action.payload);
         } 
     }
 })
 
-export const { setMaraData , remMaradata } = marathonSlice.actions;
+export const { setMaraData , remMaradata , updateProblems } = marathonSlice.actions;
 export default marathonSlice.reducer;

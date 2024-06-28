@@ -5,10 +5,14 @@ import {
   ChevronDownIcon,
   Flex,
 } from "@radix-ui/themes";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { showCard } from "@/storeRedux/reducers/winCard";
-import { ontimeoutwin,onsubmissionwin,ondraw } from "@/BACKEND_CALLs/apis";
+import { ontimeoutwin,onsubmissionwin,ondraw, marathonMatchOver } from "@/BACKEND_CALLs/apis";
+import { updateProblems } from "@/storeRedux/reducers/marathonReducer";
+import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
+import { remMatchData } from "@/storeRedux/reducers/matchReducer";
+import { useRouter } from "next/navigation";
 
 const OptionBar = ({
   player2,
@@ -17,7 +21,13 @@ const OptionBar = ({
   matchInfo,
   handleWinCard,
 }: any) => {
-  const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes in seconds
+
+
+  const router = useRouter();
+  const requestInProgress = useRef(false);
+  const timeLeftRef = useRef(1200);
+  const [ ,setTimeLeft] = useState(1200); // 20 minutes in seconds
+  const [matchOver , setMatchOver] = useState();
   const P1PassedCases = useSelector((state: any) => {
     return state.testCasesReducer.passed;
   });
@@ -26,13 +36,18 @@ const OptionBar = ({
 
   // time control functionality
   useEffect(() => {
-    if (matchInfo.room_id) {
-      const timer = setInterval(() => {
-        setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-      }, 1000);
-      return () => clearInterval(timer); // Cleanup the interval on component unmount
-    }
-  }, [matchInfo.room_id]);
+    const timer = setInterval(() => {
+      if (timeLeftRef.current > 0) {
+        timeLeftRef.current -= 1;
+        setTimeLeft(timeLeftRef.current); // Trigger a re-render every second
+      } else {
+        clearInterval(timer);
+      }
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup the interval on component unmount
+  }, []);
+
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -44,44 +59,9 @@ const OptionBar = ({
   // win control functionality
   useEffect(() => {
 
-    // Called when anyone solve problem
-    const submissionWin = async (winner: any, loser: any) => {
-      try {
-        console.log(3);
-        const data = {
-          from: currentplayer.username,
-          id: matchInfo.id,
-          room_id: matchInfo.room_id,
-          winner: { id: winner.id, username: winner.username, by: "solveing" },
-          loser: { id: loser.id, username: loser.username },
-        };
-
-        const req: any = await onsubmissionwin(data);
-        console.log(4);
-        if (req.status == 200) {
-          console.log(req.data);
-          // Show the winning card
-          dispatch(
-            showCard({
-              winner: winner.username,
-              soluton: "good for now",
-              winnerImage: winner.image,
-              showCard: true,
-              by: "solving",
-              loser: loser.username,
-              loserImage: loser.image,
-            })
-          );
-        }
-        console.log(5);
-        setTimeLeft(0);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    
-    // Called when time reaches end make winner (by most cases passed)
     const TimeOut = async (winner: any, loser: any) => {
+      if (requestInProgress.current) return; // Prevent multiple requests
+      requestInProgress.current = true;
       try {
         const data = {
           from: currentplayer.username,
@@ -101,38 +81,39 @@ const OptionBar = ({
         };
         // send req to backend for processing data
         const req = await ontimeoutwin(data);
-        if (req.status == 200) {
-
-          console.log(req.data);
-          // Show the winning card
+        if (req.status === 200) {
           dispatch(
             showCard({
               winner: winner.username,
               soluton: "good for now",
               winnerImage:
-                winner.id == currentplayer.id ? currentplayer.image : player2.image,
+                winner.id === currentplayer.id ? currentplayer.image : player2.image,
               showCard: true,
               by: "timeout",
-              loser : loser.username,
-              loserImage: winner.id == currentplayer.id ? player2.image : currentplayer.image,
+              loser: loser.username,
+              loserImage: winner.id === currentplayer.id ? player2.image : currentplayer.image,
             })
           );
+          
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        requestInProgress.current = false;
       }
     };
 
-    //Called when equal test cases passed on timeout 
     const onDraw = async () => {
-      try{
+      if (requestInProgress.current) return; // Prevent multiple requests
+      requestInProgress.current = true;
+      try {
         const data = {
           from: currentplayer.username,
           id: matchInfo.id,
           room_id: matchInfo.room_id,
-        }
+        };
         const req = await ondraw(data);
-        if(req.status == 200) { 
+        if (req.status === 200) {
           dispatch(
             showCard({
               winner: currentplayer.username,
@@ -141,48 +122,82 @@ const OptionBar = ({
               showCard: true,
               by: "draw",
               loserImage: player2.image,
-              loser : player2.username
+              loser: player2.username,
             })
           );
         }
-
-      }catch(error) {
+      } catch (error) {
         console.log(error);
+      } finally {
+        requestInProgress.current = false;
       }
-    }
+    };
 
-
-    if (timeLeft === 1150 ) {
+    if (timeLeftRef.current === 1170) {
       // call when times end
-      if(P1PassedCases > P2PassedCases) {
-        TimeOut(currentplayer , player2);
-      }
-      else if(P2PassedCases > P1PassedCases) {
-        TimeOut(player2 , currentplayer);
-      }
-      else if( P1PassedCases === P2PassedCases ) {
+      if (P1PassedCases > P2PassedCases) {
+        TimeOut(currentplayer, player2);
+      } else if (P2PassedCases > P1PassedCases) {
+        TimeOut(player2, currentplayer);
+      } else if (P1PassedCases === P2PassedCases) {
         onDraw();
       }
+      setTimeLeft(0);
+      timeLeftRef.current = 0;
     }
-    
+
+ 
+      
+  }, [
+    timeLeftRef.current,matchInfo
+  ]);
+
+
+  useEffect(() => {
+    const submissionWin = async (winner: any, loser: any) => {
+
+      if(requestInProgress.current) return;
+      requestInProgress.current = true;
+      try {
+        const data = {
+          from: currentplayer.username,
+          id: matchInfo.id,
+          room_id: matchInfo.room_id,
+          winner: { id: winner.id, username: winner.username, by: "solving" },
+          loser: { id: loser.id, username: loser.username },
+        };
+
+        const req: any = await onsubmissionwin(data);
+        if (req.status === 200) {
+          dispatch(
+            showCard({
+              winner: winner.username,
+              soluton: "good for now",
+              winnerImage: winner.image,
+              showCard: true,
+              by: "solving",
+              loser: loser.username,
+              loserImage: loser.image,
+            })
+          );
+        }
+        setTimeLeft(0);
+        timeLeftRef.current = 0;
+      } catch (error) {
+        console.log(error);
+      } finally { 
+        requestInProgress.current = false;
+      }
+    };
     // call submission win for P1 (arg1 winner, arg2 loser)
-    if (matchInfo.totalCases == P1PassedCases) {
+    if (matchInfo.totalCases === P1PassedCases) {
       submissionWin(currentplayer, player2);
     }
     // call submission win for P2 (arg1 winner, arg2 loser)
-    if (matchInfo.totalCases == P2PassedCases) {
+    if (matchInfo.totalCases === P2PassedCases) {
       submissionWin(player2, currentplayer);
     }
-  }, [
-    timeLeft,
-    P1PassedCases,
-    P2PassedCases,
-    currentplayer,
-    player2,
-    matchInfo,
-    dispatch,
-    handleWinCard,
-  ]);
+  },[P1PassedCases,P2PassedCases])
 
   return (
     <div className="flex items-center justify-between border dark:bg-neutral-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">
@@ -198,8 +213,8 @@ const OptionBar = ({
       </div>
 
       {/** will change time color based on time left */}
-      <Badge color={timeLeft == 600 ? "red" : "ruby"} size={"3"}>
-        {formatTime(timeLeft)}
+      <Badge color={timeLeftRef.current == 600 ? "red" : "ruby"} size={"3"}>
+        {formatTime(timeLeftRef.current)}
       </Badge>
 
       <div className="flex items-center justify-center gap-[20px]">
@@ -238,12 +253,26 @@ const OptionBar = ({
 };
 
 const OptionBarMarathon = ({ currentplayer }: any) => {
-  const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes in seconds
-  const cases = useSelector(( state : any ) => { return state.testCasesReducer});
 
+  const requestProgress = useRef(false);
+  const timeLeftRef = useRef(1200);
+  const [,setTimeLeft] = useState(1200); // 20 minutes in seconds
+  const cases = useSelector(( state : any ) => { return state.testCasesReducer});
+  const matchData = useSelector((state : any) => { return  state.marathonReducer} )
+  const dispatch = useDispatch() ;
+  console.log(matchData.problems);
+
+
+
+  // time control functionality
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      if (timeLeftRef.current > 0) {
+        timeLeftRef.current -= 1;
+        setTimeLeft(timeLeftRef.current); // Trigger a re-render every second
+      } else {
+        clearInterval(timer);
+      }
     }, 1000);
 
     return () => clearInterval(timer); // Cleanup the interval on component unmount
@@ -259,23 +288,54 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
 
 
   useEffect(() => {
+    
 
-    if(timeLeft == 0) {
-      // make a call to save in db + update ranking in leaderboard
+      async function matchOver () {
+        if(requestProgress.current) return;
+        requestProgress.current = true;
+        try {
+          const req = await marathonMatchOver(matchData);
+          if(req.status === 200) {
+            console.log(req.data);
+          }
+
+        } catch(error) {
+          console.log(error);
+        } finally { 
+          requestProgress.current = false;
+        }
+      }
+
+      if(timeLeftRef.current == 1190) {
+        // make a call to save in db + update ranking in leaderboard
+        matchOver();
+        setTimeLeft(0);
+        timeLeftRef.current = 0;
+      }
+
+    if (cases.passed > 0 && cases.total == cases.passed) {
+      const lastProblem = matchData.problems[matchData.problems.length - 1];
+      console.log(`Problem Solved: ${lastProblem}`);
+
+      while (true) {
+        const id = Math.floor(Math.random() * 52) + 1;
+        const newProblem = matchData.problems.find((problem : number) => problem === id);
+        if (!newProblem) {
+          console.log('new problem');
+          dispatch(updateProblems(id));
+          break;
+        }
+      }
+      dispatch(emptyTestCases());
     }
+  
 
-    if( cases.total == cases.passed ) {
-      // show some congrats card 
-      // generate new Problem id and so on.. unitl times end or user ends on choice 
-    }
-
-
-  },[cases.total, cases.passed]);
+  },[timeLeftRef.current , cases.total, cases.passed]);
 
   return (
     <div className="flex items-center justify-between border dark:bg-neutral-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">
       {/** will change time color based on time left */}
-      <Badge>{formatTime(timeLeft)}</Badge>
+      <Badge>{formatTime(timeLeftRef.current)}</Badge>
 
       <div className="flex items-center justify-center gap-[20px]">
         <AlertDialog.Root>

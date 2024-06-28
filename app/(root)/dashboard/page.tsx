@@ -10,6 +10,7 @@ import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { remMaradata, setMaraData } from "@/storeRedux/reducers/marathonReducer";
 import { useRouter } from "next/navigation";
 import { closeCard } from "@/storeRedux/reducers/winCard";
+import { Loader2 } from "@/components/shared/Loader";
 
 
 const Dashboard = () => {
@@ -87,6 +88,12 @@ const Dashboard = () => {
       // Do Something (DAILY);
     }
   }, [mode.type]);
+
+  if(status == 'loading') {
+    return <div className="flex items-center justify-center h-screen">
+      <Loader2 />
+    </div>
+  }
 
   return (
     <div className="relative min-h-screen">
