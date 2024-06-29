@@ -28,8 +28,6 @@ const Profile = ({ params }: any) => {
     return <Loader />;
   }
 
-console.log(user);
-
   return (
     <>
       {!open ? (

@@ -9,12 +9,14 @@ import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { getUserData } from "@/lib/userActions/getUserData";
 import useSocket from "@/lib/Sockets/useSocket";
+import { Button, Text } from "@radix-ui/themes";
+import Link from "next/link";
 
 const Page = ({ params }: any) => {
   const param = params.id;
-  console.log(param);
   const socket = useSocket();
   const matchInfo = useSelector((state: any) => { return state.matchReducer; });
+  const marathonMatchData = useSelector((state : any) => { return state.marathonReducer})
   const testCases = useSelector((state : any) => {return  state.testCasesReducer} );
   const [player2, setPlayer2] = useState<any>({});
   const [P2PassedCases, setPassedCases] = useState(0);
@@ -41,8 +43,6 @@ const Page = ({ params }: any) => {
   // for 1v1 real time test cases updates
   useEffect(() => {
     socket.on(`${matchInfo.room_id}`, (data) => {
-      console.log(data);
-      console.log(player2);
       console.log('Recieving Cases');
       // @ts-ignore
       data.userid != session?.user.id
@@ -69,19 +69,6 @@ const Page = ({ params }: any) => {
     if(testCases && testCases.passed > 0) {test();}
    
   },[testCases])
-
-
-
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Make Player 2 the winner
-      alert("P2 Wins");
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
 
 
   // which option bar to show based on mode type 
@@ -112,13 +99,28 @@ const Page = ({ params }: any) => {
 
   return (
     <div className="flex flex-col p-[20px] max-h-[600px]">
-      {renderOptionsBar()}
-      <div className="flex sm:flex-row  flex-col items-center justify-center gap-[50px] ">
-        <Problem_Editor 
-        //@ts-ignore
-        username={session?.user.username} 
-        />
-      </div>
+    {!marathonMatchData.id && !matchInfo.id ? 
+    <div className="flex flex-col items-center justify-center h-screen gap-[20px]">
+      <Text color='ruby'>No Data Found!</Text>
+      <Link href={'/dashboard'}>
+      <Button variant={'outline'} size={'4'} style={{cursor:'pointer'}} color={'ruby'}>
+        Go Home
+      </Button>
+      </Link>
+    </div>
+    :
+    (
+    <>{renderOptionsBar()}
+    <div className="flex sm:flex-row  flex-col items-center justify-center gap-[50px] ">
+      <Problem_Editor 
+      //@ts-ignore
+      username={session?.user.username} 
+      />
+    </div></>
+    )
+
+    }
+     
     </div>
   );
 };

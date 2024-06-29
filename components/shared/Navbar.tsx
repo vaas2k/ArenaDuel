@@ -4,11 +4,11 @@ import { DotsHorizontalIcon, MagnifyingGlassIcon, PersonIcon, BellIcon } from "@
 import { Rubik } from "next/font/google";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useWidth } from "@/utils/useWidth";
+import { useWidth } from "@/hooks/useWidth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import Notifications from "./Notifications";
 import Link from "next/link";
+
 
 const rubik = Rubik({ subsets: ['latin'] });
 
@@ -24,7 +24,7 @@ const Navbar = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [searchKeyword, setSearchKeyword] = useState<string>('');
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [theme, setTheme] = useState<boolean>(false);
   console.log(session?.user);
   useEffect(() => {
@@ -91,11 +91,7 @@ const Navbar = () => {
 
           <Link href={`/profile/${/**@ts-ignore \n*/ 
             session.user?.id}`}>
-          <Button
-            style={{ cursor: "pointer" }}
-            >
-            <PersonIcon />
-          </Button>
+           {session.user?.image ? <img src={session.user?.image!} alt="" className=" flex w-[31px] h-[31px] rounded-full object-cover " /> : <PersonIcon />}
             </Link>
         </>
       );
@@ -122,14 +118,10 @@ const Navbar = () => {
     <div className={`${rubik.className} flex items-center justify-between sm:px-[30px] px-[15px] pt-[20px] pb-[15px]`}>
       
       <Link href={'/'}>
-      <div
-        className="cursor-pointer font-black leading-tight flex flex-row items-center justify-evenly"
+      <Button variant='ghost'
+        className="cursor-pointer flex flex-row items-center justify-evenly"
         >
-        <svg
-          className="w-auto h-6 fill-current"
-          viewBox="0 0 194 116"
-          xmlns="http://www.w3.org/2000/svg"
-          >
+        <svg className="w-auto h-6 fill-current" viewBox="0 0 194 116" xmlns="http://www.w3.org/2000/svg" >
           <g fillRule="evenodd">
             <path d="M96.869 0L30 116h104l-9.88-17.134H59.64l47.109-81.736zM0 116h19.831L77 17.135 67.088 0z" />
             <path d="M87 68.732l9.926 17.143 29.893-51.59L174.15 116H194L126.817 0z" />
@@ -137,11 +129,11 @@ const Navbar = () => {
         </svg>
 
         {width! > 765 && (
-          <span className="ml-3 text-xl">
-            DevBuddies<span className="text-pink-500">.</span>
-          </span>
+          <h1 className={`${rubik.className} text-lg ml-[10px]`}>
+            <b style={{color : !theme ? 'white' : 'black'}}>Code</b><b>Arena</b>
+          </h1>
         )}
-      </div>
+      </Button>
       </Link>
 
       {width! < 765 && (

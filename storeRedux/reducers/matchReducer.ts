@@ -1,6 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+interface MatchData1v1 { 
+    id : string ,
+    room_id : string,
+    problem_id : string , 
+    p1 : string ,
+    p2 : string,
+    winner : string | null ,
+    totalCases : number | 0
+}
+const initialState : MatchData1v1 = {
     id : '',
     room_id : '',
     problem_id : '', 

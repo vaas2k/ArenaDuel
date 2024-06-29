@@ -5,13 +5,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { login } from "@/types/types";
-import { redirect, useRouter } from "next/navigation";
-import Credentials from "next-auth/providers/credentials";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
-  const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<any>({

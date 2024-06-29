@@ -11,11 +11,13 @@ import { remMaradata, setMaraData } from "@/storeRedux/reducers/marathonReducer"
 import { useRouter } from "next/navigation";
 import { closeCard } from "@/storeRedux/reducers/winCard";
 import { Loader2 } from "@/components/shared/Loader";
+import { AxiosError } from "axios";
+import { NextApiRequest } from "next";
 
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
-  const [mode, setMode] = useState({ type: "", rating: "" });
+  const [mode, setMode] = useState({ type: "", rating: 0 });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -24,14 +26,13 @@ const Dashboard = () => {
     dispatch(remMatchData());
     dispatch(emptyTestCases());
     dispatch(remMaradata());
+    dispatch(closeCard());
   }, []);
 
 
   function handleMode(newMode: any) {
     setMode(newMode);
-    if (newMode.type === "") {
-      setIsLoading(false);
-    }
+    setIsLoading(false);
   }
 
   // send player for matching in mode 1v1
@@ -41,33 +42,36 @@ const Dashboard = () => {
     dispatch(emptyTestCases());
     dispatch(remMaradata());
     dispatch(closeCard());
+
     try {
-      const data = {
+      const data : {type : string, rating : number , id : string} =  {
         type: mode.type, // Use newMode instead of mode
         rating: mode.rating,
         // @ts-ignore
         id: session?.user!.id,
       };
-      console.log(data);
       // Send user to put him in waiting queue for match
-      const req: any = await queue_player(data);
+      const req : any = await queue_player(data);
+      console.log('Data sent to backend');
       if (req.status === 200) {
         console.log("Player Queued");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error : any) {
+      if(error.response.data) {
+        console.log(error.response.data.error);
+      }
     }
   }
 
   // for marathon mode
   const marathon = async () => {
     try {
-      const data = {
+      const data : {type : string , id : string }= {
         type: "marathon", //@ts-ignore
         id: session?.user.id,
       };
       
-      const req = await marathonMatch(data);
+      const req : any = await marathonMatch(data);
       
       if(req.status == 200) {
         console.log(req.data);

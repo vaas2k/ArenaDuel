@@ -4,8 +4,6 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { Rubik } from "next/font/google";
 import { useSession } from "next-auth/react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 import { Loader } from "@/components/shared/Loader";
 
 // Dynamically import components that may access the DOM

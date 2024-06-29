@@ -1,6 +1,11 @@
-import { marathonMatch } from "@/BACKEND_CALLs/apis";
 import { createSlice  } from "@reduxjs/toolkit";
 
+
+interface marathonSlice { 
+    id : string , 
+    userID : string ,
+    problems : number[]
+}
 
 const initialState : any = { 
     id : '',

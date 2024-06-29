@@ -12,11 +12,11 @@ cloudinary.config({
 const prisma = new PrismaClient();
 
 export async function POST(req: Request, res: Response) {
-  const { profile, background, email } = await req.json();
+  const { profilePic, background, id } = await req.json();
 
   try {
     const user = await prisma.user.findFirst({
-      where: { email: email },
+      where: { id: id },
     });
 
     console.log(1);
@@ -60,17 +60,20 @@ export async function POST(req: Request, res: Response) {
       });
     }
 
-    if(profile) {
-      const profileImage = await cloudinary.uploader.upload(profile, {
+    if(profilePic) {
+      console.log('x');
+      const profileImage = await cloudinary.uploader.upload(profilePic, {
        resource_type: "image",
        folder: "profile",
       })
+      console.log('y');
       await prisma.user.update({
         where :{ id : user.id},
         data : {
           image : profileImage.url as string
         }
       })
+      console.log('z');
     }
 
     return new Response(

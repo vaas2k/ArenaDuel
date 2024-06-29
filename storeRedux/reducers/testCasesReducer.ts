@@ -1,15 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
+interface testCaseType  {
+    userID: string,
+    type : string,
+    passed : number | 0,
+    failedCase : {},
+    errorMessage: string,
+    total : number | 0
+}
 
-const initialState = {
+const initialState : testCaseType =  {
     
     userID: '',
     type : '',
     passed : 0,
     failedCase : {},
     errorMessage: "",
-    total : ''
+    total : 0
 
 };
 
@@ -28,7 +36,7 @@ const testCasesSlice = createSlice({
       state.passed = 0;
       state.failedCase = {};
       state.errorMessage = "";
-      state.total = "";
+      state.total = 0;
     },
   },
 });

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import problems from '../../public/problems/problems';
 import { Loader2 } from "../shared/Loader";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const ProblemV0 = () => {
 
@@ -19,10 +20,13 @@ const ProblemV0 = () => {
     else if(maraProblems) {
       const len = maraProblems.length;
       setgetProblem(problems.find((i) => maraProblems[len - 1] == i.id));
-
     }
-  },[maraProblems,problem1v1])
 
+  },[maraProblems,problem1v1])
+     
+  
+  
+    
   return (
     <>
     {getProblem ?

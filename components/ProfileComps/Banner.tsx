@@ -6,8 +6,8 @@ import {Loader2} from "../shared/Loader";
 const Banner = ({ image , email , background_image }: any) => {
 
 
-  const [background, setBackground] = useState<any>("");
-  const [profile, setProfile] = useState<any>("");
+  const [background, setBackground] = useState<string | ArrayBuffer | null>("");
+  const [profilePic, setProfile] = useState<string | ArrayBuffer | null>("");
   const [ load , setLoad ] = useState<boolean>(false);
   const [ error , setError ] = useState<string>('')
 
@@ -41,7 +41,7 @@ const Banner = ({ image , email , background_image }: any) => {
     setError('');
 
     const data = {
-      profile : profile,
+      profilePic : profilePic,
       background : background,
       email : email,
     }
@@ -85,10 +85,10 @@ const Banner = ({ image , email , background_image }: any) => {
           />
 
         {/** Profile Image */}
-        <label htmlFor="profile">
+        <label htmlFor="profilePic">
           <img
             alt="profilepic"
-            src={profile ? profile : image}
+            src={profilePic ? profilePic : image}
             className="relative cursor-pointer object-cover rounded-full border-white w-[130px] 
             h-[130px] mt-[-60px] ml-[20px] hover:drop-shadow-xl transition-all ease-linear"
           />
@@ -97,14 +97,14 @@ const Banner = ({ image , email , background_image }: any) => {
         <input
           type="file"
           name="photo"
-          id="profile"
+          id="profilePic"
           style={{ display: "none" }}
           accept="image/jpg, image/jpeg, image/png"
           onChange={handleProfile}
           />
       </div>
 
-      {profile || background ? (
+      {profilePic || background ? (
         <div className="flex flex-row items-center justify-end gap-[20px] pr-[20px]">
           <Button loading={load} onClick={uploadimage}>Apply</Button>
           <Button variant="outline">Discard</Button>

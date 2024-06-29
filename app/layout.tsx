@@ -33,7 +33,7 @@ export default function RootLayout({
 
             <Theme
               appearance={theme == "true" ? "light" : "dark"}
-              radius={"full"}
+              radius={'large'}
               accentColor={"blue"}
             >
               <Toaster />

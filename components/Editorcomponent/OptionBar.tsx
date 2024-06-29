@@ -11,7 +11,6 @@ import { showCard } from "@/storeRedux/reducers/winCard";
 import { ontimeoutwin,onsubmissionwin,ondraw, marathonMatchOver } from "@/BACKEND_CALLs/apis";
 import { updateProblems } from "@/storeRedux/reducers/marathonReducer";
 import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
-import { remMatchData } from "@/storeRedux/reducers/matchReducer";
 import { useRouter } from "next/navigation";
 
 const OptionBar = ({
@@ -152,6 +151,7 @@ const OptionBar = ({
     timeLeftRef.current,matchInfo
   ]);
 
+  console.log('Render') ;
 
   useEffect(() => {
     const submissionWin = async (winner: any, loser: any) => {
@@ -254,15 +254,20 @@ const OptionBar = ({
 
 const OptionBarMarathon = ({ currentplayer }: any) => {
 
+  // State Definitions
   const requestProgress = useRef(false);
   const timeLeftRef = useRef(1200);
   const [,setTimeLeft] = useState(1200); // 20 minutes in seconds
   const cases = useSelector(( state : any ) => { return state.testCasesReducer});
-  const matchData = useSelector((state : any) => { return  state.marathonReducer} )
+  const matchData = useSelector((state : any) => { return  state.marathonReducer} );
+  const [solved , setSolved ] = useState<number>(0); 
+  
+  // Hooks Definition
   const dispatch = useDispatch() ;
+  const router = useRouter();
+
+  //Logs 
   console.log(matchData.problems);
-
-
 
   // time control functionality
   useEffect(() => {
@@ -288,13 +293,12 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
 
 
   useEffect(() => {
-    
-
+  
       async function matchOver () {
         if(requestProgress.current) return;
         requestProgress.current = true;
         try {
-          const req = await marathonMatchOver(matchData);
+          const req : any = await marathonMatchOver({...matchData,solved : solved,username : currentplayer.username, image : currentplayer.image});
           if(req.status === 200) {
             console.log(req.data);
           }
@@ -327,10 +331,13 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
         }
       }
       dispatch(emptyTestCases());
+      setSolved(solved + 1);
     }
   
 
-  },[timeLeftRef.current , cases.total, cases.passed]);
+  },[ timeLeftRef.current , cases.total, cases.passed]);
+
+  console.log("Render");
 
   return (
     <div className="flex items-center justify-between border dark:bg-neutral-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">

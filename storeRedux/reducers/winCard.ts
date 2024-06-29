@@ -1,6 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { 
+
+interface winCardType { 
+    showCard : boolean,
+    winner : string,
+    winnerImage : string,
+    solution : any,
+    by : string,
+    loser : string ,
+    loserImage : string 
+}
+
+const initialState : winCardType = { 
     showCard : false,
     winner : '',
     winnerImage : '',

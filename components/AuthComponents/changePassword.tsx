@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react"
 
 
-const Password_change = ({email} : any )  => {
+const Password_change = ({ email } : {email :string} )  => {
 
 
     const router = useRouter();
@@ -17,7 +17,7 @@ const Password_change = ({email} : any )  => {
         passwordFormatError: false,
     });
 
-    const [form, setForm] = useState<any>({
+    const [form, setForm] = useState<{email:string ,password:string,confirm_password:string}>({
         email : email,
         password: "",
         confirm_password: "", 

@@ -15,12 +15,13 @@ const WinningCard = () => {
   const currentstats = useSelector ((state : any) => { return state.testCasesReducer}) ;
   const {data: session} = useSession();
   const totalCases = useSelector((state : any) => { return state.matchReducer.totalCases} ) ;
+
   return (
     <>
       <Card className={`flex flex-col ${cardData.winner == session?.user?.name ? 'border-green-500' : 'border-green-500'} w-[400px] h-[450]`}>
-        <div className="p-[10px]">
-          <X size={"15px"} onClick={() => {dispatch(closeCard());}} className="cursor-pointer" />
-        </div>
+        <Link className="p-[10px]" href={'/dashboard'}>
+          <X size={"15px"} className="cursor-pointer" />
+        </Link>
         <div className="flex items-center justify-center ">
           <h1 className="text-center text-[11px]">
             <b className=" text-center text-[20px]">{cardData.by == 'draw' ? 'Draw' : `${cardData.winner} Wins`} &nbsp;</b>

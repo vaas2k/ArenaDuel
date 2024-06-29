@@ -15,7 +15,7 @@ const Setting = ({ user , open , handleSettings }: any) => {
 
   const [load  , setLoad ] = useState<boolean>(false);
   const [error , setError ] = useState<string>('');
-  const [skills, setSkills] = useState<any>(user.skills);
+  const [skills, setSkills] = useState<string[]>(user.skills);
   const [skill, setSkill] = useState<string>("");
   const [ info  , setInfo] = useState<any>({
     name : null,

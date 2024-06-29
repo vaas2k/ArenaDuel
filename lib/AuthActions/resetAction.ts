@@ -86,16 +86,16 @@ export async function verify_PinCode (token : string, userID : string ) {
     }
 }
 
-export async function newPassword(user: any) {
+export async function newPassword({email , password,confirm_password} :{email:string ,password:string,confirm_password:string}) {
   try {
     
 
-    const hashed_password = await bcrypt.hash(user.password!, 10);
+    const hashed_password = await bcrypt.hash(password!, 10);
     console.log(hashed_password);
 
 
     const updated_Password = await prisma.user.update({
-      where : {email : user.email},
+      where : {email : email},
       data : {
         password : hashed_password
       }

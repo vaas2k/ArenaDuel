@@ -1,5 +1,5 @@
 "use client";
-import React, { ReducerAction, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@radix-ui/themes";
 import {
   DropdownMenuTrigger,
@@ -19,9 +19,9 @@ import { useSession } from "next-auth/react";
 const EditorV0 = () => {
   const [showResult, setShowResults] = useState(false);
   const {data : session, status } = useSession();
-  const testCases = useSelector((state: any) => state.testCasesReducer);
+  const testCases = useSelector((state : any) => state.testCasesReducer);
   const [lang, setLang] = useState("cpp");
-  const [code, setCode] = useState("int main() { \n }");
+  const [code, setCode] = useState("int main() { \n}");
   const dispatch = useDispatch();
 
   console.log(code);
@@ -39,7 +39,7 @@ const EditorV0 = () => {
         console.log(req.data);
         dispatch(setTestCases(req.data));
       }
-    } catch (error: any) {
+    } catch (error : any) {
       console.error("Caught an error:", error);
       if (error.response && error.response.status === 403) {
         toast.error(`${error.response.data.msg}`, { position: "bottom-left" });
