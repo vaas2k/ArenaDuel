@@ -10,7 +10,7 @@ const api = axios.create({
 
 
 const queue_player = async (data : any) => {
-    let response : Response ;
+    let response : any ;
     try{
         response = await api.post('/enqueue_player',data);
     }catch(error){
@@ -19,7 +19,7 @@ const queue_player = async (data : any) => {
     return response;
 }
 const cancel_matchmaking = async (data : any) => {
-    let response : Response;
+    let response : any;
     try{
         response = await api.post('/player_left',data);
     }catch(error){
@@ -30,38 +30,38 @@ const cancel_matchmaking = async (data : any) => {
 }
 
 const submitCode = async (data : any) => {
-    let response : Response;
+    let response : any;
     response = await api.post('/runAllTestCases',data);
     return response;
 }
 const runCode = async (data : any) => {
-    let response : Response;
+    let response : any;
     response = await api.post('/runSampleTestCases',data);
     return response;
 }
 const ontimeoutwin = async (data : any) => {
-    let response : Response;
+    let response : any;
     response = await api.post('/ontimeoutwin',data);
     return response;
 }
 const onsubmissionwin = async (data : any) => {
-    let response : Response;
+    let response : any;
     response = await api.post('/onSubmissionwin',data);
     return response;
 }
 const ondraw = async (data : any) => {
-    let response : Response;
+    let response : any;
     response = await api.post('/onDraw',data);
     return response;
 }
 const marathonMatch = async (data : any) => {
-    let response : Response;
+    let response : any;
     response = await api.post('/marathonmatch',data);
     return response;
 }
 
 const marathonMatchOver = async (data : any) => {
-    let response : Response;
+    let response : any;
     response = await api.post('/marathonmatchover',data);
     return response;
 }
