@@ -2,6 +2,7 @@ import { Button } from "@radix-ui/themes";
 import axios from "axios";
 import React, { useState } from "react";
 import {Loader2} from "../shared/Loader";
+import { revalidatePath } from "next/cache";
 
 const Banner = ({ image , email , background_image }: any) => {
 

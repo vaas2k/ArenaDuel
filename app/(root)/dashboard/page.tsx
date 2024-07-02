@@ -1,18 +1,24 @@
 "use client";
-import Searchingmatch from "@/components/Dashboard/Searchingmatch";
-import { Dashboard_Comp } from "@/components/Dashboard/dash-board";
+//Hooks Import 
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+
+// Components Imports 
+const Searchingmatch = dynamic(() => import('@/components/Dashboard/Searchingmatch'),{ssr : false});
+const Dashboard_Comp = dynamic(() => import('@/components/Dashboard/dash-board'),{ssr : false});
+const ProtectedRoute = dynamic(() => import('@/components/Protected/ProtectedRoute'),{ssr : false});
+
+
+//Reducers/Apis
 import { marathonMatch, queue_player } from "@/BACKEND_CALLs/apis";
 import { remMatchData } from "@/storeRedux/reducers/matchReducer";
-import { useDispatch } from "react-redux";
 import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { remMaradata, setMaraData } from "@/storeRedux/reducers/marathonReducer";
-import { useRouter } from "next/navigation";
 import { closeCard } from "@/storeRedux/reducers/winCard";
-import { Loader2 } from "@/components/shared/Loader";
-import { AxiosError } from "axios";
-import { NextApiRequest } from "next";
 
 
 const Dashboard = () => {
@@ -93,29 +99,29 @@ const Dashboard = () => {
     }
   }, [mode.type]);
 
-  if(status == 'loading') {
-    return <div className="flex items-center justify-center h-screen">
-      <Loader2 />
-    </div>
-  }
-
   return (
-    <div className="relative min-h-screen">
-      <Dashboard_Comp 
-      mode={mode} handleMode={handleMode} 
-      // @ts-ignore
-      rating={session?.user.rating} />
-      {isLoading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Searchingmatch 
-          mode={mode} handleMode={handleMode}
+    <ProtectedRoute>
+      <div className="relative min-h-screen">
+        <Dashboard_Comp
+          mode={mode}
+          handleMode={handleMode}
           // @ts-ignore
           rating={session?.user.rating}
-          // @ts-ignore
-          currentuser={session?.user!.id} />
-        </div>
-      )}
-    </div>
+        />
+        {isLoading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <Searchingmatch
+              mode={mode}
+              handleMode={handleMode}
+              // @ts-ignore
+              rating={session?.user.rating}
+              // @ts-ignore
+              currentuser={session?.user!.id}
+            />
+          </div>
+        )}
+      </div>
+    </ProtectedRoute>
   );
 };
 

@@ -4,7 +4,7 @@ import { CardContent, Card } from "@/components/ui/card"
 import { AlertDialog, Button, Flex } from "@radix-ui/themes"
 
 
-export function Dashboard_Comp({ handleMode ,rating } : any) {
+export default function Dashboard_Comp({ handleMode ,rating } : any) {
   
   return (
     <div className="flex flex-col h-full w-full p-6 md:p-10">

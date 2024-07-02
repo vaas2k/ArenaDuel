@@ -12,11 +12,13 @@ cloudinary.config({
 const prisma = new PrismaClient();
 
 export async function POST(req: Request, res: Response) {
-  const { profilePic, background, id } = await req.json();
+  const { profilePic, background, email} = await req.json();
+
+  console.log(profilePic, background ,email);
 
   try {
     const user = await prisma.user.findFirst({
-      where: { id: id },
+      where: { email : email },
     });
 
     console.log(1);

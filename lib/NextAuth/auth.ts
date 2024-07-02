@@ -116,7 +116,7 @@ const authConfig: NextAuthOptions = {
               rating: true,
             },
           });
-          // clear all caches before that save memorey
+          // clear all caches before that save memory
           useCache.flushAll();
           useCache.set(`${token.email}`, dbUser);
         }
