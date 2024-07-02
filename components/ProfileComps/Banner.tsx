@@ -108,7 +108,7 @@ const Banner = ({ image , email , background_image }: any) => {
       {profilePic || background ? (
         <div className="flex flex-row items-center justify-end gap-[20px] pr-[20px]">
           <Button loading={load} onClick={uploadimage}>Apply</Button>
-          <Button variant="outline">Discard</Button>
+          <Button variant="outline" onClick={ () => profilePic ? setProfile('') : setBackground('')}>Discard</Button>
         </div>
       ) : (
         <>{""}</>
