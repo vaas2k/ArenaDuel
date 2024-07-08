@@ -22,6 +22,10 @@ const Page = ({ params }: any) => {
   const [P2PassedCases, setPassedCases] = useState(0);
   const { data: session, status } = useSession();
 
+  const [ code , setCode ] = useState('');
+  function handleCode (code : string ) { 
+    setCode(code);
+  }
 
   useEffect(() => {
     // get Player2 Data when Match is Found and Started
@@ -82,6 +86,8 @@ const Page = ({ params }: any) => {
               matchInfo={matchInfo}
               P2PassedCases={P2PassedCases}
               currentplayer={session?.user}
+              code={code}
+              handleCode={handleCode}
             />
           )}
         </>
@@ -114,7 +120,9 @@ const Page = ({ params }: any) => {
     <div className="flex sm:flex-row  flex-col items-center justify-center gap-[50px] ">
       <Problem_Editor 
       //@ts-ignore
-      username={session?.user.username} 
+      username={session?.user.username}
+      code={code}
+      handleCode={handleCode} 
       />
     </div></>
     )

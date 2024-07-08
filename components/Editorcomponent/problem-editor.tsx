@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import Confetti from "react-confetti";
 import { Loader, Loader2 } from "../shared/Loader";
 
-export default function Probem_Editor({ username }: any) {
+export default function Probem_Editor({ username , code , handleCode}: any) {
   const showCard = useSelector((state: any) => state.winCard.showCard);
   const [showConfetti, setShowConfetti] = useState(false);
   const getWinner = useSelector((state : any) => { return state.winCard.winner});
@@ -24,9 +24,12 @@ export default function Probem_Editor({ username }: any) {
   }, [showCard]);
 
   return (
-    <div className="relative h-screen w-full grid grid-cols-1 md:grid-cols-[minmax(300px,_1fr)_minmax(400px,_1fr)]">
+    <div className="relative h-screen w-full grid grid-cols-1 md:grid-cols-[minmax(250px,_1fr)_minmax(400px,_1fr)]">
       <ProblemV0 />
-      <EditorV0 />
+      <EditorV0
+      code={code}
+      handleCode={handleCode} 
+      />
       {showCard && (
         <>
           {showConfetti && <Confetti />}

@@ -1,34 +1,106 @@
 "use client";
-import React, { useState } from "react";
-import { Button } from "@radix-ui/themes";
+import React, { useEffect, useState } from "react";
+import { Badge, Button } from "@radix-ui/themes";
 import {
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuContent,
   DropdownMenu,
 } from "@/components/ui/dropdown-menu";
-import { PlayIcon } from "@radix-ui/react-icons";
-import { ArrowUp, CheckIcon, ChevronDownIcon, X } from "lucide-react";
+import { CrossCircledIcon, PlayIcon, StopwatchIcon } from "@radix-ui/react-icons";
+import { ArrowUp, CheckCircle, CheckIcon, ChevronDownIcon, X } from "lucide-react";
 import { Editor } from "@monaco-editor/react";
 import { useDispatch, useSelector } from "react-redux";
 import { runCode, submitCode } from "@/BACKEND_CALLs/apis";
 import toast from "react-hot-toast";
 import { setTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { useSession } from "next-auth/react";
+import { updateStats } from "@/storeRedux/reducers/winCard";
 
-const EditorV0 = () => {
+const EditorV0 = ({code, handleCode} : any) => {
+
+
+  const [ problem_id, setproblem_id ] =  useState<any>('');
   const [showResult, setShowResults] = useState(false);
-  const {data : session, status } = useSession();
-  const testCases = useSelector((state : any) => state.testCasesReducer);
   const [lang, setLang] = useState("cpp");
-  const [code, setCode] = useState("int main() { \n}");
+  const [loading, setLoading] = useState(false);
+
+
+  //  code statuses 
+  const [ TLE , setTLE] = useState(false);
+  const [compileError , setCompileError] = useState(false);
+  const [runtimeError , setRuntimeError] = useState(false);
+
   const dispatch = useDispatch();
+  const {data : session, status } = useSession();
+  
+
+  // Reducers
+  const testCases = useSelector((state : any) => state.testCasesReducer);
+  const maraProblems = useSelector((state : any) => { return state.marathonReducer.problems});
+  const problem1v1 = useSelector((state : any) => { return state.matchReducer.problem_id});
+  const totalTestCases = useSelector((state : any ) => { return state.matchReducer.totalCases});
+
 
   console.log(code);
+
+  useEffect(() => {
+    if(lang == 'cpp') { 
+      handleCode(`#include <bits/stdc++.h>
+using namespace std;
+class useClass { 
+    
+    public : 
+
+    void getter () { 
+
+    }
+
+    void setter () { 
+
+    }
+
+
+};
+
+int main() { 
+
+    // YOUR CODE HERE
+
+    return 0;}`
+               )
+    }
+    else if(lang == 'java') {
+      handleCode('');
+    }
+    else if(lang == 'python') {
+      handleCode('');
+    }
+    else if(lang == 'javascript') {
+      handleCode('');
+    }
+
+  },[lang]);
+
+  useEffect(() => {
+
+    if(problem1v1) {
+      setproblem_id(problem1v1);
+    }
+    else if(maraProblems) {
+      const index = maraProblems.length;
+      const problem = maraProblems[index - 1];
+      console.log(problem); 
+      setproblem_id(problem);
+    }
+
+  },[maraProblems,problem1v1]);
+
+
   const Run = async () => {
     try {
       const data = {
-        lang,
+        language : lang,
         code: code, //@ts-ignore
         userid: session?.user.id,
         problem_id: 1,
@@ -50,20 +122,48 @@ const EditorV0 = () => {
   };
 
   const Submit = async () => {
+    setRuntimeError(false);
+    setCompileError(false);
+    setLoading(true);
+    setShowResults(false);
+    setTLE(false);
+
     try {
       const data = {
-        lang,
+        language : lang,
         code: code, //@ts-ignore
         userid: session?.user.id,
-        problem_id: 1,
+        problem_id: problem_id,
       };
       const req = await submitCode(data);
       if (req.status === 200) {
-        console.log(req.data);
-        dispatch(setTestCases(req.data));
-  
+
+        if(testCases &&  testCases.passed < req.data.passed ){ 
+          dispatch(setTestCases(req.data)); 
+          dispatch(updateStats({
+            time : req.data.time,
+            memory : req.data.memory
+          }))
+        }
+        setShowResults(true); 
+        setLoading(false);
       }
+      if(req.status == 201 && req.data.error == 'TLE') { 
+        setTLE(true);
+        setShowResults(false);
+        setLoading(false);
+      }
+      if(req.status == 201 && req.data.error == 'CE') {
+        setCompileError(true);
+        setLoading(false);
+      }
+      if(req.status == 201 && req.data.error == 'RTE') {
+        setRuntimeError(true);
+        setLoading(false);
+      }
+
     } catch (error: any) {
+      setLoading(false);
       console.error("Caught an error:", error);
       if (error.response && error.response.status === 403) {
         toast.error(`${error.response.data.msg}`, { position: "bottom-left" });
@@ -100,26 +200,53 @@ const EditorV0 = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="h-6 w-[1px] bg-gray-200 dark:bg-gray-800" />
+          <div className="h-6 w-[1px] bg-gray-200 dark:bg-gray-800" />        
         </div>
 
+        <div className="flex items-center justify-center gap-[10px]">
+          {showResult && 
+         <>
+          <CheckCircle color="green" />
+          <Badge color="green" size={'2'} >Test Cases Passed : {testCases.passed} / {totalTestCases} </Badge>
+          </>
+         }
+
+        {compileError && <>
+          <CrossCircledIcon  color="red"/>
+          <Badge color="red" size={'2'}>COMPILATION ERROR</Badge>
+          </>}
+         
+         {TLE && <>
+          <StopwatchIcon  color="red"/>
+          <Badge color="red" size={'2'}>TIME LIMITED EXEEDED</Badge>
+          </>}
+
+          {runtimeError && <>
+          <CrossCircledIcon  color="red"/>
+          <Badge color="red" size={'2'}>Runtime Error </Badge>
+          </>}
+        </div>  
+
         <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            onClick={() => {
-              Run();
-              setShowResults(true);
-            }}
+          {/**
+           * 
+           <Button
+           variant="ghost"
+           onClick={() => {
+            Run();
+          }}
           >
-            Run
-            <PlayIcon className="h-5 w-5" />
+          Run
+          <PlayIcon className="h-5 w-5" />
           </Button>
+          *  */
+          }
           <Button
+            loading={loading}
             variant="solid"
             className="bg-blue-500 text-white hover:bg-blue-600"
             onClick={() => {
               Submit();
-              setShowResults(true);
             }}
           >
             Submit
@@ -132,91 +259,13 @@ const EditorV0 = () => {
           theme="vs-dark"
           language={lang}
           value={code}
-          onChange={(value: any) => setCode(value)}
+          onChange={(value: any) => handleCode(value)}
           options={{
             fontSize: 16,
-            formatOnType: true,
+            formatOnType: true
           }}
+          
         />
-      </div>
-
-      <div className="sticky bottom-0 z-10 bg-gray-200 px-6 py-2 shadow-sm dark:bg-neutral-900">
-        {testCases && testCases.total > 0 && showResult ? (
-          <div className="absolute bottom-full left-0 right-0 z-10 overflow-hidden rounded-t-lg bg-gray-200 px-6 py-1 transition-all duration-300 ease-in-out max-h-[250px] dark:bg-neutral-900">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold">Test Results</h3>
-              <Button
-                variant="ghost"
-                radius={"small"}
-                onClick={() => setShowResults(false)}
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
-            </div>
-            <div className="flex gap-[10px] items-center">
-              {testCases.failedCase ? (
-                <h1 className="py-[10px]" style={{ color: "tomato" }}>
-                  <b>{testCases.errorMessage}</b>
-                </h1>
-              ) : (
-                <h1 className="py-[10px]" style={{ color: "lightgreen" }}>
-                  <b>Accepted</b>
-                </h1>
-              )}
-            </div>
-
-            <div className="flex flex-col flex-wrap mt-[-10px] overflow-y-auto max-h-[200px] gap-[1px] py-[10px]">
-              {!testCases.failedCase.input ? (<div className="flex items-center gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
-                  <CheckIcon className="h-4 w-4" />
-                </div>
-                <div>
-                  <h4 className="font-medium">
-                    Test Cases Passed - {testCases.passed} / {testCases.total}
-                  </h4>
-                </div>
-              </div>)
-              :
-              (<div className="flex items-center gap-4">
-                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md w-full">
-                  <h4 className="font-medium text-red-600 dark:text-red-400">
-                    Failed Case
-                  </h4>
-                  <div className="mt-1">
-                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      Input:
-                    </p>
-                    <pre className=" flex flex-row bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
-                      [{testCases.failedCase.input.map((i :any) => {
-                        return <p key={i} className="flex flex-row"> {i},</p>
-                      })}]
-                    </pre>
-                  </div>
-                  <div className="mt-1">
-                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      Output:
-                    </p>
-                    <pre className=" flex flex-row bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
-                    [{testCases.failedCase.output.map((i :any) => {
-                        return <p key={i} className="flex flex-row"> {i},</p>
-                      })}]
-                    </pre>
-                  </div>
-                </div>
-              </div>)
-              }
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between h-[40px]">
-            <h3 className="text-lg font-bold">Test Results</h3>
-            <Button variant="ghost" onClick={() => setShowResults(true)}>
-              <ArrowUp className="h-4 w-4" />
-              <span className="sr-only">Show</span>
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

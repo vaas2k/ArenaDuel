@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import problems from '../../public/problems/problems';
 import { Loader2 } from "../shared/Loader";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { Badge } from "@radix-ui/themes";
+
+// intro problems  :  id > 1 &&  <= 19
+// sort and search :  id >= 20 && <= 54
+// dynamic probs   :  id >= 55 && <= 74
+
 
 const ProblemV0 = () => {
 
-  
+
   const [getProblem, setgetProblem] = useState<any>();
   const maraProblems = useSelector((state : any) => { return state.marathonReducer.problems});
   const problem1v1 = useSelector((state : any) => { return state.matchReducer.problem_id});
@@ -34,11 +39,7 @@ const ProblemV0 = () => {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{getProblem.title}</h1>
-          <div className="flex items-center gap-2">
-            <div className="rounded-full bg-yellow-500 px-2 py-1 text-xs font-medium text-white">
-              Easy
-            </div>
-          </div>
+        
         </div>
         <div className="space-y-4">
           <pre className="whitespace-pre-wrap">

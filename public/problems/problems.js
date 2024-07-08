@@ -221,7 +221,6 @@ const  problems = [
     "time_limit": "1.00 s",
     "memory_limit": "512 MB",
     "testCases": [
-      "12345678910111213141516171819202122232425...",
       "3\n7\n19\n12",
       "7\n4\n1"
     ]
@@ -602,34 +601,6 @@ const  problems = [
     "testCases": [
       "8\n2 5 1 4 8 3 2 5",
       "0 1 0 3 4 3 3 7"
-    ]
-  },
-  {
-    "id": 46,
-    "title": "Subarray Sums I",
-    "statement": "Given an array of n positive integers, your task is to count the number of subarrays having sum x.",
-    "input": "The first input line has two integers n and x: the size of the array and the target sum x. The next line has n integers a_1,a_2,\\dots,a_n: the contents of the array.",
-    "output": "Print one integer: the required number of subarrays.",
-    "constraints": "1 <= n <= 2 * 10^5, 1 <= x,a_i <= 10^9",
-    "time_limit": "1.00 s",
-    "memory_limit": "512 MB",
-    "testCases": [
-      "5 7\n2 4 1 2 7",
-      "3"
-    ]
-  },
-  {
-    "id": 47,
-    "title": "Subarray Sums II",
-    "statement": "Given an array of n integers, your task is to count the number of subarrays having sum x.",
-    "input": "The first input line has two integers n and x: the size of the array and the target sum x. The next line has n integers a_1,a_2,\\dots,a_n: the contents of the array.",
-    "output": "Print one integer: the required number of subarrays.",
-    "constraints": "1 <= n <= 2 * 10^5, -10^9 <= x,a_i <= 10^9",
-    "time_limit": "1.00 s",
-    "memory_limit": "512 MB",
-    "testCases": [
-      "5 7\n2 -1 3 5 -2",
-      "2"
     ]
   },
   {

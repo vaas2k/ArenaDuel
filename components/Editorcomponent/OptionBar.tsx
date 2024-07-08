@@ -18,18 +18,19 @@ const OptionBar = ({
   currentplayer,
   P2PassedCases,
   matchInfo,
-  handleWinCard,
+  code,
 }: any) => {
 
 
-  const router = useRouter();
   const requestInProgress = useRef(false);
   const timeLeftRef = useRef(1200);
   const [ ,setTimeLeft] = useState(1200); // 20 minutes in seconds
-  const [matchOver , setMatchOver] = useState();
   const P1PassedCases = useSelector((state: any) => {
     return state.testCasesReducer.passed;
   });
+  const totalTestCases = useSelector(( state : any ) => { return state.testCasesReducer.total});
+  const win = useSelector((state : any) => { return state.winCard.showCard }) ;
+
 
   const dispatch = useDispatch();
 
@@ -132,7 +133,7 @@ const OptionBar = ({
       }
     };
 
-    if (timeLeftRef.current === 1170) {
+    if (timeLeftRef.current === 0 && !win) {
       // call when times end
       if (P1PassedCases > P2PassedCases) {
         TimeOut(currentplayer, player2);
@@ -147,9 +148,7 @@ const OptionBar = ({
 
  
       
-  }, [
-    timeLeftRef.current,matchInfo
-  ]);
+  }, [ timeLeftRef.current,matchInfo ]);
 
   console.log('Render') ;
 
@@ -163,16 +162,18 @@ const OptionBar = ({
           from: currentplayer.username,
           id: matchInfo.id,
           room_id: matchInfo.room_id,
-          winner: { id: winner.id, username: winner.username, by: "solving" },
+          winner: { id: winner.id, username: winner.username, by: "solving" , code : winner.code },
           loser: { id: loser.id, username: loser.username },
         };
 
         const req: any = await onsubmissionwin(data);
         if (req.status === 200) {
+
+          console.log(req.data);
           dispatch(
             showCard({
               winner: winner.username,
-              soluton: "good for now",
+              solution: req.data.winner.code,
               winnerImage: winner.image,
               showCard: true,
               by: "solving",
@@ -180,9 +181,9 @@ const OptionBar = ({
               loserImage: loser.image,
             })
           );
+          setTimeLeft(0);
+          timeLeftRef.current = 0;
         }
-        setTimeLeft(0);
-        timeLeftRef.current = 0;
       } catch (error) {
         console.log(error);
       } finally { 
@@ -190,14 +191,14 @@ const OptionBar = ({
       }
     };
     // call submission win for P1 (arg1 winner, arg2 loser)
-    if (matchInfo.totalCases === P1PassedCases) {
-      submissionWin(currentplayer, player2);
+    if (matchInfo.totalCases > 0 && matchInfo.totalCases === P1PassedCases) {
+      submissionWin({...currentplayer,code}, player2);
     }
     // call submission win for P2 (arg1 winner, arg2 loser)
-    if (matchInfo.totalCases === P2PassedCases) {
-      submissionWin(player2, currentplayer);
+    if (matchInfo.totalCases > 0 && matchInfo.totalCases === P2PassedCases) {
+      submissionWin(player2, {...currentplayer,code});
     }
-  },[P1PassedCases,P2PassedCases])
+  },[P1PassedCases,P2PassedCases,totalTestCases])
 
   return (
     <div className="flex items-center justify-between border dark:bg-neutral-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">
@@ -209,7 +210,7 @@ const OptionBar = ({
         <Badge>
           {player2.username} &nbsp; {player2.rating}
         </Badge>
-        <Badge color={"ruby"}>Cases Passed - {P2PassedCases} </Badge>
+        <Badge color={"ruby"}>Cases Passed - {P2PassedCases} / {matchInfo.totalCases}</Badge>
       </div>
 
       {/** will change time color based on time left */}
@@ -322,7 +323,7 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
       console.log(`Problem Solved: ${lastProblem}`);
 
       while (true) {
-        const id = Math.floor(Math.random() * 52) + 1;
+        const id = Math.floor(Math.random() * 19) + 1;
         const newProblem = matchData.problems.find((problem : number) => problem === id);
         if (!newProblem) {
           console.log('new problem');
