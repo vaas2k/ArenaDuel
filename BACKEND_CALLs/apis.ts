@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: `http://localhost:8080`,
+    baseURL: 'http://localhost:8080/',
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"
@@ -10,6 +10,7 @@ const api = axios.create({
 
 
 const queue_player = async (data : any) => {
+    console.log(process.env.BACKEND_API)
     let response : any ;
     try{
         response = await api.post('/enqueue_player',data);
@@ -65,6 +66,13 @@ const marathonMatchOver = async (data : any) => {
     response = await api.post('/marathonmatchover',data);
     return response;
 }
+
+const abandonMatch = async (data : any) => {
+    let response : any;
+    response = await api.post('/abandon',data);
+    return response;
+}
+
 export  {
     queue_player,
     cancel_matchmaking,
@@ -74,5 +82,6 @@ export  {
     onsubmissionwin,
     ondraw,
     marathonMatch,
-    marathonMatchOver
+    marathonMatchOver,
+    abandonMatch
 }

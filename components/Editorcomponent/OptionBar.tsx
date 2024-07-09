@@ -34,7 +34,7 @@ const OptionBar = ({
 
   const dispatch = useDispatch();
 
-  // time control functionality
+  // time control functionality   
   useEffect(() => {
     const timer = setInterval(() => {
       if (timeLeftRef.current > 0) {
@@ -47,7 +47,6 @@ const OptionBar = ({
 
     return () => clearInterval(timer); // Cleanup the interval on component unmount
   }, []);
-
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -72,11 +71,13 @@ const OptionBar = ({
             username: winner.username,
             by: "timeout",
             casesPassed: winner.id == currentplayer.id ? P1PassedCases : P2PassedCases,
+            rating : winner.rating 
           },
           loser: {
             id: loser.id,
             username: loser.username,
             casesPassed: loser.id === currentplayer.id ? P1PassedCases : P2PassedCases,
+            rating : loser.rating
           },
         };
         // send req to backend for processing data
@@ -85,13 +86,14 @@ const OptionBar = ({
           dispatch(
             showCard({
               winner: winner.username,
-              soluton: "good for now",
+              soluton: "NO SOLUTION",
               winnerImage:
                 winner.id === currentplayer.id ? currentplayer.image : player2.image,
               showCard: true,
               by: "timeout",
               loser: loser.username,
               loserImage: winner.id === currentplayer.id ? player2.image : currentplayer.image,
+              rating : winner.id === currentplayer.id ? req.data.winner.rating : req.data.loser.rating
             })
           );
           
@@ -123,6 +125,7 @@ const OptionBar = ({
               by: "draw",
               loserImage: player2.image,
               loser: player2.username,
+              rating : currentplayer.rating 
             })
           );
         }
@@ -150,7 +153,6 @@ const OptionBar = ({
       
   }, [ timeLeftRef.current,matchInfo ]);
 
-  console.log('Render') ;
 
   useEffect(() => {
     const submissionWin = async (winner: any, loser: any) => {
@@ -158,12 +160,13 @@ const OptionBar = ({
       if(requestInProgress.current) return;
       requestInProgress.current = true;
       try {
+
         const data = {
+          ...matchInfo,
           from: currentplayer.username,
-          id: matchInfo.id,
-          room_id: matchInfo.room_id,
-          winner: { id: winner.id, username: winner.username, by: "solving" , code : winner.code },
-          loser: { id: loser.id, username: loser.username },
+          winner: { id: winner.id, username: winner.username, by: "solving" , code : winner.code, rating : winner.rating },
+          loser: { id: loser.id, username: loser.username , rating : loser.rating},
+          by : 'solving'
         };
 
         const req: any = await onsubmissionwin(data);
@@ -177,8 +180,9 @@ const OptionBar = ({
               winnerImage: winner.image,
               showCard: true,
               by: "solving",
-              loser: loser.username,
+              loser: req.data.loser.username,
               loserImage: loser.image,
+              rating : winner.id === currentplayer.id ? req.data.winner.rating : req.data.loser.rating
             })
           );
           setTimeLeft(0);

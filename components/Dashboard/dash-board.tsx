@@ -1,7 +1,7 @@
 
 import Link from "next/link"
 import { CardContent, Card } from "@/components/ui/card"
-import { AlertDialog, Button, Flex } from "@radix-ui/themes"
+import { AlertDialog, Badge, Button, Flex } from "@radix-ui/themes"
 
 
 export default function Dashboard_Comp({ handleMode ,rating } : any) {
@@ -15,7 +15,7 @@ export default function Dashboard_Comp({ handleMode ,rating } : any) {
           <ZapIcon className="w-5 h-5 text-yellow-500" />
           <p>
             {" "}
-            <b>{rating}</b>
+            <Badge variant={'soft'} color={'amber'} size={'3'}><b className="text-[16px]">{rating}</b></Badge>
           </p>
         </div>
       </header>

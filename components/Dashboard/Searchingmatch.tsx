@@ -37,7 +37,22 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
     }
   };
 
-  console.log(currentuser);
+  useEffect(() => {
+    // Event listener for beforeunload
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // Call cancelMatch function to notify the server
+      cancelMatch();
+    };
+
+    // Add event listener
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     async function match_found() {
       try {
@@ -64,6 +79,23 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
     }
     match_found();
   }, [socket, currentuser, setWaiting, setMatchFound, setCountdown]);
+
+  useEffect(() => {
+    const handleBeforePopState = (event : any) => {
+        const message = "Are you sure you want to leave?";
+        event.preventDefault();
+        console.log('popState');
+        cancelMatch();
+        event.returnValue = message;
+        return message;
+      }
+    
+    window.addEventListener('popstate', handleBeforePopState);
+  
+    return () => {
+      window.removeEventListener("popstate", handleBeforePopState);
+    };
+  }, [socket, currentuser, setWaiting, setMatchFound, setCountdown])
 
   // Countdown effect when match is found
   useEffect(() => {

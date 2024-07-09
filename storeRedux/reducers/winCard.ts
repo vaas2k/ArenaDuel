@@ -10,7 +10,8 @@ interface winCardType {
     loser : string ,
     loserImage : string,
     time : Number ,
-    memory : Number 
+    memory : Number,
+    rating : Number 
 }
 
 const initialState : winCardType = { 
@@ -22,7 +23,8 @@ const initialState : winCardType = {
     loser : '',
     loserImage : '',
     time : 0,
-    memory : 0
+    memory : 0,
+    rating : 0
 }
 
 const WinCardSlice = createSlice({
@@ -38,6 +40,7 @@ const WinCardSlice = createSlice({
             state.loserImage = action.payload.loserImage;
             state.loser = action.payload.loser;
             state.by = action.payload.by
+            state.rating = action.payload.rating
         },
         updateStats ( state , action ) {
             state.time = action.payload.time ; 
@@ -53,6 +56,7 @@ const WinCardSlice = createSlice({
             state.loser = '';
             state.time = 0;
             state.memory = 0;
+            state.rating = 0;
         }
     }
 })

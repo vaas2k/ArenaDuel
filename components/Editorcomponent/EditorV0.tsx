@@ -42,7 +42,6 @@ const EditorV0 = ({code, handleCode} : any) => {
   const totalTestCases = useSelector((state : any ) => { return state.matchReducer.totalCases});
 
 
-  console.log(code);
 
   useEffect(() => {
     if(lang == 'cpp') { 
@@ -144,6 +143,9 @@ int main() {
             time : req.data.time,
             memory : req.data.memory
           }))
+        }
+        if(req.data.message == 'RTE') {
+          setRuntimeError(true);
         }
         setShowResults(true); 
         setLoading(false);

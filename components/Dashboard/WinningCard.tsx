@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { Rubik } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { Editor } from "@monaco-editor/react";
+import { DoubleArrowUpIcon, DoubleArrowDownIcon } from "@radix-ui/react-icons";
 const rubik = Rubik({ subsets: ["latin"] });
 
 const WinningCard = () => {
@@ -74,12 +75,12 @@ const WinningCard = () => {
           <h1 className="text-[18px]">
             {/**@ts-ignore */}
             <b style={{color : cardData.winner == session?.user!.username ? 'lightgreen' : ' #E55451'}}>
-              {
-                //@ts-ignore
-                session?.user.rating
-              }
+              {cardData.rating}
             </b>
           </h1>
+          {/**@ts-ignore */}
+          {cardData.winner == session?.user!.username ? <DoubleArrowUpIcon color={'jade'} /> : <DoubleArrowDownIcon color={'ruby'} />}
+          
         </div>
 
         <div className="flex items-center justify-center gap-[20px] my-[20px]">

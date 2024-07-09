@@ -19,6 +19,7 @@ import { remMatchData } from "@/storeRedux/reducers/matchReducer";
 import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { remMaradata, setMaraData } from "@/storeRedux/reducers/marathonReducer";
 import { closeCard } from "@/storeRedux/reducers/winCard";
+import { emptyOpponent } from "@/storeRedux/reducers/opponentReducer";
 
 
 const Dashboard = () => {
@@ -33,6 +34,7 @@ const Dashboard = () => {
     dispatch(emptyTestCases());
     dispatch(remMaradata());
     dispatch(closeCard());
+    dispatch(emptyOpponent());
   }, []);
 
 
@@ -48,6 +50,7 @@ const Dashboard = () => {
     dispatch(emptyTestCases());
     dispatch(remMaradata());
     dispatch(closeCard());
+    dispatch(emptyOpponent());
 
     try {
       const data : {type : string, rating : number , id : string} =  {

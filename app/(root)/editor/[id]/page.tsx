@@ -11,14 +11,18 @@ import { getUserData } from "@/lib/userActions/getUserData";
 import useSocket from "@/lib/Sockets/useSocket";
 import { Button, Text } from "@radix-ui/themes";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setOpponent } from "@/storeRedux/reducers/opponentReducer";
 
 const Page = ({ params }: any) => {
   const param = params.id;
+
+  const dispatch = useDispatch();
   const socket = useSocket();
   const matchInfo = useSelector((state: any) => { return state.matchReducer; });
   const marathonMatchData = useSelector((state : any) => { return state.marathonReducer})
   const testCases = useSelector((state : any) => {return  state.testCasesReducer} );
-  const [player2, setPlayer2] = useState<any>({});
+  const player2 = useSelector((state : any) => {return state.opponentReducer});
   const [P2PassedCases, setPassedCases] = useState(0);
   const { data: session, status } = useSession();
 
@@ -26,14 +30,14 @@ const Page = ({ params }: any) => {
   function handleCode (code : string ) { 
     setCode(code);
   }
-
+  console.log(player2);
   useEffect(() => {
     // get Player2 Data when Match is Found and Started
     async function getP2Data() {
       try {
         const req = await getUserData(matchInfo.p2);
         if (req) {
-          setPlayer2(req);
+          dispatch(setOpponent(req));
         }
       } catch (error) {
         console.log(error);
@@ -120,9 +124,13 @@ const Page = ({ params }: any) => {
     <div className="flex sm:flex-row  flex-col items-center justify-center gap-[50px] ">
       <Problem_Editor 
       //@ts-ignore
+      userrating={session?.user.rating}
+      //@ts-ignore
       username={session?.user.username}
+      userimage={session?.user?.image}
+
       code={code}
-      handleCode={handleCode} 
+      handleCode={handleCode}
       />
     </div></>
     )
