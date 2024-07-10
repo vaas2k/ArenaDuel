@@ -12,6 +12,7 @@ import { ontimeoutwin,onsubmissionwin,ondraw, marathonMatchOver } from "@/BACKEN
 import { updateProblems } from "@/storeRedux/reducers/marathonReducer";
 import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const OptionBar = ({
   player2,
@@ -257,7 +258,7 @@ const OptionBar = ({
   );
 };
 
-const OptionBarMarathon = ({ currentplayer }: any) => {
+const OptionBarMarathon = ({ currentplayer , handleMarathonCard }: any) => {
 
   // State Definitions
   const requestProgress = useRef(false);
@@ -266,7 +267,7 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
   const cases = useSelector(( state : any ) => { return state.testCasesReducer});
   const matchData = useSelector((state : any) => { return  state.marathonReducer} );
   const [solved , setSolved ] = useState<number>(0); 
-  
+
   // Hooks Definition
   const dispatch = useDispatch() ;
   const router = useRouter();
@@ -303,8 +304,9 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
         if(requestProgress.current) return;
         requestProgress.current = true;
         try {
-          const req : any = await marathonMatchOver({...matchData,solved : solved,username : currentplayer.username, image : currentplayer.image});
+          const req : any = await marathonMatchOver({...matchData,solved : solved,username : currentplayer.username, image : currentplayer.image, rating  : currentplayer.rating});
           if(req.status === 200) {
+            handleMarathonCard(true);
             console.log(req.data);
           }
 
@@ -315,7 +317,7 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
         }
       }
 
-      if(timeLeftRef.current == 1190) {
+      if(timeLeftRef.current == 1150) {
         // make a call to save in db + update ranking in leaderboard
         matchOver();
         setTimeLeft(0);
@@ -325,24 +327,33 @@ const OptionBarMarathon = ({ currentplayer }: any) => {
     if (cases.passed > 0 && cases.total == cases.passed) {
       const lastProblem = matchData.problems[matchData.problems.length - 1];
       console.log(`Problem Solved: ${lastProblem}`);
-
-      while (true) {
-        const id = Math.floor(Math.random() * 19) + 1;
-        const newProblem = matchData.problems.find((problem : number) => problem === id);
-        if (!newProblem) {
-          console.log('new problem');
-          dispatch(updateProblems(id));
-          break;
+      
+      toast('Accepted', {
+        icon: '👏',
+        position :'top-center',
+        style : {
+          color : 'lightgren',
+          backgroundColor:'gray'
         }
-      }
+      });
+
+      //while (true) {
+        //const id = Math.floor(Math.random() * 19) + 1;
+        //const newProblem = matchData.problems.find((problem : number) => problem === id);
+        //if (!newProblem) {
+        //  console.log('new problem');
+        //  dispatch(updateProblems(id));
+        //  break;
+       // }
+      dispatch(updateProblems(1));
       dispatch(emptyTestCases());
       setSolved(solved + 1);
-    }
+      }
+    
   
 
   },[ timeLeftRef.current , cases.total, cases.passed]);
 
-  console.log("Render");
 
   return (
     <div className="flex items-center justify-between border dark:bg-neutral-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">

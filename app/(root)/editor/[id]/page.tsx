@@ -26,6 +26,12 @@ const Page = ({ params }: any) => {
   const [P2PassedCases, setPassedCases] = useState(0);
   const { data: session, status } = useSession();
 
+
+  const [ marathonCard , setShowMarathonCard ] = useState(false);
+  function handleMarathonCard(flag : boolean) {
+    setShowMarathonCard(flag);
+  }
+
   const [ code , setCode ] = useState('');
   function handleCode (code : string ) { 
     setCode(code);
@@ -99,7 +105,12 @@ const Page = ({ params }: any) => {
     } else if (param == "marathon") {
       return (
         <>
-          {session?.user && <OptionBarMarathon currentplayer={session?.user} />}
+          {session?.user && 
+          <OptionBarMarathon 
+          currentplayer={session?.user}
+          marathonCard={marathonCard}
+          handleMarathonCard={handleMarathonCard}
+           />}
         </>
       );
     } else {
@@ -124,13 +135,10 @@ const Page = ({ params }: any) => {
     <div className="flex sm:flex-row  flex-col items-center justify-center gap-[50px] ">
       <Problem_Editor 
       //@ts-ignore
-      userrating={session?.user.rating}
-      //@ts-ignore
-      username={session?.user.username}
-      userimage={session?.user?.image}
-
+      currentplayer={session?.user}
       code={code}
       handleCode={handleCode}
+      marathonCard={marathonCard}
       />
     </div></>
     )

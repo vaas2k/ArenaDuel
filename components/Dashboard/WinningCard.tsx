@@ -79,7 +79,7 @@ const WinningCard = () => {
             </b>
           </h1>
           {/**@ts-ignore */}
-          {cardData.winner == session?.user!.username ? <DoubleArrowUpIcon color={'jade'} /> : <DoubleArrowDownIcon color={'ruby'} />}
+          {cardData.winner == session?.user!.username ? <DoubleArrowUpIcon color={'lightgreen'} /> : <DoubleArrowDownIcon color={'#E55451'} />}
           
         </div>
 

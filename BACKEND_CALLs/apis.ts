@@ -73,6 +73,12 @@ const abandonMatch = async (data : any) => {
     return response;
 }
 
+const getLeaderBoard = async () => {
+    let response : any;
+    response = await api.get('/getleaderboard');
+    return response;
+}
+
 export  {
     queue_player,
     cancel_matchmaking,
@@ -83,5 +89,6 @@ export  {
     ondraw,
     marathonMatch,
     marathonMatchOver,
-    abandonMatch
+    abandonMatch,
+    getLeaderBoard
 }

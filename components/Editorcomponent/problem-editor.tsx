@@ -10,8 +10,9 @@ import { useDispatch } from "react-redux";
 import { showCard as showReducerCard } from "@/storeRedux/reducers/winCard";
 
 import { useRouter } from "next/navigation";
+import MarathonCard from "../Dashboard/MarathonCard";
 
-export default function Probem_Editor({ username , userimage ,userrating, code , handleCode}: any) {
+export default function Probem_Editor({ currentplayer, code , handleCode , marathonCard}: any) {
   
   const showCard = useSelector((state: any) => state.winCard.showCard);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -36,7 +37,7 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
       }
   
       const winner = { username: player2.username, image: player2.image, rating: player2.rating };
-      const loser = { username, image: userimage, rating: userrating };
+      const loser = { username : currentplayer.username, image: currentplayer.image, rating: currentplayer.rating };
       const data = {
         ...matchInfo,
         winner: winner,
@@ -57,7 +58,7 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
   
   useEffect(() => {
     try {
-      socket.on(`abandon-${matchInfo.room_id}`, (data) => {
+      socket.on(`abandon-${currentplayer.id}`, (data) => {
         console.log('socket data -> : ', data);
   
         dispatch(
@@ -80,11 +81,7 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
   useEffect(() => {
     if (!showCard) {
     const handleBeforeUnload = (event : any ) => {
-        abandon_match();
-        const message = "Are you sure you want to leave?";
-        event.preventDefault();
-        event.returnValue = message;
-        return message;
+        abandon_match();     
       };
       
       
@@ -94,7 +91,7 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
         window.removeEventListener("beforeunload", handleBeforeUnload);
       };
     }
-  }, [showCard, player2, matchInfo, username, userimage]);
+  }, [showCard, player2, matchInfo, currentplayer]);
 
   useEffect(() => {
     const handleBeforePopState = (event : any) => {
@@ -102,8 +99,7 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
         event.preventDefault();
         console.log('popState');
         abandon_match();
-        event.returnValue = message;
-        return message;
+        
       }
     
     window.addEventListener('popstate', handleBeforePopState);
@@ -111,7 +107,7 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
     return () => {
       window.removeEventListener("popstate", handleBeforePopState);
     };
-  }, [socket, showCard, player2, matchInfo, username, userimage])
+  }, [socket, showCard, player2, matchInfo,currentplayer])
   
   
 
@@ -123,7 +119,7 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
 
   useEffect(() => {
     if (showCard) {
-      setShowConfetti(getWinner == username ? true : false );
+      setShowConfetti(getWinner == currentplayer.username ? true : false );
       // Stop confetti after a few seconds
       const timer = setTimeout(() => {
         setShowConfetti(false);
@@ -145,6 +141,13 @@ export default function Probem_Editor({ username , userimage ,userrating, code ,
           {showConfetti && <Confetti />}
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <WinningCard />
+          </div>
+        </>
+      )}
+      {marathonCard && (
+        <>
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <MarathonCard />
           </div>
         </>
       )}

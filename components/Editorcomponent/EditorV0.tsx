@@ -209,7 +209,7 @@ int main() {
           {showResult && 
          <>
           <CheckCircle color="green" />
-          <Badge color="green" size={'2'} >Test Cases Passed : {testCases.passed} / {totalTestCases} </Badge>
+          <Badge color="green" size={'2'} >Test Cases Passed : {testCases.passed} / { maraProblems ? testCases.total : totalTestCases } </Badge>
           </>
          }
 
