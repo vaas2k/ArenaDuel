@@ -177,7 +177,7 @@ const OptionBar = ({
           dispatch(
             showCard({
               winner: winner.username,
-              solution: req.data.winner.code,
+              solution: req.data.winner.solution,
               winnerImage: winner.image,
               showCard: true,
               by: "solving",

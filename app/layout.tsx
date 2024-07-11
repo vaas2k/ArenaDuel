@@ -11,6 +11,8 @@ import store from "@/storeRedux/store";
 import { Rubik } from "next/font/google";
 const rubik = Rubik({ subsets: ["latin"] });
 import { Toaster } from 'react-hot-toast';
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { FloatingNav } from "@/components/ui/floating-navbar";
 
 export default function RootLayout({
   children,
@@ -28,23 +30,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={rubik.className}>
         <NextAuthProvider>
-          
           <Provider store={store}>
-
             <Theme
               appearance={theme == "true" ? "light" : "dark"}
-              radius={'large'}
+              radius={"large"}
               accentColor={"blue"}
             >
               <Toaster />
-              <Navbar />
-          
-              {children}
-          
+              <>
+                <Navbar />
+                {children}
+              </>
             </Theme>
-          
           </Provider>
-        
         </NextAuthProvider>
       </body>
     </html>

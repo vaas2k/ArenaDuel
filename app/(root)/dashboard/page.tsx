@@ -20,6 +20,7 @@ import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { remMaradata, setMaraData } from "@/storeRedux/reducers/marathonReducer";
 import { closeCard } from "@/storeRedux/reducers/winCard";
 import { emptyOpponent } from "@/storeRedux/reducers/opponentReducer";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
 
 const Dashboard = () => {
@@ -103,14 +104,17 @@ const Dashboard = () => {
   }, [mode.type]);
 
   return (
+
+    <>
     <ProtectedRoute>
+      <BackgroundBeams />
       <div className="relative min-h-screen">
         <Dashboard_Comp
           mode={mode}
           handleMode={handleMode}
           // @ts-ignore
           rating={session?.user.rating}
-        />
+          />
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <Searchingmatch
@@ -125,6 +129,7 @@ const Dashboard = () => {
         )}
       </div>
     </ProtectedRoute>
+  </>
   );
 };
 

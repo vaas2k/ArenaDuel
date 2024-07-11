@@ -5,6 +5,7 @@ import useSocket from "@/lib/Sockets/useSocket";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setMatchData } from "@/storeRedux/reducers/matchReducer";
+import { MovingBorders } from "../ui/movingBorder";
 
 const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   const socket = useSocket();
@@ -118,7 +119,8 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   }, [matchFound, countdown, router, room]);
 
   return (
-    <Card>
+
+      <MovingBorders borderRadius="1.50rem" className="w-[250px] h-[150px]">
       {waiting ? (
         <div>
           <Text as="div" size="2" weight="bold">
@@ -147,13 +149,13 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
               size="1"
               style={{ cursor: "pointer" }}
               onClick={cancelMatch}
-            >
+              >
               Cancel
             </Button>
           </div>
         </div>
       ) : matchFound ? (
-        <div className="p-[30px]">
+        <div >
           <Text as="div" size="2" weight="bold">
             MATCH FOUND
           </Text>
@@ -165,12 +167,12 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
             size="1"
             style={{ cursor: "pointer" }}
             onClick={cancelMatch}
-          >
+            >
             Cancel
           </Button>
         </div>
       ) : null}
-    </Card>
+  </MovingBorders>
   );
 };
 

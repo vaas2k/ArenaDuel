@@ -11,6 +11,7 @@ import { showCard as showReducerCard } from "@/storeRedux/reducers/winCard";
 
 import { useRouter } from "next/navigation";
 import MarathonCard from "../Dashboard/MarathonCard";
+import { BackgroundBeams } from "../ui/background-beams";
 
 export default function Probem_Editor({ currentplayer, code , handleCode , marathonCard}: any) {
   
@@ -130,6 +131,7 @@ export default function Probem_Editor({ currentplayer, code , handleCode , marat
   }, [showCard]);
 
   return (
+    <>
     <div className="relative h-screen w-full grid grid-cols-1 md:grid-cols-[minmax(250px,_1fr)_minmax(400px,_1fr)]">
       <ProblemV0 />
       <EditorV0
@@ -152,5 +154,6 @@ export default function Probem_Editor({ currentplayer, code , handleCode , marat
         </>
       )}
     </div>
+      </>
   );
 }

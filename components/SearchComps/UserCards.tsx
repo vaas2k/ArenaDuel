@@ -12,6 +12,8 @@ const UserCards = ({ param }: any) => {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  console.log(param); 
+
 
   useEffect(() => {
     getUsers();
@@ -69,7 +71,7 @@ const UserCards = ({ param }: any) => {
                 return (
                   <div
                   key={index}
-                  onClick={() => router.push(`/profile/${user.email}`)} 
+                  onClick={() => router.push(`/profile/${user.id}`)} 
                   className="w-[290px] h-[260px] flex flex-col p-[20px] gap-[10px] items-center justify-center border border-gray rounded-lg dark:bg-gray-900 bg-white cursor-pointer">
                     <img
                       src={user.image}
