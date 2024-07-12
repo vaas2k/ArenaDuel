@@ -11,8 +11,6 @@ import store from "@/storeRedux/store";
 import { Rubik } from "next/font/google";
 const rubik = Rubik({ subsets: ["latin"] });
 import { Toaster } from 'react-hot-toast';
-import { BackgroundBeams } from "@/components/ui/background-beams";
-import { FloatingNav } from "@/components/ui/floating-navbar";
 
 export default function RootLayout({
   children,

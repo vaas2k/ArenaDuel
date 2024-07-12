@@ -20,7 +20,6 @@ import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { remMaradata, setMaraData } from "@/storeRedux/reducers/marathonReducer";
 import { closeCard } from "@/storeRedux/reducers/winCard";
 import { emptyOpponent } from "@/storeRedux/reducers/opponentReducer";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 
 
 const Dashboard = () => {
