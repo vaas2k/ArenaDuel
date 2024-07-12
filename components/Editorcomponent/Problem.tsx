@@ -9,7 +9,7 @@ import { Badge } from "@radix-ui/themes";
 // dynamic probs   :  id >= 55 && <= 74
 
 
-const ProblemV0 = () => {
+const ProblemV0 = ({className} : any) => {
 
 
   const [getProblem, setgetProblem] = useState<any>();
@@ -35,7 +35,7 @@ const ProblemV0 = () => {
   return (
     <>
     {getProblem ?
-    (<div className="p-[20px] overflow-scroll">
+    (<div className={` ${className} p-[20px] overflow-scrol`}>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{getProblem.title}</h1>

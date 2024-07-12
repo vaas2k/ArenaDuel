@@ -17,7 +17,7 @@ import { setTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { useSession } from "next-auth/react";
 import { updateStats } from "@/storeRedux/reducers/winCard";
 
-const EditorV0 = ({code, handleCode} : any) => {
+const EditorV0 = ({code, handleCode ,className} : any) => {
 
 
   const [ problem_id, setproblem_id ] =  useState<any>('');
@@ -164,7 +164,7 @@ int main() {
   };
 
   return (
-    <div className="h-screen flex flex-col overflow-scroll">
+    <div className={` ${className} h-screen flex flex-col overflow-scroll`}>
       <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 shadow-sm">
         <div className="flex items-center gap-4">
           <DropdownMenu>

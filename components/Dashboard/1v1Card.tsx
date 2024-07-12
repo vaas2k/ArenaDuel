@@ -1,12 +1,11 @@
-'use client'
-import React, { useState } from 'react'
-import { CardBody, CardContainer, CardItem } from '@/components/ui/3dCard'
-import Image from 'next/image'
-import { Button, Card, Flex } from '@radix-ui/themes'
+"use client";
+import React, { useState } from "react";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3dCard";
+import Image from "next/image";
+import { Button, Card, Flex } from "@radix-ui/themes";
 
-const Card1v1 = ({handleMode, rating} : any) => {
-
-  const [ option, setOption] = useState(false);
+const Card1v1 = ({ handleMode, rating }: any) => {
+  const [option, setOption] = useState(false);
 
   return (
     <div>
@@ -20,16 +19,12 @@ const Card1v1 = ({handleMode, rating} : any) => {
           </CardItem>
           <CardItem
             as="p"
-            translateZ="60"
+            translateZ={60}
             className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
           >
             Go one on one with random.
           </CardItem>
-          <CardItem 
-          translateZ="100"
-          rotateX={20}
-          rotateZ={-10}
-               className="w-full mt-4">
+          <CardItem translateZ="100" className="w-full mt-4">
             <Image
               src="/images/cardimages/1v1.jpeg"
               height="1000"
@@ -54,32 +49,44 @@ const Card1v1 = ({handleMode, rating} : any) => {
       </CardContainer>
       {option && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Card className='max-w-[450px]'>
-             <h1 className='text-center'>Do want to play ranked ?</h1>
-              <Flex gap="3" mt="4" justify="end" p={'3'}>
-                <Button variant="soft" color="gray" onClick={() => {setOption(false);}}>
-                  cancel
-                </Button>
-                <Button
-                  variant="soft"
-                  color="blue"
-                  onClick={() => {setOption(false);handleMode({ type: "1v1", rating: 0 })}}
-                >
-                  No
-                </Button>
-                <Button
-                  variant="solid"
-                  color="red"
-                  onClick={() =>{setOption(false); handleMode({ type: "1v1", rating: rating })}}
-                >
-                  Yes
-                </Button>
-              </Flex>
+          <Card className="max-w-[450px]">
+            <h1 className="text-center">Do want to play ranked ?</h1>
+            <Flex gap="3" mt="4" justify="end" p={"3"}>
+              <Button
+                variant="soft"
+                color="gray"
+                onClick={() => {
+                  setOption(false);
+                }}
+              >
+                cancel
+              </Button>
+              <Button
+                variant="soft"
+                color="blue"
+                onClick={() => {
+                  setOption(false);
+                  handleMode({ type: "1v1", rating: 0 });
+                }}
+              >
+                No
+              </Button>
+              <Button
+                variant="solid"
+                color="red"
+                onClick={() => {
+                  setOption(false);
+                  handleMode({ type: "1v1", rating: rating });
+                }}
+              >
+                Yes
+              </Button>
+            </Flex>
           </Card>
         </div>
       )}
     </div>
   );
-}
+};
 
-export default Card1v1
+export default Card1v1;

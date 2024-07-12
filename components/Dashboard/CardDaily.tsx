@@ -7,21 +7,21 @@ const CardDaily = ({handleMode, rating} : any) => {
 
 
   return (
-    <div>
-      <CardContainer className="inter-var w-[400px] h-[300px]">
+<div>
+      <CardContainer className="inter-var w-[400px] h-[340px]">
         <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
           <CardItem
-            translateZ="50"
+            translateZ={50}
             className="text-xl font-bold text-neutral-600 dark:text-white"
           >
             Daily
           </CardItem>
           <CardItem
             as="p"
-            translateZ="60"
+            translateZ={60}
             className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
           >
-           Complete a daily challenge to earn points and climb the leaderboard.
+            Go one on one with random.
           </CardItem>
           <CardItem translateZ="100" className="w-full mt-4">
             <Image
@@ -37,14 +37,12 @@ const CardDaily = ({handleMode, rating} : any) => {
               translateZ={20}
               as="button"
               className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-              onClick={() => {handleMode({ type: "marathon", rating: rating })}}
             >
-              not available
+              Not Available
             </CardItem>
           </div>
         </CardBody>
       </CardContainer>
-      
     </div>
   );
 }

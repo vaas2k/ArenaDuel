@@ -136,29 +136,23 @@ export default function Probem_Editor({ currentplayer, code , handleCode , marat
   }, [showCard]);
 
   return (
-    <>
-    <div className="relative h-screen w-full grid grid-cols-1 md:grid-cols-[minmax(250px,_1fr)_minmax(400px,_1fr)]">
-      <ProblemV0 />
+    <div className="responsive-container grid grid-cols-1 md:grid-cols-12">
+      <ProblemV0 className="col-span-full md:col-span-6" />
+
       <EditorV0
-      code={code}
-      handleCode={handleCode} 
+        code={code}
+        handleCode={handleCode}
+        className="col-span-full md:col-span-6"
       />
+
       {showCard && (
         <>
           {showConfetti && <Confetti />}
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <WinningCard />
-          </div>
-        </>
-      )}
-      {marathonCard && (
-        <>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <MarathonCard />
+            {showConfetti ? <WinningCard /> : <MarathonCard />}
           </div>
         </>
       )}
     </div>
-      </>
   );
 }
