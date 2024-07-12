@@ -1,10 +1,11 @@
-import Link from "next/link";
-import { CardContent, Card } from "@/components/ui/card";
-import { AlertDialog, Badge, Button, Flex } from "@radix-ui/themes";
-import { CanvasRevealEffect } from "../ui/revealCard";
-import Card1v1 from "./1v1Card";
-import CardMara from "./CardMara";
-import CardDaily from "./CardDaily";
+
+
+import dynamic from "next/dynamic";
+import { Badge } from "@radix-ui/themes";
+
+const Card1v1 = dynamic(() => import("./1v1Card"), { ssr: false })
+const CardMara = dynamic(() => import("./CardMara"), { ssr: false })
+const CardDaily = dynamic(() => import("./CardDaily"), { ssr: false })
 
 export default function Dashboard_Comp({ handleMode, rating }: any) {
   return (

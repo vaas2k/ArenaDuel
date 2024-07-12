@@ -23,6 +23,7 @@ import { emptyOpponent } from "@/storeRedux/reducers/opponentReducer";
 
 
 const Dashboard = () => {
+
   const { data: session, status } = useSession();
   const [mode, setMode] = useState({ type: "", rating: 0 });
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -102,9 +103,10 @@ const Dashboard = () => {
     }
   }, [mode.type]);
 
+
+
   return (
 
-    <>
     <ProtectedRoute>
       <div className="relative min-h-screen">
         <Dashboard_Comp
@@ -127,7 +129,6 @@ const Dashboard = () => {
         )}
       </div>
     </ProtectedRoute>
-  </>
   );
 };
 

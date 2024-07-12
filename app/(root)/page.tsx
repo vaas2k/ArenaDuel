@@ -3,5 +3,5 @@ const ClientHome = dynamic(() => import("../../components/ClientHome/page"), { s
 
 export default function Home() {
   
-  return <> <ClientHome /> </> 
+  return (<ClientHome />) ;
 }
