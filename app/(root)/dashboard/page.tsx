@@ -107,7 +107,6 @@ const Dashboard = () => {
 
     <>
     <ProtectedRoute>
-      <BackgroundBeams />
       <div className="relative min-h-screen">
         <Dashboard_Comp
           mode={mode}
