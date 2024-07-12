@@ -2,7 +2,9 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import {Loader} from "../shared/Loader";
+import dynamic from "next/dynamic";
+
+const Loader = dynamic(() => import('@/components/shared/Loader'), { ssr: false });
 
 const ProtectedRoute = ({ children }: any) => {
   const [ isMounted , setisMounted ] = useState(false);

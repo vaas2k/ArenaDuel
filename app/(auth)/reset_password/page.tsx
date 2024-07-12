@@ -1,5 +1,7 @@
-import ResetPassword from "@/components/AuthComponents/resetPass";
-import { Container, Flex } from "@radix-ui/themes";
+import dynamic from "next/dynamic";
+
+const ResetPassword = dynamic(() => import('@/components/AuthComponents/resetPass'), { ssr: false });
+
 
 const PassReset = () => {
 

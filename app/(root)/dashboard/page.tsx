@@ -98,6 +98,7 @@ const Dashboard = () => {
     }
   }, [mode.type]);
 
+
   return (
     <ProtectedRoute>
       <div className="relative min-h-screen">

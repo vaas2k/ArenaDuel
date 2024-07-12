@@ -69,7 +69,7 @@ export function MovingBorders({
   );
 }
 
-export const MovingBorder = ({
+const MovingBorder = ({
   children,
   duration = 2000,
   rx,
@@ -137,3 +137,6 @@ export const MovingBorder = ({
     </>
   );
 };
+
+
+export default MovingBorder;

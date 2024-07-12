@@ -1,3 +1,5 @@
+
+import dynamic from "next/dynamic";
 import { Card, Text, Button } from "@radix-ui/themes";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -5,7 +7,8 @@ import useSocket from "@/lib/Sockets/useSocket";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setMatchData } from "@/storeRedux/reducers/matchReducer";
-import { MovingBorders } from "../ui/movingBorder";
+const MovingBorders = dynamic(() => import('@/components/ui/movingBorder'), { ssr: false });
+
 
 const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   const socket = useSocket();

@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3dCard'
 import Image from 'next/image'
-import { Button, Card, Flex } from '@radix-ui/themes'
 
 const CardDaily = ({handleMode, rating} : any) => {
 

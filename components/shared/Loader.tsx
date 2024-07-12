@@ -1,9 +1,13 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { jellyTriangle } from "ldrs";
-jellyTriangle.register();
 
-export const Loader = () => {
+export default function Loader () {
+  
+  useEffect(() => {
+    jellyTriangle.register();
+  },[]);
+
   return (
     <div className="flex justify-center items-center h-screen">
         <l-jelly-triangle
@@ -15,6 +19,11 @@ export const Loader = () => {
   )
 }
 export const Loader2 = () => {
+  
+  useEffect(() => {
+    jellyTriangle.register();
+  },[]);
+
   return (
     <div className="">
         <l-jelly-triangle

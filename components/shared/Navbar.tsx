@@ -13,23 +13,26 @@ import { useWidth } from "@/hooks/useWidth";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Loader2 } from "./Loader";
 import { LogOutIcon } from "lucide-react";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
-const DynamicMoon = dynamic(
-  () => import("lucide-react").then((mod) => mod.Moon),
+const DynamicMoon = dynamic(  () => import("lucide-react").then((mod) => mod.Moon),
   {
     ssr: false,
   }
 );
-const DynamicSun = dynamic(
-  () => import("lucide-react").then((mod) => mod.Sun),
+const DynamicSun = dynamic( () => import("lucide-react").then((mod) => mod.Sun),
   {
     ssr: false,
   }
 );
+const Loader2 = dynamic( () => import("./Loader"),
+  {
+    ssr: false,
+  }
+);
+
 
 const Navbar = () => {
   const width = useWidth();
