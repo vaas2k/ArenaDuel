@@ -7,7 +7,7 @@ import useSocket from "@/lib/Sockets/useSocket";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setMatchData } from "@/storeRedux/reducers/matchReducer";
-const MovingBorders = dynamic(() => import('@/components/ui/movingBorder'), { ssr: false });
+import { MovingBorders } from "../ui/movingBorder";
 
 
 const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
