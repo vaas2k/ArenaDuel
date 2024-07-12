@@ -27,7 +27,7 @@ export default function Dashboard_Comp({ handleMode, rating }: any) {
       {/** This div will take up the remaining space to push the cards to the bottom */}
       <div className="flex-grow"></div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="flex items-center justify-center gap-[40px]">
         {/**1v1 */}
         <Card1v1 handleMode={handleMode} rating={rating}/>
 

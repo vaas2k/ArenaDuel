@@ -8,7 +8,7 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { showCard } from "@/storeRedux/reducers/winCard";
-import { ontimeoutwin,onsubmissionwin,ondraw, marathonMatchOver } from "@/BACKEND_CALLs/apis";
+import { ontimeoutwin,onsubmissionwin,ondraw, marathonMatchOver, abandonMatch } from "@/BACKEND_CALLs/apis";
 import { updateProblems } from "@/storeRedux/reducers/marathonReducer";
 import { emptyTestCases } from "@/storeRedux/reducers/testCasesReducer";
 import { useRouter } from "next/navigation";
@@ -58,7 +58,6 @@ const OptionBar = ({
 
   // win control functionality
   useEffect(() => {
-
     const TimeOut = async (winner: any, loser: any) => {
       if (requestInProgress.current) return; // Prevent multiple requests
       requestInProgress.current = true;
@@ -155,8 +154,9 @@ const OptionBar = ({
   }, [ timeLeftRef.current,matchInfo ]);
 
 
+  // Submission Win Control
   useEffect(() => {
-    const submissionWin = async (winner: any, loser: any) => {
+    const submissionWin = async (winner: any, loser: any)  => {
 
       if(requestInProgress.current) return;
       requestInProgress.current = true;
@@ -205,6 +205,51 @@ const OptionBar = ({
     }
   },[P1PassedCases,P2PassedCases,totalTestCases])
 
+
+  // resign or abandon
+  async function abandon_match() {
+    try {
+      if (!player2.username || !player2.image) {
+        console.error("Player 2 data is missing:", player2);
+        return;
+      }
+      if (win) {
+        console.log('Match Already Over');
+        return;
+      }
+  
+      const winner = { username: player2.username, image: player2.image, rating: player2.rating };
+      const loser = { username : currentplayer.username, image: currentplayer.image, rating: currentplayer.rating };
+      const data = {
+        ...matchInfo,
+        winner: winner,
+        loser: loser,
+        by: 'resign'
+      };
+  
+      const req = await abandonMatch(data);
+      if (req.status === 200) {
+        console.log('Good job, request sent successfully');
+        dispatch(
+          showCard({
+            winner: data.winner.username,
+            solution: 'NO SOLUTION',
+            winnerImage: data.winner.image,
+            showCard: true,
+            by: data.by,
+            loser: data.loser.username,
+            loserImage: data.loser.image,
+            rating : data.winner.username == currentplayer.username ? data.winner.rating :  data.loser.rating
+          })
+        );
+      } else {
+        console.error('Failed to send request:', req);
+      }
+    } catch (error) {
+      console.error('Error in abandon_match:', error);
+    }
+  } 
+  
   return (
     <div className="flex items-center justify-between border dark:bg-neutral-900 bg-white rounded-lg w-[100%] h-[40px] p-[10px]">
       <div className="flex items-center justify-center gap-[20px]">
@@ -235,10 +280,7 @@ const OptionBar = ({
 
             <Flex className="flex-col gap-[10px]">
               <AlertDialog.Action>
-                <Button color="red">Resign</Button>
-              </AlertDialog.Action>
-              <AlertDialog.Action>
-                <Button color="gray">Offer Draw ?</Button>
+                <Button color="red" onClick={() => {abandon_match()}}>Resign / Abort</Button>
               </AlertDialog.Action>
               <AlertDialog.Action>
                 <Button color="blue">cancel</Button>
@@ -394,6 +436,10 @@ const OptionBarMarathon = ({ currentplayer , handleMarathonCard }: any) => {
 
 export { OptionBar, OptionBarMarathon };
 
+
+  function showReducerCard(arg0: { winner: any; solution: string; winnerImage: any; showCard: boolean; by: any; loser: any; loserImage: any; }): any {
+    throw new Error("Function not implemented.");
+  }
 /** options for duo matches
  * <div className="flex items-center justify-center gap-[20px]">
         <Button variant="ghost" color="ruby">

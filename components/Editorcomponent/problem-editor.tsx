@@ -26,6 +26,8 @@ export default function Probem_Editor({ currentplayer, code , handleCode , marat
 
 
 
+
+  // abandon match when user leave the match
   async function abandon_match() {
     try {
       if (!player2.username || !player2.image) {
@@ -71,9 +73,12 @@ export default function Probem_Editor({ currentplayer, code , handleCode , marat
             by: data.by,
             loser: data.loser.username,
             loserImage: data.loser.image,
+            rating : data.winner.username == currentplayer.username ? data.winner.rating :  data.loser.rating
           })
         );
       });
+
+
     } catch (error) {
       console.log(error);
     }

@@ -4,6 +4,7 @@ import testCasesReducer from './reducers/testCasesReducer';
 import winCard from './reducers/winCard';
 import marathonReducer from './reducers/marathonReducer';
 import opponentReducer from './reducers/opponentReducer';
+import themeReducer from './reducers/themeReducer';
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     testCasesReducer,
     winCard,
     marathonReducer,
-    opponentReducer
+    opponentReducer,
+    themeReducer
   },
 });
 

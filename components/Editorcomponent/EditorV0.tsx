@@ -40,6 +40,7 @@ const EditorV0 = ({code, handleCode} : any) => {
   const maraProblems = useSelector((state : any) => { return state.marathonReducer.problems});
   const problem1v1 = useSelector((state : any) => { return state.matchReducer.problem_id});
   const totalTestCases = useSelector((state : any ) => { return state.matchReducer.totalCases});
+  const theme = useSelector ((state : any) => { return state.themeReducer.theme}) ;
 
 
 
@@ -47,27 +48,14 @@ const EditorV0 = ({code, handleCode} : any) => {
     if(lang == 'cpp') { 
       handleCode(`#include <bits/stdc++.h>
 using namespace std;
-class useClass { 
-    
-    public : 
 
-    void getter () { 
-
-    }
-
-    void setter () { 
-
-    }
-
-
-};
 
 int main() { 
 
     // YOUR CODE HERE
 
-    return 0;}`
-               )
+    return 0;
+}`)
     }
     else if(lang == 'java') {
       handleCode('');
@@ -258,7 +246,7 @@ int main() {
 
       <div className="flex-1">
         <Editor
-          theme="vs-dark"
+          theme={theme == 'dark' ? "vs-dark" : 'vs-light'}
           language={lang}
           value={code}
           onChange={(value: any) => handleCode(value)}

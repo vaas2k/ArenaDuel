@@ -25,7 +25,10 @@ const CardMara = ({handleMode, rating} : any) => {
           >
            Compete in a series of matches to climb the leaderboard.
           </CardItem>
-          <CardItem translateZ="100" className="w-full mt-4">
+          <CardItem 
+          translateZ="100"
+          
+          className="w-full mt-4">
             <Image
               src="/images/cardimages/marathon.jpeg"
               height="1000"

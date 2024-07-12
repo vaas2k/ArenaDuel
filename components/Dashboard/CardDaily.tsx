@@ -5,7 +5,6 @@ import Image from 'next/image'
 
 const CardDaily = ({handleMode, rating} : any) => {
 
-  const [ option, setOption] = useState(false);
 
   return (
     <div>

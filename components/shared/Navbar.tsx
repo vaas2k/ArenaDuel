@@ -14,6 +14,9 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { LogOutIcon } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setDark, setLight } from "@/storeRedux/reducers/themeReducer";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
@@ -35,31 +38,16 @@ const Loader2 = dynamic( () => import("./Loader"),
 
 
 const Navbar = () => {
+
+  const dispatch = useDispatch();
   const width = useWidth();
   const router = useRouter();
   const { data: session, status } = useSession();
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isMounted, setIsMounted] = useState(false);
-  const [theme, setTheme] = useState(false);
+  const theme = useSelector((state : any) => { return state.themeReducer.theme});
 
   const navButtons = 'cursor-pointer block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
-
-  useEffect(() => {
-    const storedTheme =
-      typeof window !== undefined ? sessionStorage.getItem("theme") : null;
-    if (storedTheme !== null) {
-      setTheme(storedTheme === "true");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = !theme;
-    setTheme(newTheme);
-    if (typeof window !== undefined) {
-      sessionStorage.setItem("theme", JSON.stringify(newTheme));
-      window.location.reload();
-    }
-  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -148,7 +136,7 @@ const Navbar = () => {
 
           {width! > 765 && (
             <h1 className={`${rubik.className} text-lg ml-[10px]`}>
-              <b style={{ color: !theme ? "white" : "black" }}>Code</b>
+              <b style={{ color: theme == 'dark' ? "white" : "black" }}>Code</b>
               <b>Arena</b>
             </h1>
           )}
@@ -197,11 +185,11 @@ const Navbar = () => {
             )}
             <AuthButtonRender />
             <Flex className="flex items-center justify-center hover:opacity-[50%] cursor-pointer">
-              <Button variant="soft" radius="full" onClick={toggleTheme}>
-                {theme ? (
-                  <DynamicMoon size={"20px"} />
+              <Button variant="soft" radius="full" >
+                {theme == 'light' ? (
+                  <DynamicMoon size={"20px"} onClick={() => { dispatch(setDark())}} />
                 ) : (
-                  <DynamicSun size={"20px"} />
+                  <DynamicSun size={"20px"} onClick={() => { dispatch(setLight())}} />
                 )}
               </Button>
             </Flex>
@@ -218,9 +206,9 @@ const Navbar = () => {
               {status === "authenticated" && (
                 <div className="flex items-center justify-center pt-[15px]">
                   {theme ? (
-                    <DynamicMoon size={"20px"} onClick={toggleTheme} />
+                    <DynamicMoon size={"20px"} onClick={() => { dispatch(setDark())}} />
                   ) : (
-                    <DynamicSun size={"20px"} onClick={toggleTheme} />
+                    <DynamicSun size={"20px"}onClick={() => { dispatch(setLight())}} />
                   )}
                 </div>
               )}

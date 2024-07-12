@@ -34,7 +34,7 @@ const MarathonCard = () => {
 
     return (
       <div className={`${rubik.className}`}>
-        <Card variant={"classic"} className="w-[700px] h-[640px]">
+        <Card variant={'surface'} className="w-[700px] h-[640px]">
         
           <div className="flex items-center justify-between px-[30px] py-[20px]">
             <div>
@@ -52,7 +52,7 @@ const MarathonCard = () => {
           <div className="p-[20px]">
             <table className="min-w-full rounded-lg overflow-auto">
               <thead>
-                <tr className="bg-gray-800 border rounded-t-lg">
+                <tr className="dark:bg-gray-800 border rounded-t-lg">
                   <th className="py-3 px-6">Rank</th>
                   <th className="py-3 px-6">User</th>
                   <th className="py-3 px-6">Rating</th>
