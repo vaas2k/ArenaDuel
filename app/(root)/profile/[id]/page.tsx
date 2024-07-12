@@ -3,7 +3,13 @@ import Banner from "@/components/ProfileComps/Banner";
 import Info from "@/components/ProfileComps/Info";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Loader } from "@/components/shared/Loader";
+
+import dynamic from "next/dynamic";
+const Loader = dynamic( () => import("@/components/shared/Loader"),
+  {
+    ssr: false,
+  }
+);
 import Settings from "@/components/ProfileComps/Setting";
 const Profile = ({ params }: any) => {
   const [user, setUser] = useState<any>();

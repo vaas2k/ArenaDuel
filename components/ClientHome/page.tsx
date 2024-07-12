@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { Rubik } from "next/font/google";
 import { useSession } from "next-auth/react";
-import { Loader } from "@/components/shared/Loader";
+
 
 // Dynamically import components that may access the DOM
 const CalltoAction = dynamic(() => import("@/components/LandingPage/CalltoAction"), { ssr: false });
@@ -14,6 +14,7 @@ const Community = dynamic(() => import("@/components/LandingPage/Community"), { 
 const Discover = dynamic(() => import("@/components/LandingPage/Discover"), { ssr: false });
 const Footer = dynamic(() => import("@/components/LandingPage/Footer"), { ssr: false });
 const Hero = dynamic(() => import("@/components/LandingPage/Hero"), { ssr: false });
+const Loader = dynamic( () => import("@/components/shared/Loader"), { ssr: false, } );
 
 const rubik = Rubik({ subsets: ["latin"] });
 
