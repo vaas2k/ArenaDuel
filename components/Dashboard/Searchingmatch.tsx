@@ -61,12 +61,12 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
     async function match_found() {
       try {
         socket.on(JSON.stringify(currentuser), (data) => {
-          console.log(`Match created for - ${currentuser}`);
-          console.log(data);
           if(currentuser == data.p2) {
             const P2 = data.p1;
             data = {...data,p1 : currentuser,p2 : P2}
           }
+
+            console.log('receive match created');
             dispatch(setMatchData(data));
             setRoom(data.room_id)
             setMatchFound(true);

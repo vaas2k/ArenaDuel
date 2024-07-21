@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl","debian-openssl-1.1.x"]
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -17,11 +17,13 @@ model User {
   image         String?
   OAuth_ID      String?
   verified      Boolean         @default(false)
-  Token         Token[]
   rating        Int?            @default(50)
+  Token         Token[]
   UserInfo      UserInfo[]
   Friends       Friends[]
   Notifications Notifications[]
+  marathons     Marathon[]
+  leaderboard   MarathonLeaderboard[]
 }
 
 model UserInfo {
@@ -63,4 +65,34 @@ model Notifications {
   sender_email String
   sender_image String
   message      String
+}
+
+model Match { 
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  room_id      String
+  problem_id   Int
+  winner       Json ?
+  loser        Json ?
+  p1           String 
+  p2           String 
+  rated        Boolean
+  totalCases   Int
+}
+model Marathon { 
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  problems      Int[]
+  solved       Int?
+  user         User    @relation(fields: [userID], references: [id])
+  userID       String  @db.ObjectId
+}
+
+
+model MarathonLeaderboard { 
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  problemsSolved   Int
+  username         String
+  image            String
+  rating           Int 
+  user             User    @relation(fields: [userID], references: [id])
+  userID           String  @db.ObjectId
 }

@@ -11,6 +11,7 @@ const Loader = dynamic( () => import("@/components/shared/Loader"),
   }
 );
 import Settings from "@/components/ProfileComps/Setting";
+import Stats from "@/components/ProfileComps/Stats";
 const Profile = ({ params }: any) => {
   const [user, setUser] = useState<any>();
 
@@ -45,6 +46,7 @@ const Profile = ({ params }: any) => {
               background_image={user.background_image}
             />
             <Info user={user} open={open} handleSettings={hanldeSettings} email={user.email} />
+            <Stats userid={params.id} username={user.username}/>
           </div>
         </div>
       ) : (

@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/utils/prisma";
 
 export async function POST(req: Request, res: Response) {
     const { param, len } = await req.json();

@@ -11,15 +11,7 @@ import { BackgroundBeams } from "../ui/background-beams";
 import Image from "next/image";
 import { Badge } from "@radix-ui/themes";
 import Link from "next/link";
-
-// Dynamically import components that may access the DOM
-// const CalltoAction = dynamic(() => import("@/components/LandingPage/CalltoAction"), { ssr: false });
-// const Clients = dynamic(() => import("@/components/LandingPage/Clients"), { ssr: false });
-// const Commitment = dynamic(() => import("@/components/LandingPage/Commitment"), { ssr: false });
-// const Community = dynamic(() => import("@/components/LandingPage/Community"), { ssr: false });
-// const Discover = dynamic(() => import("@/components/LandingPage/Discover"), { ssr: false });
-// const Footer = dynamic(() => import("@/components/LandingPage/Footer"), { ssr: false });
-// const Hero = dynamic(() => import("@/components/LandingPage/Hero"), { ssr: false });
+import { useRouter } from "next/navigation";
 const Loader = dynamic(() => import("@/components/shared/Loader"), { ssr: false, });
 
 const rubik = Rubik({ subsets: ["latin"] });
@@ -27,6 +19,7 @@ const rubik = Rubik({ subsets: ["latin"] });
 export default function ClientHome() {
   const [isMounted, setIsMounted] = useState(false);
   const { data: session, status } = useSession();
+  const router = useRouter() ;
 
   useEffect(() => {
     setIsMounted(true);
@@ -73,49 +66,6 @@ export default function ClientHome() {
 
         </div>
 
-
-        {/**FEATURES SECTION */}
-        <div className="flex flex-col gap-[20px] mt-[-200px] p-[50px]">
-          <div className="flex">
-            <Image
-              src='/images/landing/1v1.png'
-              width={600}
-              height={600}
-              alt=""
-              className="rounded-lg"
-            />
-            <div className="flex flex-col items-center justify-center my-[80px] text-xl px-4 md:text-2xl sm:mt-[100px] mt-[30px] lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto">
-              <p>Compete against your friends </p> <br/> <Highlight>  Climb Leaderboard </Highlight> </div>
-          </div>
-
-          <div className="flex">
-            <div className="flex flex-col items-center justify-center my-[80px] text-xl px-4 md:text-2xl sm:mt-[100px] mt-[30px] lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto">
-              <p>Real time Programming </p> <br/> <Highlight>  Elo Rating System </Highlight> </div>
-            <Image
-              src='/images/landing/win.png'
-              width={600}
-              height={600}
-              alt=""
-              className="rounded-lg"
-            />
-          </div>
-
-          <div>
-
-            <div className="flex flex-col items-center justify-center mt-[30px]">
-              <div className="flex items-center justify-center my-[80px] text-xl px-4 md:text-2xl sm:mt-[100px] mt-[30px] lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto"><p>Three Different Modes</p></div>
-              <Image
-                src='/images/landing/modes.png'
-                width={1100}
-                height={1100}
-                alt=""
-                className="rounded-lg"
-              />
-            </div>
-          </div>
-
-        </div>
-
         {/**TECH STACK USED*/}
         <div className="flex flex-col items-center justify-center my-[20px] text-xl px-4 md:text-2xl sm:mt-[100px] mt-[30px] lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto">
           Tech Stack Used </div>
@@ -149,3 +99,51 @@ export default function ClientHome() {
   );
 
 }
+
+
+
+/**
+ * 
+ * FEATURES SECTION CODE 
+ * 
+ <div className="flex flex-col gap-[20px] mt-[-200px] p-[50px] ">
+ <div className="flex sm:flex-row flex-col">
+   <Image
+     src='/images/landing/1v1.png'
+     width={600}
+     height={600}
+     alt=""
+     className="rounded-lg"
+   />
+   <div className="flex flex-col items-center justify-center my-[80px] text-xl px-4 md:text-2xl sm:mt-[100px] mt-[30px] lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto">
+     <p>Compete against your friends </p> <br/> <Highlight>  Climb Leaderboard </Highlight> </div>
+ </div>
+
+ <div className="flex sm:flex-row flex-col">
+   <div className="flex flex-col items-center justify-center my-[80px] text-xl px-4 md:text-2xl sm:mt-[100px] mt-[30px] lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto">
+     <p>Real time Programming </p> <br/> <Highlight>  Elo Rating System </Highlight> </div>
+   <Image
+     src='/images/landing/win.png'
+     width={600}
+     height={600}
+     alt=""
+     className="rounded-lg"
+   />
+ </div>
+
+ <div>
+
+   <div className="flex flex-col items-center justify-center mt-[30px]">
+     <div className="flex items-center justify-center my-[80px] text-xl px-4 md:text-2xl sm:mt-[100px] mt-[30px] lg:text-3xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto"><p>Three Different Modes</p></div>
+     <Image
+       src='/images/landing/modes.png'
+       width={1100}
+       height={1100}
+       alt=""
+       className="rounded-lg"
+     />
+   </div>
+ </div>
+
+</div>
+ */

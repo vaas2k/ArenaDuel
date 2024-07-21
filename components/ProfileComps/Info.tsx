@@ -1,7 +1,5 @@
 "use client";
 import { Badge, Button } from "@radix-ui/themes";
-import axios from "axios";
-import { Sparkle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Rubik } from "next/font/google";
 import React, { useState } from "react";

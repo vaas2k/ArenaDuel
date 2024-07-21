@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/utils/prisma";
 import { v2 as cloudinary } from "cloudinary";
-import { stringify } from "querystring";
-
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -9,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const prisma = new PrismaClient();
+
 
 export async function POST(req: Request, res: Response) {
   const { profilePic, background, email} = await req.json();

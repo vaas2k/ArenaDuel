@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const prisma = new PrismaClient();
-
+import { prisma } from "@/utils/prisma";
 export async function POST(req : Request , res : Response) {
     
 

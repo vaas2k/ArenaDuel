@@ -18,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={rubik.className}>
+        <NextAuthProvider>
           <Provider store={store}>
               <Toaster />
               {children}
           </Provider>
+        </NextAuthProvider>
       </body>
     </html>
   );

@@ -1,9 +1,7 @@
 'use server'
 import mailgun from 'mailgun-js'
 import * as bcrypt from 'bcryptjs';
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/utils/prisma";
 
 
 const DOMAIN = process.env.DOMAIN;

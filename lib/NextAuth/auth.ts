@@ -2,11 +2,11 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import * as bcrypt from 'bcryptjs';
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/utils/prisma";
 import NodeCache from 'node-cache';
 
 const useCache = new NodeCache();
-const prisma = new PrismaClient();
+
 
 const authConfig: NextAuthOptions = {
   providers: [
