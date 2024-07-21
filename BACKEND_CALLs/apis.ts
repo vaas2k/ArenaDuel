@@ -10,7 +10,6 @@ const api = axios.create({
 
 
 const queue_player = async (data : any) => {
-    console.log(process.env.BACKEND_API)
     let response : any ;
     try{
         response = await api.post('/enqueue_player',data);

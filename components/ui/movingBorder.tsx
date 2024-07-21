@@ -13,7 +13,7 @@ import { cn } from "@/utils/cn";
 export function MovingBorders({
   borderRadius = "1.75rem",
   children,
-  as: Component = "button",
+  as: Component = "div", // Changed from "button" to "div"
   containerClassName,
   borderClassName,
   duration,
@@ -138,5 +138,4 @@ const MovingBorder = ({
   );
 };
 
-
-export default MovingBorder;
+export default MovingBorders;

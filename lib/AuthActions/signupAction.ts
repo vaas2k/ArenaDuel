@@ -20,12 +20,21 @@ export async function registerUser(user: signup) {
     }
     const hashedPassword = await bcrypt.hash(user.password!, 10);
 
+    const images = [
+      'https://ih1.redbubble.net/image.5292131909.9696/st,small,507x507-pad,600x600,f8f8f8.u4.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY9UtioTmzThP_evrMDUf68-2APS94Wrpc2MRomiIq4sJdl112WJc1eTVrq5TFtZ4vjcY&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr9I4qwckLNigezLEInvLmZoFb4e2GdbF-YZPokOdXWnliT5IBvcOPaXU3GhYXrwlCyEI&usqp=CAU',
+    ];
+
+    const index = Math.floor(Math.random() * images.length);
+
     const newUser = await prisma.user.create({
       data: {
         name: user.name,
         username: user.username!,
         email: user.email!,
         password: hashedPassword,
+        image: images[index],
       },
     });
     return newUser; // Return the created user object

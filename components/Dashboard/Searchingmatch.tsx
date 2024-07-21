@@ -1,4 +1,3 @@
-
 import dynamic from "next/dynamic";
 import { Card, Text, Button } from "@radix-ui/themes";
 import axios from "axios";
@@ -8,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setMatchData } from "@/storeRedux/reducers/matchReducer";
 import { MovingBorders } from "../ui/movingBorder";
-
 
 const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   const socket = useSocket();
@@ -20,7 +18,6 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   const [room, setRoom] = useState<any>(null); // Initialize with null
   
   const dispatch = useDispatch();
-
 
   // Function to cancel the matchmaking process
   const cancelMatch = async () => {
@@ -61,6 +58,9 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
     async function match_found() {
       try {
         socket.on(JSON.stringify(currentuser), (data) => {
+          
+          console.log('match created');
+
           if(currentuser == data.p2) {
             const P2 = data.p1;
             data = {...data,p1 : currentuser,p2 : P2}
@@ -122,8 +122,7 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
   }, [matchFound, countdown, router, room]);
 
   return (
-
-      <MovingBorders borderRadius="1.50rem" className="w-[250px] h-[150px]">
+    <Card className=" flex items-center justify-center">
       {waiting ? (
         <div>
           <Text as="div" size="2" weight="bold">
@@ -152,13 +151,13 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
               size="1"
               style={{ cursor: "pointer" }}
               onClick={cancelMatch}
-              >
+            >
               Cancel
             </Button>
           </div>
         </div>
       ) : matchFound ? (
-        <div >
+        <div>
           <Text as="div" size="2" weight="bold">
             MATCH FOUND
           </Text>
@@ -170,12 +169,12 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
             size="1"
             style={{ cursor: "pointer" }}
             onClick={cancelMatch}
-            >
+          >
             Cancel
           </Button>
         </div>
       ) : null}
-  </MovingBorders>
+    </Card>
   );
 };
 

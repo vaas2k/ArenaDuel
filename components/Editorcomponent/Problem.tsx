@@ -46,6 +46,7 @@ const ProblemV0 = ({className} : any) => {
             {getProblem.statement}
           </pre>
         </div>
+        
         <div className="flex flex-col gap-[10px]">
           <p>Input</p>
              {getProblem.input}
@@ -62,13 +63,13 @@ const ProblemV0 = ({className} : any) => {
                 <div>
                   <label className="text-sm font-medium">Input</label>
                   <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                    <code>{getProblem.testCases[0]}</code>
+                    <code>{getProblem.id >= 55 ? getProblem.testCases[0].input : getProblem.testCases[0]} </code>
                   </pre>
                 </div>
                 <div>
                   <label className="text-sm font-medium">Output</label>
                   <pre className="rounded-md bg-gray-50 p-2 text-sm dark:bg-gray-900">
-                    <code>{getProblem.testCases[1]}</code>
+                    <code>{getProblem.id >= 55 ? getProblem.testCases[0].input : getProblem.testCases[1]}</code>
                   </pre>
                 </div>
               </div>
