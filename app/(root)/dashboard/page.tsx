@@ -102,12 +102,13 @@ const Dashboard = () => {
   return (
     <ProtectedRoute>
       <div className="relative min-h-screen">
+
         <Dashboard_Comp
           mode={mode}
           handleMode={handleMode}
           // @ts-ignore
           rating={session?.user.rating}
-        />
+          />
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <Searchingmatch
@@ -117,7 +118,7 @@ const Dashboard = () => {
               rating={session?.user.rating}
               // @ts-ignore
               currentuser={session?.user!.id}
-            />
+              />
           </div>
         )}
       </div>

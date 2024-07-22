@@ -8,6 +8,8 @@ COPY package-lock.json .
 
 RUN npm install -f
 
+RUN npx prisma generate 
+
 COPY . .
 
 RUN npm run build

@@ -37,6 +37,7 @@
     "localforage": "^1.10.0",
     "lucide-react": "^0.374.0",
     "mailgun-js": "^0.22.0",
+    "mini-svg-data-uri": "^1.4.4",
     "monaco": "^1.201704190613.0",
     "monaco-editor": "^0.48.0",
     "monaco-themes": "^0.4.4",

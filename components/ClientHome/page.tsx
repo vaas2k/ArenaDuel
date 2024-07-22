@@ -27,6 +27,7 @@ export default function ClientHome() {
 
   if (!isMounted) return <Loader />;
   if (status === 'loading') return <Loader />;
+  if (status === 'authenticated') { router.push('/dashboard')};
 
   return (
     <>

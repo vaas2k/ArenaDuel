@@ -115,7 +115,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`${rubik.className} flex items-center justify-between sm:px-[30px] px-[15px] pt-[20px] pb-[15px] bg-transparent`}
+      className={`${rubik.className} flex items-center justify-between sm:px-[30px] px-[15px] pt-[20px] pb-[15px] bg-transparent-600`}
     >
       
       <Link href={"/"}>
@@ -136,8 +136,8 @@ const Navbar = () => {
 
           {width! > 765 && (
             <h1 className={`${rubik.className} text-lg ml-[10px]`}>
-              <b style={{ color: theme == 'dark' ? "white" : "black" }}>Code</b>
-              <b>Arena</b>
+              <b style={{ color: theme == 'dark' ? "white" : "black" }}>Arena</b>
+              <b>Duel</b>
             </h1>
           )}
         </Button>
