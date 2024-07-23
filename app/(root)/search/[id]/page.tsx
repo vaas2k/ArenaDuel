@@ -6,7 +6,6 @@ import React, { useState } from 'react'
 
 const Search = ({params} : any)  => {
     const param = decodeURIComponent(params.id);
-    console.log(param);
 
     const[ userCards , setUserCards ] = useState(true);
     const[ roomCards , setRoomCards ] = useState(false); 

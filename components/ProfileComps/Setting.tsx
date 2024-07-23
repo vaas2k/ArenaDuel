@@ -26,7 +26,6 @@ const Setting = ({ user , open , handleSettings }: any) => {
     email : user.email
   })
 
-  console.log(info);
 
   const addSkill = (skill: string) => {
     if(!skills){
@@ -61,7 +60,6 @@ const Setting = ({ user , open , handleSettings }: any) => {
         skills: skills,
       };
     }
-    console.log(data);
     
     try{
 
@@ -72,7 +70,6 @@ const Setting = ({ user , open , handleSettings }: any) => {
         typeof window !== undefined ? window.location.reload() : null;
       }
       else{ 
-        console.log(req.data);
         if(req.data.msg === 'USERNAME_TAKEN') {
           setError('USERNAME TAKEN ALREADY')
         }

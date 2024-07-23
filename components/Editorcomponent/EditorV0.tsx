@@ -132,17 +132,20 @@ int main() {
             memory : req.data.memory
           }))
         }
-        if(req.data.message == 'RTE') {
+        if(req.data.message.RTE == 'RTE') {
           setRuntimeError(true);
+        }
+        if(req.data.message.TLE == 'TLE') {
+          setTLE(true);
         }
         setShowResults(true); 
         setLoading(false);
       }
-      if(req.status == 201 && req.data.error == 'TLE') { 
-        setTLE(true);
-        setShowResults(false);
-        setLoading(false);
-      }
+      //if(req.status == 201 && req.data.error == 'TLE') { 
+       // 
+       // setShowResults(false);
+        //setLoading(false);
+       // }
       if(req.status == 201 && req.data.error == 'CE') {
         setCompileError(true);
         setLoading(false);

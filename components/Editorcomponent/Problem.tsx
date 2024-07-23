@@ -16,7 +16,6 @@ const ProblemV0 = ({className} : any) => {
   const maraProblems = useSelector((state : any) => { return state.marathonReducer.problems});
   const problem1v1 = useSelector((state : any) => { return state.matchReducer.problem_id});
 
-  console.log(problem1v1);
 
   useEffect(()=>{
     if(problem1v1) {

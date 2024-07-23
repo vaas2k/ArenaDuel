@@ -66,7 +66,6 @@ const Searchingmatch = ({ mode, handleMode, currentuser, rating }: any) => {
             data = {...data,p1 : currentuser,p2 : P2}
           }
 
-            console.log('receive match created');
             dispatch(setMatchData(data));
             setRoom(data.room_id)
             setMatchFound(true);

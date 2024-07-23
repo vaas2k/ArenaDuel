@@ -12,7 +12,6 @@ const UserCards = ({ param }: any) => {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  console.log(param); 
 
 
   useEffect(() => {
@@ -36,7 +35,6 @@ const UserCards = ({ param }: any) => {
       }
       const req = await axios.post(`/api/search/`, data);
       if (req.data.status === 200) {
-        console.log(req.data);
         setUsers(req.data.users);
         setLoad(false);
       } else {

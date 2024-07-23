@@ -23,7 +23,6 @@ const Password_change = ({ email } : {email :string} )  => {
         confirm_password: "", 
     });
 
-    console.log(form);
 
     const handleError = (field:any) => error[field];
 

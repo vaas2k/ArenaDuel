@@ -22,7 +22,6 @@ const OptionBar = ({
   code,
 }: any) => {
 
-
   const requestInProgress = useRef(false);
   const timeLeftRef = useRef(1200);
   const [ ,setTimeLeft] = useState(1200); // 20 minutes in seconds
@@ -173,7 +172,6 @@ const OptionBar = ({
         const req: any = await onsubmissionwin(data);
         if (req.status === 200) {
 
-          console.log(req.data);
           dispatch(
             showCard({
               winner: winner.username,
@@ -314,9 +312,6 @@ const OptionBarMarathon = ({ currentplayer , handleMarathonCard }: any) => {
   const dispatch = useDispatch() ;
   const router = useRouter();
 
-  //Logs 
-  console.log(matchData.problems);
-
   // time control functionality
   useEffect(() => {
     const timer = setInterval(() => {
@@ -349,7 +344,6 @@ const OptionBarMarathon = ({ currentplayer , handleMarathonCard }: any) => {
           const req : any = await marathonMatchOver({...matchData,solved : solved,username : currentplayer.username, image : currentplayer.image, rating  : currentplayer.rating});
           if(req.status === 200) {
             handleMarathonCard(true);
-            console.log(req.data);
           }
 
         } catch(error) {
@@ -384,7 +378,6 @@ const OptionBarMarathon = ({ currentplayer , handleMarathonCard }: any) => {
         if(id == 53 || id == 54) continue;
         const newProblem = matchData.problems.find((problem : number) => problem === id);
         if (!newProblem) {
-          console.log('new problem');
           dispatch(updateProblems(id));
           break;
         }

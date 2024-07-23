@@ -36,7 +36,6 @@ const Page = ({ params }: any) => {
   function handleCode (code : string ) { 
     setCode(code);
   }
-  console.log(player2);
   useEffect(() => {
     // get Player2 Data when Match is Found and Started
     async function getP2Data() {
