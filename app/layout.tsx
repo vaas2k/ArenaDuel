@@ -8,6 +8,8 @@ import { Rubik } from "next/font/google";
 const rubik = Rubik({ subsets: ["latin"] });
 import { Toaster } from "react-hot-toast";
 
+export const runtime = "edge";
+
 export default function RootLayout({
   children,
 }: Readonly<{
